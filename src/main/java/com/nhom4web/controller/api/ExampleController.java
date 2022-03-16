@@ -1,4 +1,4 @@
-package com.nhom4web.controller;
+package com.nhom4web.controller.api;
 
 import com.nhom4web.model.Example;
 import com.nhom4web.service.impl.ExampleService;
