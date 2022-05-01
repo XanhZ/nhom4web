@@ -1,7 +1,7 @@
 package com.nhom4web.controller.api;
 
-import com.nhom4web.model.Example;
-import com.nhom4web.service.impl.ExampleService;
+import com.nhom4web.model.DanhMuc;
+import com.nhom4web.service.impl.DanhMucService;
 import com.nhom4web.utils.Json;
 
 import javax.servlet.ServletException;
@@ -12,65 +12,64 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
-@WebServlet("/api/examples/*")
-public class ExampleController extends HttpServlet {
-    private static ExampleService service = new ExampleService();
+@WebServlet("/api/danh-muc/*")
+public class DanhMucController extends HttpServlet {
+    private static final DanhMucService service = new DanhMucService();
 
-    // Uri: /api/examples/{id}
+    // Url: /api/danh-muc/{id}
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String path = req.getPathInfo();
-        int ma = Integer.parseInt(path.split("/")[1]);
-        if (service.xoaTheoMa(ma)) {
-            Json.chuyenThanhJson(resp, "Xóa thành công");
+        if (service.xoaTheoMa((Integer) req.getAttribute("ma"))) {
+            Json.chuyenThanhJson(resp, true);
             return;
         }
         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    // Uri: /api/examples/
-    // Uri: /api/examples/{id}
+    // Url: /api/danh-muc
+    // Url: /api/danh-muc/
+    // Url: /api/danh-muc/{id}
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String path = req.getPathInfo();
+        Object maObj = req.getAttribute("ma");
 
-        // Uri: /api/examples or /api/examples/
-        if (path == null || path == "/") {
+        if (maObj == null) {
             Json.chuyenThanhJson(resp, service.layTatCa());
             return;
         }
 
-        // Uri: /api/examples/{id}
-        int ma = Integer.parseInt(path.split("/")[1]);
-        Example ex = service.timTheoMa(ma);
-        if (ex == null) {
-            resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        DanhMuc danhMuc = service.timTheoMa((Integer) maObj);
+        if (danhMuc != null) {
+            Json.chuyenThanhJson(resp, danhMuc);
             return;
         }
-        Json.chuyenThanhJson(resp, service.timTheoMa(ma));
+        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    // Uri: /api/examples/
+    // Url: /api/danh-muc/
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
-        duLieu.put("hoTen", req.getParameter("hoTen"));
-        duLieu.put("tuoi", Integer.parseInt(req.getParameter("tuoi")));
+        duLieu.put("tenDanhMuc", req.getParameter("tenDanhMuc"));
+
         if (service.them(duLieu) > 0) {
             Json.chuyenThanhJson(resp, "Thêm thành công");
+            return;
         }
+
         resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
-    // Uri: /api/examples/{id}
+    // Url: /api/danh-muc/{id}
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int ma = Integer.parseInt(req.getParameter("ma"));
+        int ma = (Integer) req.getAttribute("ma");
         LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
-        duLieu.put("hoTen", req.getParameter("hoTen"));
-        duLieu.put("tuoi", Integer.parseInt(req.getParameter("tuoi")));
+        duLieu.put("tenDanhMuc", req.getParameter("tenDanhMuc"));
+
         if (service.capNhat(duLieu, ma)) {
             Json.chuyenThanhJson(resp, "Cập nhật thành công");
+            return;
         }
         resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
