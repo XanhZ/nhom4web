@@ -1,8 +1,8 @@
 package com.nhom4web.filter;
 
 import com.nhom4web.utils.Json;
-import com.nhom4web.utils.request.DanhMucRequest;
 
+import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -12,7 +12,14 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @WebFilter("/api/danh-muc/*")
+@MultipartConfig
 public class DanhMucFilter extends AbstractFilter {
+    public DanhMucFilter() {
+        this.luat.put("tenDanhMuc", KHONG_BO_TRONG);
+
+        this.e.put("tenDanhMuc." + KHONG_BO_TRONG, "Không được để trống tên danh mục");
+    }
+
     protected boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String duongDan = req.getPathInfo();
         if (duongDan == null || !Pattern.matches("/\\d+", duongDan)) {
@@ -49,7 +56,7 @@ public class DanhMucFilter extends AbstractFilter {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return false;
         }
-        Map<String, String> loi = new DanhMucRequest().getLoi(req);
+        Map<String, String> loi = this.getLoi(req);
         if (loi.size() != 0) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             Json.chuyenThanhJson(resp, loi);
@@ -67,7 +74,7 @@ public class DanhMucFilter extends AbstractFilter {
         Pattern patternMa = Pattern.compile("\\d+");
         Matcher matcher = patternMa.matcher(duongDan);
         int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
-        Map<String, String> loi = new DanhMucRequest().getLoi(req);
+        Map<String, String> loi = this.getLoi(req);
         if (loi.size() != 0) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             Json.chuyenThanhJson(resp, loi);

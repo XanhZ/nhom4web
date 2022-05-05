@@ -19,7 +19,7 @@ CREATE TABLE thongtindangnhap
     thoiGianTao     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     thoiGianCapNhat TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     UNIQUE (maNguoiDung),
-    FOREIGN KEY (maNguoiDung) REFERENCES nguoidung (ma)
+    FOREIGN KEY (maNguoiDung) REFERENCES nguoidung (ma) ON DELETE CASCADE
 );
 
 CREATE TABLE danhmuc
@@ -44,7 +44,7 @@ CREATE TABLE hinhanhsach
 (
     maSach   INT          NOT NULL,
     duongDan VARCHAR(255) NOT NULL,
-    FOREIGN KEY (maSach) REFERENCES sach (ma),
+    FOREIGN KEY (maSach) REFERENCES sach (ma) ON DELETE CASCADE,
     UNIQUE (duongDan),
     CONSTRAINT PK_HinhAnhSach PRIMARY KEY (maSach, duongDan)
 );
@@ -53,8 +53,8 @@ CREATE TABLE phanLoaiSach
 (
     maSach    INT NOT NULL,
     maDanhMuc INT NOT NULL,
-    FOREIGN KEY (maSach) REFERENCES sach (ma),
-    FOREIGN KEY (maDanhMuc) REFERENCES danhmuc (ma),
+    FOREIGN KEY (maSach) REFERENCES sach (ma) ON DELETE CASCADE,
+    FOREIGN KEY (maDanhMuc) REFERENCES danhmuc (ma) ON DELETE CASCADE,
     CONSTRAINT PK_PhanLoaiSach PRIMARY KEY (maSach, maDanhMuc)
 );
 
@@ -65,19 +65,19 @@ CREATE TABLE binhluan
     noiDung         MEDIUMTEXT NOT NULL,
     thoiGianTao     TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     thoiGianCapNhat TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    FOREIGN KEY (maSach) REFERENCES sach (ma),
-    FOREIGN KEY (maNguoiDung) REFERENCES nguoidung (ma),
+    FOREIGN KEY (maSach) REFERENCES sach (ma) ON DELETE CASCADE,
+    FOREIGN KEY (maNguoiDung) REFERENCES nguoidung (ma) ON DELETE CASCADE,
     CONSTRAINT PK_BinhLuan PRIMARY KEY (maSach, maNguoiDung, thoiGianTao)
 );
 
 CREATE TABLE donhang
 (
     ma              INT PRIMARY KEY AUTO_INCREMENT,
-    maNguoiDung     INT       NOT NULL,
+    maNguoiDung     INT,
     trangThai       VARCHAR(20)        DEFAULT 'dangCho' CHECK (trangThai IN ('dangCho', 'xacNhan', 'huy')),
     thoiGianTao     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     thoiGianCapNhat TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    FOREIGN KEY (maNguoiDung) REFERENCES nguoidung (ma)
+    FOREIGN KEY (maNguoiDung) REFERENCES nguoidung (ma) ON DELETE SET NULL
 );
 
 CREATE TABLE dongdonhang
@@ -86,7 +86,7 @@ CREATE TABLE dongdonhang
     maDonHang INT NOT NULL,
     soLuong   INT NOT NULL CHECK (soLuong > 0),
     donGia    INT NOT NULL CHECK (donGia >= 0),
-    FOREIGN KEY (maSach) REFERENCES sach (ma),
-    FOREIGN KEY (maDonHang) REFERENCES donhang (ma),
+    FOREIGN KEY (maSach) REFERENCES sach (ma) ON DELETE CASCADE,
+    FOREIGN KEY (maDonHang) REFERENCES donhang (ma) ON DELETE CASCADE,
     CONSTRAINT PK_DongDonHang PRIMARY KEY (maSach, maDonHang)
 );
