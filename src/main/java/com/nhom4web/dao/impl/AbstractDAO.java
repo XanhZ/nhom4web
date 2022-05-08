@@ -49,9 +49,9 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      */
     protected Connection getKetNoi() {
         try {
-            Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+            Class.forName("com.mysql.cj.jdbc.Driver");
             return DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (ClassNotFoundException | SQLException | InstantiationException | IllegalAccessException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -128,6 +128,8 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
                 stmt.setString(index, (String) thamSo);
             } else if (thamSo instanceof Boolean) {
                 stmt.setBoolean(index, (Boolean) thamSo);
+            } else if (thamSo instanceof Timestamp) {
+                stmt.setTimestamp(index, (Timestamp) thamSo);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -209,8 +211,6 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
         }
         return khoaChinh;
     }
-
-    ;
 
     /**
      * Cập nhật thực thể theo mã

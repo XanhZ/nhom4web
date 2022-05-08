@@ -6,9 +6,12 @@ import com.google.gson.reflect.TypeToken;
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public abstract class AbstractFilter implements Filter {
@@ -30,6 +33,7 @@ public abstract class AbstractFilter implements Filter {
     public static final String REGEX_EMAIL = "^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$";
     public static final String REGEX_SDT = "\\d{10}";
     public static final String REGEX_MAT_KHAU = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,32}$";
+    public static final String REGEX_HINH_ANH = "([^\\s]+(\\.(?i)(jpg|jpeg|png|gif|bmp))$)";
 
     /**
      * Tập các luật của Filter
@@ -38,9 +42,7 @@ public abstract class AbstractFilter implements Filter {
     public final Map<String, String> e = new HashMap<>();
 
     @Override
-    public void destroy() {
-        Filter.super.destroy();
-    }
+    public void destroy() {}
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
@@ -113,6 +115,35 @@ public abstract class AbstractFilter implements Filter {
     }
 
     /**
+     * Kiểm tra tên các file gửi đến có phải là file image
+     * @param files Các file được gửi đến từ Request
+     * @return Lỗi nếu tên file không hợp lệ ngược lại trả về null
+     */
+    public String kiemTraFiles(Collection<Part> files) {
+        for (Part file : files) {
+            String tenFile = this.layTenFile(file);
+            if (!Pattern.matches(REGEX_HINH_ANH, tenFile)) {
+                return "Hình ảnh không hợp lệ";
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Lấy tên file từ Content-Disposition
+     * @param file Part được gửi tới từ request
+     * @return tên file
+     */
+    private String layTenFile(Part file) {
+        Matcher matcher = Pattern.compile("filename=\".*\"").matcher(file.getHeader("content-disposition"));
+        if (matcher.find()) {
+            String tmp = matcher.group();
+            return tmp.substring(10, tmp.length() - 1);
+        }
+        return null;
+    }
+
+    /**
      * Kiểm tra dữ liệu có đúng luật không
      *
      * @param duLieus Dữ liệu cần kiểm tra
@@ -145,8 +176,7 @@ public abstract class AbstractFilter implements Filter {
     }
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-    }
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
     protected abstract boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException;
 

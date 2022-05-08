@@ -2,17 +2,23 @@ package com.nhom4web.filter;
 
 import com.nhom4web.utils.Json;
 
+import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.Part;
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @WebFilter("/api/sach/*")
-@MultipartConfig
+@MultipartConfig(maxFileSize = 1024 * 1024 * 4, // 4 MB
+        maxRequestSize = 1024 * 1024 * 25 // 25 MB
+)
 public class SachFilter extends AbstractFilter {
     public SachFilter() {
         this.luat.put("tenSach", KHONG_BO_TRONG);
@@ -63,6 +69,21 @@ public class SachFilter extends AbstractFilter {
             return false;
         }
         Map<String, String> loi = this.getLoi(req);
+        try {
+            Collection<Part> files = req.getParts()
+                    .stream()
+                    .filter(part -> part.getName().equals("anh"))
+                    .collect(Collectors.toList());
+            String er = this.kiemTraFiles(files);
+            if (er != null) {
+                loi.put("anh", er);
+            }
+        } catch (IllegalStateException e) {
+            loi.put("anh", "Hình ảnh không được quá 4 MB");
+            e.printStackTrace();
+        } catch (ServletException e) {
+            e.printStackTrace();
+        }
         if (loi.size() != 0) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             Json.chuyenThanhJson(resp, loi);

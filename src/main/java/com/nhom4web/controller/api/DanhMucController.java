@@ -13,15 +13,15 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 
-@MultipartConfig
 @WebServlet("/api/danh-muc/*")
+@MultipartConfig
 public class DanhMucController extends HttpServlet {
-    private static final DanhMucService service = new DanhMucService();
+    private static final DanhMucService SERVICE = new DanhMucService();
 
     // Url: /api/danh-muc/{id}
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (service.xoaTheoMa((Integer) req.getAttribute("ma"))) {
+        if (SERVICE.xoaTheoMa((Integer) req.getAttribute("ma"))) {
             Json.chuyenThanhJson(resp, true);
             return;
         }
@@ -36,11 +36,11 @@ public class DanhMucController extends HttpServlet {
         Object maObj = req.getAttribute("ma");
 
         if (maObj == null) {
-            Json.chuyenThanhJson(resp, service.layTatCa());
+            Json.chuyenThanhJson(resp, SERVICE.layTatCa());
             return;
         }
 
-        DanhMuc danhMuc = service.timTheoMa((Integer) maObj);
+        DanhMuc danhMuc = SERVICE.timTheoMa((Integer) maObj);
         if (danhMuc != null) {
             Json.chuyenThanhJson(resp, danhMuc);
             return;
@@ -54,7 +54,7 @@ public class DanhMucController extends HttpServlet {
         LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
         duLieu.put("tenDanhMuc", req.getParameter("tenDanhMuc"));
 
-        if (service.them(duLieu) > 0) {
+        if (SERVICE.them(duLieu) > 0) {
             Json.chuyenThanhJson(resp, "Thêm thành công");
             return;
         }
@@ -69,7 +69,7 @@ public class DanhMucController extends HttpServlet {
         LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
         duLieu.put("tenDanhMuc", req.getParameter("tenDanhMuc"));
 
-        if (service.capNhat(duLieu, ma)) {
+        if (SERVICE.capNhat(duLieu, ma)) {
             Json.chuyenThanhJson(resp, "Cập nhật thành công");
             return;
         }
