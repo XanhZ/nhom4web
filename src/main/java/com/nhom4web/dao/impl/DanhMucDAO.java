@@ -11,7 +11,7 @@ import java.util.List;
 
 public class DanhMucDAO extends AbstractDAO<DanhMuc> implements IDanhMucDAO {
     public DanhMucDAO() {
-        this.setTenBang("danhmuc");
+        this.setTenBang("danhMuc");
     }
 
     @Override

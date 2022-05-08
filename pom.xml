@@ -21,8 +21,11 @@
     <weld.version>2.4.8.Final</weld.version>
     <gson.version>2.9.0</gson.version>
     <sitemesh.version>2.4.2</sitemesh.version>
+    <cloudinary.version>1.32.2</cloudinary.version>
+    <commons.io.version>2.11.0</commons.io.version>
   </properties>
 
+  <!--  Begin dependencies-->
   <dependencies>
     <dependency>
       <groupId>javax</groupId>
@@ -77,7 +80,23 @@
       <artifactId>sitemesh</artifactId>
       <version>${sitemesh.version}</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.cloudinary/cloudinary-http44 -->
+    <dependency>
+      <groupId>com.cloudinary</groupId>
+      <artifactId>cloudinary-http44</artifactId>
+      <version>${cloudinary.version}</version>
+    </dependency>
+
+    <!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
+    <dependency>
+      <groupId>commons-io</groupId>
+      <artifactId>commons-io</artifactId>
+      <version>${commons.io.version}</version>
+    </dependency>
+
   </dependencies>
+  <!-- End dependencies-->
 
   <build>
     <plugins>
