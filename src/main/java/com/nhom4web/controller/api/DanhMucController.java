@@ -1,7 +1,7 @@
 package com.nhom4web.controller.api;
 
+import com.nhom4web.dao.impl.DanhMucDAO;
 import com.nhom4web.model.DanhMuc;
-import com.nhom4web.service.impl.DanhMucService;
 import com.nhom4web.utils.Json;
 
 import javax.servlet.ServletException;
@@ -11,17 +11,18 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.LinkedHashMap;
 
 @WebServlet("/api/danh-muc/*")
 @MultipartConfig
 public class DanhMucController extends HttpServlet {
-    private static final DanhMucService SERVICE = new DanhMucService();
+    private static final DanhMucDAO DANH_MUC_DAO = new DanhMucDAO();
 
     // Url: /api/danh-muc/{id}
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (SERVICE.xoaTheoMa((Integer) req.getAttribute("ma"))) {
+        if (DANH_MUC_DAO.xoa((Integer) req.getAttribute("ma"))) {
             Json.chuyenThanhJson(resp, true);
             return;
         }
@@ -36,11 +37,11 @@ public class DanhMucController extends HttpServlet {
         Object maObj = req.getAttribute("ma");
 
         if (maObj == null) {
-            Json.chuyenThanhJson(resp, SERVICE.layTatCa());
+            Json.chuyenThanhJson(resp, DANH_MUC_DAO.layTatCa());
             return;
         }
 
-        DanhMuc danhMuc = SERVICE.timTheoMa((Integer) maObj);
+        DanhMuc danhMuc = DANH_MUC_DAO.tim((Integer) maObj);
         if (danhMuc != null) {
             Json.chuyenThanhJson(resp, danhMuc);
             return;
@@ -51,10 +52,9 @@ public class DanhMucController extends HttpServlet {
     // Url: /api/danh-muc/
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
-        duLieu.put("tenDanhMuc", req.getParameter("tenDanhMuc"));
-
-        if (SERVICE.them(duLieu) > 0) {
+        DanhMuc danhMuc = new DanhMuc();
+        danhMuc.setTen(req.getParameter("tenDanhMuc"));
+        if (DANH_MUC_DAO.them(danhMuc)) {
             Json.chuyenThanhJson(resp, "Thêm thành công");
             return;
         }
@@ -65,11 +65,12 @@ public class DanhMucController extends HttpServlet {
     // Url: /api/danh-muc/{id}
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        int ma = (Integer) req.getAttribute("ma");
-        LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
-        duLieu.put("tenDanhMuc", req.getParameter("tenDanhMuc"));
+        DanhMuc danhMuc = new DanhMuc();
+        danhMuc.setMa((Integer) req.getAttribute("ma"));
+        danhMuc.setTen(req.getParameter("tenDanhMuc"));
+        danhMuc.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
 
-        if (SERVICE.capNhat(duLieu, ma)) {
+        if (DANH_MUC_DAO.capNhat(danhMuc)) {
             Json.chuyenThanhJson(resp, "Cập nhật thành công");
             return;
         }

@@ -1,44 +1,36 @@
 package com.nhom4web.model;
 
+import com.google.gson.annotations.Expose;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 public class Sach extends AbstractModel {
-    private final int ma;
-    private int maDanhMuc;
-    private String tenSach;
-    private int giaTien;
-    private int soLuongTrongKho;
-    private Timestamp thoiGianTao;
-    private Timestamp thoiGianCapNhat;
+    @Expose List<HinhAnhSach> hinhAnhSachs;
+    @Expose private String ten;
+    @Expose private int giaTien;
+    @Expose private int soLuongTrongKho;
+    @Expose private Timestamp thoiGianTao, thoiGianCapNhat;
 
-    public Sach(int ma, int maDanhMuc, String tenSach, int giaTien, int soLuongTrongKho, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
-        this.ma = ma;
-        this.maDanhMuc = maDanhMuc;
-        this.tenSach = tenSach;
+    public Sach() {
+    }
+
+    public Sach(int ma, List<HinhAnhSach> hinhAnhSachs, String ten, int giaTien, int soLuongTrongKho, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
+        super(ma);
+        this.hinhAnhSachs = hinhAnhSachs;
+        this.ten = ten;
         this.giaTien = giaTien;
         this.soLuongTrongKho = soLuongTrongKho;
         this.thoiGianTao = thoiGianTao;
         this.thoiGianCapNhat = thoiGianCapNhat;
     }
 
-    public int getMa() {
-        return ma;
+    public String getTen() {
+        return ten;
     }
 
-    public int getMaDanhMuc() {
-        return maDanhMuc;
-    }
-
-    public void setMaDanhMuc(int maDanhMuc) {
-        this.maDanhMuc = maDanhMuc;
-    }
-
-    public String getTenSach() {
-        return tenSach;
-    }
-
-    public void setTenSach(String tenSach) {
-        this.tenSach = tenSach;
+    public void setTen(String ten) {
+        this.ten = ten;
     }
 
     public int getGiaTien() {
@@ -71,5 +63,13 @@ public class Sach extends AbstractModel {
 
     public void setThoiGianCapNhat(Timestamp thoiGianCapNhat) {
         this.thoiGianCapNhat = thoiGianCapNhat;
+    }
+
+    public List<HinhAnhSach> getHinhAnhSachs() {
+        return hinhAnhSachs;
+    }
+
+    public void setHinhAnhSachs(List<HinhAnhSach> hinhAnhSachs) {
+        this.hinhAnhSachs = hinhAnhSachs;
     }
 }

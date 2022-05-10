@@ -1,27 +1,32 @@
 package com.nhom4web.model;
 
 public class PhanLoaiSach extends AbstractModel {
-    private int maSach;
-    private int maDanhMuc;
+    private Sach sach;
+    private DanhMuc danhMuc;
 
-    public PhanLoaiSach(int maSach, int maDanhMuc) {
-        this.maSach = maSach;
-        this.maDanhMuc = maDanhMuc;
+    public PhanLoaiSach() {
+
     }
 
-    public int getMaSach() {
-        return maSach;
+    public PhanLoaiSach(int ma, Sach sach, DanhMuc danhMuc) {
+        super(ma);
+        this.sach = sach;
+        this.danhMuc = danhMuc;
     }
 
-    public void setMaSach(int maSach) {
-        this.maSach = maSach;
+    public DanhMuc getDanhMuc() {
+        return danhMuc;
     }
 
-    public int getMaDanhMuc() {
-        return maDanhMuc;
+    public void setDanhMuc(DanhMuc danhMuc) {
+        this.danhMuc = danhMuc;
     }
 
-    public void setMaDanhMuc(int maDanhMuc) {
-        this.maDanhMuc = maDanhMuc;
+    public Sach getSach() {
+        return sach;
+    }
+
+    public void setSach(Sach sach) {
+        this.sach = sach;
     }
 }

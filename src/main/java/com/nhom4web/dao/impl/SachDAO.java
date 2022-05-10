@@ -1,31 +1,31 @@
 package com.nhom4web.dao.impl;
 
 import com.nhom4web.dao.ISachDAO;
-import com.nhom4web.model.DanhMuc;
-import com.nhom4web.model.HinhAnhSach;
 import com.nhom4web.model.Sach;
 
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Timestamp;
-import java.util.List;
+import javax.servlet.http.Part;
+import java.sql.*;
+import java.util.*;
 
 public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
+    private static final PhanLoaiSachDAO PHAN_LOAI_SACH_DAO = new PhanLoaiSachDAO();
+    private static final HinhAnhSachDAO HINH_ANH_SACH_DAO = new HinhAnhSachDAO();
+
     public SachDAO() {
-        this.setTenBang("sach");
+        super("sach");
     }
 
     @Override
     protected Sach sangThucThe(ResultSet rs) {
         try {
-            int ma = rs.getInt(1);
-            int maDanhMuc = rs.getInt(2);
-            String tenSach = rs.getString(3);
-            int giaTien = rs.getInt(4);
-            int soLuongTrongKho = rs.getInt(5);
-            Timestamp thoiGianTao = rs.getTimestamp(6);
-            Timestamp thoiGianCapNhat = rs.getTimestamp(7);
-            return new Sach(ma, maDanhMuc, tenSach, giaTien, soLuongTrongKho, thoiGianTao, thoiGianCapNhat);
+            Sach sach = new Sach();
+            sach.setMa(rs.getInt(1));
+            sach.setTen(rs.getString(2));
+            sach.setGiaTien(rs.getInt(3));
+            sach.setSoLuongTrongKho(rs.getInt(4));
+            sach.setThoiGianTao(rs.getTimestamp(5));
+            sach.setThoiGianCapNhat(rs.getTimestamp(6));
+            return sach;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -33,12 +33,53 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     }
 
     @Override
-    public List<HinhAnhSach> layHinhAnh(Sach sach) {
-        return null;
+    protected LinkedHashMap<String, Object> sangMap(Sach sach) {
+        LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
+        if (sach.getMa() != -1) duLieu.put("ma", sach.getMa());
+        if (sach.getTen() != null) duLieu.put("tenSach", sach.getTen());
+        if (sach.getGiaTien() != -1) duLieu.put("giaTien", sach.getGiaTien());
+        if (sach.getSoLuongTrongKho() != -1) duLieu.put("soLuongTrongKho", sach.getSoLuongTrongKho());
+        if (sach.getThoiGianTao() != null) duLieu.put("thoiGianTao", sach.getThoiGianTao());
+        if (sach.getThoiGianCapNhat() != null) duLieu.put("thoiGianCapNhat", sach.getThoiGianCapNhat());
+        return duLieu;
     }
 
     @Override
-    public List<DanhMuc> layDanhMucSach(Sach sach) {
-        return null;
+    protected void setKhoaChinh(Sach sach, ResultSet rs) {
+        try {
+            if (rs.next()) sach.setMa(rs.getInt(1));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public List<Sach> layTatCa() {
+        List<Sach> sachs = super.layTatCa();
+        for (Sach sach : sachs) {
+            sach.setHinhAnhSachs(HINH_ANH_SACH_DAO.layTatCa(sach.getMa()));
+        }
+        return sachs;
+    }
+
+    @Override
+    public Sach tim(int ma) {
+        Sach sach = super.tim(ma);
+        if (sach == null) return null;
+        sach.setHinhAnhSachs(HINH_ANH_SACH_DAO.layTatCa(sach.getMa()));
+        return sach;
+    }
+
+    @Override
+    public boolean them(Sach sach, List<Part> hinhAnhs, List<Integer> maDanhMucs) {
+        return super.them(sach) &&
+                PHAN_LOAI_SACH_DAO.them(sach.getMa(), maDanhMucs) &&
+                HINH_ANH_SACH_DAO.them(sach.getMa(), hinhAnhs);
+    }
+
+    @Override
+    public boolean xoa(int ma) {
+        HINH_ANH_SACH_DAO.xoaTrenCloud(ma);
+        return super.xoa(ma);
     }
 }

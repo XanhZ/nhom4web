@@ -1,20 +1,25 @@
 package com.nhom4web.model;
 
 public class HinhAnhSach extends AbstractModel {
-    private int maSach;
     private String duongDan;
+    private String publicId;
 
-    public HinhAnhSach(int maSach, String duongDan) {
-        this.maSach = maSach;
+    public HinhAnhSach() {
+
+    }
+
+    public HinhAnhSach(int ma, String duongDan, String publicId) {
+        super(ma);
         this.duongDan = duongDan;
+        this.publicId = publicId;
     }
 
-    public int getMaSach() {
-        return maSach;
+    public String getPublicId() {
+        return publicId;
     }
 
-    public void setMaSach(int maSach) {
-        this.maSach = maSach;
+    public void setPublicId(String publicId) {
+        this.publicId = publicId;
     }
 
     public String getDuongDan() {

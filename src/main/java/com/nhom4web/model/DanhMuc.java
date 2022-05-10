@@ -1,29 +1,39 @@
 package com.nhom4web.model;
 
+import com.google.gson.annotations.Expose;
+
 import java.sql.Timestamp;
+import java.util.List;
 
 public class DanhMuc extends AbstractModel {
-    private final int ma;
-    private String tenDanhMuc;
-    private Timestamp thoiGianTao, thoiGianCapNhat;
+    @Expose private String ten;
+    @Expose private Timestamp thoiGianTao, thoiGianCapNhat;
+    private List<PhanLoaiSach> phanLoaiSachs;
 
-    public DanhMuc(int ma, String tenDanhMuc, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
-        this.ma = ma;
-        this.tenDanhMuc = tenDanhMuc;
+    public DanhMuc() {
+    }
+
+    public DanhMuc(int ma, String ten, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
+        super(ma);
+        this.ten = ten;
         this.thoiGianTao = thoiGianTao;
         this.thoiGianCapNhat = thoiGianCapNhat;
     }
 
-    public int getMa() {
-        return ma;
+    public String getTen() {
+        return ten;
     }
 
-    public String getTenDanhMuc() {
-        return tenDanhMuc;
+    public void setTen(String ten) {
+        this.ten = ten;
     }
 
-    public void setTenDanhMuc(String tenDanhMuc) {
-        this.tenDanhMuc = tenDanhMuc;
+    public List<PhanLoaiSach> getPhanLoaiSachs() {
+        return phanLoaiSachs;
+    }
+
+    public void setPhanLoaiSachs(List<PhanLoaiSach> phanLoaiSachs) {
+        this.phanLoaiSachs = phanLoaiSachs;
     }
 
     public Timestamp getThoiGianTao() {
