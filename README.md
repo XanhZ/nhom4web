@@ -7,6 +7,12 @@
     <li>/api/danh-muc: POST, GET</li>
     <li>/api/danh-muc/{id}: GET, PUT, DELETE</li>
 </ul>
+<h3>Đăng ký, đăng nhập</h3>
+<ul>
+    <li>/api/dang-ky: POST</li>
+    <li>/api/dang-nhap: POST</li>
+    <li>/api/dang-xuat: POST</li>
+</ul>
 
 <h1>Filter</h1>
 <ul>
