@@ -64,6 +64,7 @@ CREATE TABLE `hinhAnhSach`
 (
     `maSach`   INT                 NOT NULL,
     `duongDan` VARCHAR(255) UNIQUE NOT NULL,
+    `publicId` VARCHAR(255)        NOT NULL,
     FOREIGN KEY (`maSach`) REFERENCES `sach` (`ma`) ON DELETE CASCADE,
     CONSTRAINT PK_HinhAnhSach PRIMARY KEY (`maSach`, `duongDan`)
 ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
