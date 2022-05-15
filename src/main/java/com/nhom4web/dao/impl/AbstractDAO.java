@@ -13,24 +13,62 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     private static final String URL = "jdbc:mysql://localhost:3306/nhom4_web";
     private static final String USERNAME = "root";
     private static final String PASSWORD = "";
+    public static Connection ketNoi;
 
     /**
      * Thông tin bảng
      */
-    protected String tenBang;
+    protected final String tenBang;
+
+    public AbstractDAO(String tenBang) {
+        this.tenBang = tenBang;
+        if (AbstractDAO.ketNoi == null) {
+            this.taoKetNoi();
+        }
+    }
+
+    /**
+     * Cập nhật đối tượng trong cơ sở dữ liệu
+     *
+     * @param t đối tượng cần cập nhật
+     */
+    public boolean capNhat(T t) {
+        try {
+            LinkedHashMap<String, Object> duLieu = this.sangMap(t);
+            int ma = (int) duLieu.remove("ma");
+            List<String> temp = duLieu.keySet().stream().map(o -> o + " = ?").collect(Collectors.toList());
+            String sql = String.format(
+                    "UPDATE %s SET %s WHERE ma = %d",
+                    this.tenBang,
+                    String.join(", ", temp),
+                    ma
+            );
+            ketNoi.setAutoCommit(false);
+            PreparedStatement stmt = ketNoi.prepareStatement(sql);
+            this.setThamSoTruyVan(stmt, duLieu.values());
+            stmt.executeUpdate();
+            ketNoi.commit();
+            this.dongTruyVan(stmt, null);
+            return true;
+        } catch (SQLException e) {
+            try {
+                ketNoi.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+            }
+            e.printStackTrace();
+        }
+        return false;
+    }
 
     /**
      * Đóng kết nối, truy vấn và kết quả
      *
-     * @param ketNoi kết nối tới cơ sở dũ liệu
-     * @param stmt   câu truy vấn
-     * @param rs     kết quả trả về của truy vấn
+     * @param stmt câu truy vấn
+     * @param rs   kết quả trả về của truy vấn
      */
-    protected void dongTruyVan(Connection ketNoi, PreparedStatement stmt, ResultSet rs) {
+    protected void dongTruyVan(PreparedStatement stmt, ResultSet rs) {
         try {
-            if (ketNoi != null) {
-                ketNoi.close();
-            }
             if (stmt != null) {
                 stmt.close();
             }
@@ -43,21 +81,6 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     }
 
     /**
-     * Tạo kết nối tới cơ sở dữ liệu
-     *
-     * @return một kết nối
-     */
-    protected Connection getKetNoi() {
-        try {
-            Class.forName("com.mysql.cj.jdbc.Driver");
-            return DriverManager.getConnection(URL, USERNAME, PASSWORD);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
-
-    /**
      * Lấy tất cả các bản ghi trong cơ sở dữ liệu
      *
      * @return Danh sách các thực thể
@@ -66,13 +89,12 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
         List<T> list = new ArrayList<>();
         try {
             String sql = String.format("SELECT * FROM %s", this.tenBang);
-            Connection ketNoi = this.getKetNoi();
             PreparedStatement stmt = ketNoi.prepareStatement(sql);
             ResultSet rs = stmt.executeQuery();
             while (rs.next()) {
                 list.add(this.sangThucThe(rs));
             }
-            this.dongTruyVan(ketNoi, stmt, rs);
+            this.dongTruyVan(stmt, rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -85,31 +107,22 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      * @param ma mã của thực thể cần tìm
      * @return một thực thể nếu tìm thấy, ngược lại trả về null
      */
-    public T layTheoMa(int ma) {
+    public T tim(int ma) {
         T t = null;
         try {
             String sql = String.format("SELECT * FROM %s WHERE ma = ?", this.tenBang);
-            Connection ketNoi = this.getKetNoi();
             PreparedStatement stmt = ketNoi.prepareStatement(sql);
             this.setThamSoTruyVan(stmt, ma);
             ResultSet rs = stmt.executeQuery();
             if (rs.next()) {
                 t = this.sangThucThe(rs);
             }
-            this.dongTruyVan(ketNoi, stmt, rs);
+            this.dongTruyVan(stmt, rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return t;
     }
-
-    /**
-     * Chuyển ResultSet rs sang thực thể
-     *
-     * @param rs một hàng của kết quả truy vấn
-     * @return một thực thể
-     */
-    protected abstract T sangThucThe(ResultSet rs);
 
     /**
      * Thiết lập tham số tại index chỉ định
@@ -163,88 +176,49 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     }
 
     /**
-     * Thiết lập tên bảng
-     *
-     * @param tenBang tên bảng cần thiết lập
+     * Tạo một kết nối chung tới cơ sở dữ liệu
      */
-    protected final void setTenBang(String tenBang) {
-        this.tenBang = tenBang;
+    protected void taoKetNoi() {
+        try {
+            Class.forName("com.mysql.cj.jdbc.Driver");
+            AbstractDAO.ketNoi = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
      * Thêm một hàng vào cơ sở dữ liệu
      *
-     * @param duLieu chứa dữ liệu dưới cặp key - value
-     * @return khóa chính của thực thể, trả về -1 nếu thất bại
+     * @param t đối tượng thêm vào cơ sở dữ liệu
+     * @return true nếu thành công, ngược lại trả về false
      */
-    public int them(LinkedHashMap<String, Object> duLieu) {
-        int khoaChinh = -1;
-        Connection ketNoi = this.getKetNoi();
-        if (ketNoi != null) {
+    public boolean them(T t) {
+        try {
+            LinkedHashMap<String, Object> duLieu = this.sangMap(t);
+            String[] temp = new String[duLieu.size()];
+            Arrays.fill(temp, "?");
+            String sql = String.format(
+                    "INSERT INTO %s (%s) VALUES (%s)",
+                    this.tenBang,
+                    String.join(", ", duLieu.keySet()), String.join(", ", temp)
+            );
+            ketNoi.setAutoCommit(false);
+            PreparedStatement stmt = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            this.setThamSoTruyVan(stmt, duLieu.values());
+            stmt.executeUpdate();
+            ResultSet rs = stmt.getGeneratedKeys();
+            this.setKhoaChinh(t, rs);
+            ketNoi.commit();
+            this.dongTruyVan(stmt, rs);
+            return true;
+        } catch (SQLException e) {
             try {
-                String[] temp = new String[duLieu.size()];
-                Arrays.fill(temp, "?");
-                String sql = String.format(
-                        "INSERT INTO %s (%s) VALUES (%s)",
-                        this.tenBang,
-                        String.join(", ", duLieu.keySet()),
-                        String.join(", ", temp)
-                );
-                ketNoi.setAutoCommit(false);
-                PreparedStatement stmt = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                this.setThamSoTruyVan(stmt, duLieu.values());
-                stmt.executeUpdate();
-                ResultSet rs = stmt.getGeneratedKeys();
-                if (rs.next()) {
-                    khoaChinh = rs.getInt(1);
-                }
-                ketNoi.commit();
-                this.dongTruyVan(ketNoi, stmt, rs);
-            } catch (SQLException e) {
-                try {
-                    ketNoi.rollback();
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-                e.printStackTrace();
+                ketNoi.rollback();
+            } catch (SQLException e1) {
+                e1.printStackTrace();
             }
-        }
-        return khoaChinh;
-    }
-
-    /**
-     * Cập nhật thực thể theo mã
-     *
-     * @param duLieu chứa dữ liệu dưới cặp key - value
-     * @param ma     mã của thực thể cần cập nhật
-     * @return true nếu cập nhật thành công
-     */
-    public boolean capNhat(LinkedHashMap<String, Object> duLieu, int ma) {
-        Connection ketNoi = this.getKetNoi();
-        if (ketNoi != null) {
-            try {
-                List<String> temp = duLieu.keySet().stream().map(o -> o + " = ?").collect(Collectors.toList());
-                String sql = String.format(
-                        "UPDATE %s SET %s WHERE ma = %d",
-                        this.tenBang,
-                        String.join(", ", temp),
-                        ma
-                );
-                ketNoi.setAutoCommit(false);
-                PreparedStatement stmt = ketNoi.prepareStatement(sql);
-                this.setThamSoTruyVan(stmt, duLieu.values());
-                stmt.executeUpdate();
-                ketNoi.commit();
-                this.dongTruyVan(ketNoi, stmt, null);
-                return true;
-            } catch (SQLException e) {
-                try {
-                    ketNoi.rollback();
-                } catch (SQLException e1) {
-                    e1.printStackTrace();
-                }
-                e.printStackTrace();
-            }
+            e.printStackTrace();
         }
         return false;
     }
@@ -255,57 +229,46 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      * @param ma mã của thực thể cần xóa
      * @return true nếu xóa thành công
      */
-    public boolean xoaTheoMa(int ma) {
-        Connection ketNoi = this.getKetNoi();
-        if (ketNoi != null) {
+    public boolean xoa(int ma) {
+        try {
+            String sql = String.format("DELETE FROM %s WHERE ma = ?", this.tenBang);
+            ketNoi.setAutoCommit(false);
+            PreparedStatement stmt = ketNoi.prepareStatement(sql);
+            this.setThamSoTruyVan(stmt, ma);
+            stmt.executeUpdate();
+            ketNoi.commit();
+            this.dongTruyVan(stmt, null);
+            return true;
+        } catch (SQLException e) {
             try {
-                String sql = String.format("DELETE FROM %s WHERE ma = ?", this.tenBang);
-                ketNoi.setAutoCommit(false);
-                PreparedStatement stmt = ketNoi.prepareStatement(sql);
-                this.setThamSoTruyVan(stmt, ma);
-                stmt.executeUpdate();
-                ketNoi.commit();
-                this.dongTruyVan(ketNoi, stmt, null);
-                return true;
-            } catch (SQLException e) {
-                try {
-                    ketNoi.rollback();
-                } catch (SQLException e1) {
-                    e.printStackTrace();
-                }
+                ketNoi.rollback();
+            } catch (SQLException e1) {
                 e.printStackTrace();
             }
+            e.printStackTrace();
         }
         return false;
     }
 
     /**
-     * Xóa các bản ghi có mã nằm trong danh sách
+     * Chuyển ResultSet rs sang thực thể
      *
-     * @param mas mảng chứa danh sách các mã cần xóa
-     * @return true nếu xóa thành công
+     * @param rs một hàng của kết quả truy vấn
+     * @return một thực thể
      */
-    public boolean xoaTheoMa(int[] mas) {
-        Connection ketNoi = this.getKetNoi();
-        if (ketNoi != null) {
-            try {
-                String sql = String.format("DELETE FROM %s WHERE ma IN ?", this.tenBang);
-                ketNoi.setAutoCommit(false);
-                PreparedStatement stmt = ketNoi.prepareStatement(sql);
-                this.setThamSoTruyVan(stmt, (Object) mas);
-                stmt.executeUpdate();
-                ketNoi.commit();
-                this.dongTruyVan(ketNoi, stmt, null);
-                return true;
-            } catch (SQLException e) {
-                try {
-                    ketNoi.rollback();
-                } catch (SQLException e1) {
-                    e.printStackTrace();
-                }
-                e.printStackTrace();
-            }
-        }
-        return false;
-    }
+    protected abstract T sangThucThe(ResultSet rs);
+
+    /**
+     * Chuyển đối tượng sang các cột trong bảng
+     * @param t đối tượng cần chuyển đối
+     * @return Map Key - Value tương ứng với cột - giá trị trong bảng
+     */
+    protected abstract LinkedHashMap<String, Object> sangMap(T t);
+
+    /**
+     * Thiết lập khóa chính của đối tượng sau khi thêm thành công vào cơ sở dữ liệu
+     * @param t đối tượng cần thiết lập khóa chính
+     * @param rs khóa chính được trả về trong ResultSet
+     */
+    protected abstract void setKhoaChinh(T t, ResultSet rs);
 }
