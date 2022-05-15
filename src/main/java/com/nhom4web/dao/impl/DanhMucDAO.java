@@ -6,6 +6,7 @@ import com.nhom4web.model.Sach;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -15,14 +16,34 @@ public class DanhMucDAO extends AbstractDAO<DanhMuc> implements IDanhMucDAO {
     }
 
     @Override
+    protected List<DanhMuc> sangThucThes(ResultSet rs) {
+        List<DanhMuc> danhMucs = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                DanhMuc danhMuc = new DanhMuc();
+                danhMuc.setMa(rs.getInt(1));
+                danhMuc.setTen(rs.getString(2));
+                danhMuc.setThoiGianTao(rs.getTimestamp(3));
+                danhMuc.setThoiGianCapNhat(rs.getTimestamp(4));
+                danhMucs.add(danhMuc);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return danhMucs;
+    }
+
+    @Override
     protected DanhMuc sangThucThe(ResultSet rs) {
         try {
-            DanhMuc danhMuc = new DanhMuc();
-            danhMuc.setMa(rs.getInt(1));
-            danhMuc.setTen(rs.getString(2));
-            danhMuc.setThoiGianTao(rs.getTimestamp(3));
-            danhMuc.setThoiGianCapNhat(rs.getTimestamp(4));
-            return danhMuc;
+            if (rs.next()) {
+                DanhMuc danhMuc = new DanhMuc();
+                danhMuc.setMa(rs.getInt(1));
+                danhMuc.setTen(rs.getString(2));
+                danhMuc.setThoiGianTao(rs.getTimestamp(3));
+                danhMuc.setThoiGianCapNhat(rs.getTimestamp(4));
+                return danhMuc;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
