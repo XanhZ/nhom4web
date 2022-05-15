@@ -1,7 +1,6 @@
 package com.nhom4web.dao.impl;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.api.ApiResponse;
 import com.nhom4web.dao.IHinhAnhSachDAO;
 import com.nhom4web.model.HinhAnhSach;
 import com.nhom4web.model.Sach;
@@ -28,17 +27,31 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
 
     @Override
     protected List<HinhAnhSach> sangThucThes(ResultSet rs) {
-        return null;
+        List<HinhAnhSach> hinhAnhSachs = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                HinhAnhSach hinhAnhSach = new HinhAnhSach();
+                hinhAnhSach.setMa(rs.getInt(1));
+                hinhAnhSach.setDuongDan(rs.getString(2));
+                hinhAnhSach.setPublicId(rs.getString(3));
+                hinhAnhSachs.add(hinhAnhSach);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hinhAnhSachs;
     }
 
     @Override
     protected HinhAnhSach sangThucThe(ResultSet rs) {
         try {
-            HinhAnhSach hinhAnhSach = new HinhAnhSach();
-            hinhAnhSach.setMa(rs.getInt(1));
-            hinhAnhSach.setDuongDan(rs.getString(2));
-            hinhAnhSach.setPublicId(rs.getString(3));
-            return hinhAnhSach;
+            if (rs.next()) {
+                HinhAnhSach hinhAnhSach = new HinhAnhSach();
+                hinhAnhSach.setMa(rs.getInt(1));
+                hinhAnhSach.setDuongDan(rs.getString(2));
+                hinhAnhSach.setPublicId(rs.getString(3));
+                return hinhAnhSach;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,7 +86,6 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
                     "INSERT INTO hinhAnhSach (maSach, duongDan, publicId) VALUES %s",
                     String.join(", ", temp)
             );
-            ketNoi.setAutoCommit(false);
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             int i = 0;
             for (HinhAnhSach hinhAnhSach : hinhAnhSachs) {
