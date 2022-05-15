@@ -1,7 +1,7 @@
 package com.nhom4web.controller.view;
 
-import com.nhom4web.service.impl.DangNhapService;
-import com.nhom4web.service.impl.NguoiDungService;
+import com.nhom4web.dao.impl.NguoiDungDAO;
+import com.nhom4web.dao.impl.ThongTinDangNhapDAO;
 import com.nhom4web.utils.Hashing;
 import com.nhom4web.utils.Json;
 
@@ -18,8 +18,8 @@ import java.util.LinkedHashMap;
 @MultipartConfig
 @WebServlet("/api/dang-ky")
 public class DangKyController extends HttpServlet {
-    private static final NguoiDungService NGUOI_DUNG_SERVICE = new NguoiDungService();
-    private static final DangNhapService DANG_NHAP_SERVICE = new DangNhapService();
+    private static final NguoiDungDAO ND_DAO = new NguoiDungDAO();
+    private static final ThongTinDangNhapDAO TTDN_DAO = new ThongTinDangNhapDAO();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -31,7 +31,7 @@ public class DangKyController extends HttpServlet {
         thongTinNguoiDung.put("ten", req.getParameter("ten"));
         thongTinNguoiDung.put("loaiNguoiDung", Integer.parseInt(req.getParameter("loaiNguoiDung")));
 
-        int maNguoiDung = NGUOI_DUNG_SERVICE.them(thongTinNguoiDung);
+        int maNguoiDung = ND_DAO.them(thongTinNguoiDung);
 
         if (maNguoiDung <= 0) {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
@@ -51,7 +51,7 @@ public class DangKyController extends HttpServlet {
             e.printStackTrace();
         }
 
-        if (DANG_NHAP_SERVICE.them(thongTinDangNhap) > 0) {
+        if (TTDN_DAO.them(thongTinDangNhap) > 0) {
             Json.chuyenThanhJson(resp, "Đăng ký thành công");
             return;
         }

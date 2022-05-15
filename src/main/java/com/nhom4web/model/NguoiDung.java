@@ -11,6 +11,34 @@ public class NguoiDung {
     private Integer gioiTinh;
     private String diaChi;
 
+    public void setMa(Integer ma) {
+        this.ma = ma;
+    }
+
+    public void setTen(String ten) {
+        this.ten = ten;
+    }
+
+    public void setSdt(String sdt) {
+        this.sdt = sdt;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setLoaiNguoiDung(Integer loaiNguoiDung) {
+        this.loaiNguoiDung = loaiNguoiDung;
+    }
+
+    public void setGioiTinh(Integer gioiTinh) {
+        this.gioiTinh = gioiTinh;
+    }
+
+    public void setDiaChi(String diaChi) {
+        this.diaChi = diaChi;
+    }
+
     private Timestamp thoiGianTao;
     private Timestamp thoiGianCapNhat;
 

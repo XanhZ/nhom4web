@@ -10,9 +10,9 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     /**
      * Thông tin cơ sở dữ liệu
      */
-    private static final String URL = "jdbc:mysql://localhost:3306/nhom4_web";
+    private static final String URL = "jdbc:mysql://localhost:13306/nhom4_web";
     private static final String USERNAME = "root";
-    private static final String PASSWORD = "";
+    private static final String PASSWORD = "jisooyaaa";
     public static Connection ketNoi;
 
     /**
@@ -221,6 +221,46 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             e.printStackTrace();
         }
         return false;
+    }
+
+    /**
+     * Thêm một hàng vào cơ sở dữ liệu
+     *
+     * @param duLieu chứa dữ liệu dưới cặp key - value
+     * @return khóa chính của thực thể, trả về -1 nếu thất bại
+     */
+    public int them(LinkedHashMap<String, Object> duLieu) {
+        int khoaChinh = -1;
+        if (ketNoi != null) {
+            try {
+                String[] temp = new String[duLieu.size()];
+                Arrays.fill(temp, "?");
+                String sql = String.format(
+                        "INSERT INTO %s (%s) VALUES (%s)",
+                        this.tenBang,
+                        String.join(", ", duLieu.keySet()),
+                        String.join(", ", temp)
+                );
+                ketNoi.setAutoCommit(false);
+                PreparedStatement stmt = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                this.setThamSoTruyVan(stmt, duLieu.values());
+                stmt.executeUpdate();
+                ResultSet rs = stmt.getGeneratedKeys();
+                if (rs.next()) {
+                    khoaChinh = rs.getInt(1);
+                }
+                ketNoi.commit();
+                this.dongTruyVan(stmt, rs);
+            } catch (SQLException e) {
+                try {
+                    ketNoi.rollback();
+                } catch (SQLException e1) {
+                    e1.printStackTrace();
+                }
+                e.printStackTrace();
+            }
+        }
+        return khoaChinh;
     }
 
     /**

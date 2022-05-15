@@ -6,11 +6,12 @@ import com.nhom4web.model.ThongTinDangNhap;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ThongTinDangNhapDAO extends AbstractDAO<ThongTinDangNhap> implements IThongTinDangNhapDAO {
     public ThongTinDangNhapDAO() {
-        this.setTenBang("thongTinDangNhap");
+        super("thongTinDangNhap");
     }
 
     @Override
@@ -32,15 +33,37 @@ public class ThongTinDangNhapDAO extends AbstractDAO<ThongTinDangNhap> implement
         return null;
     }
 
+    @Override
+    protected LinkedHashMap<String, Object> sangMap(ThongTinDangNhap thongTinDangNhap) {
+        LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
+        if (thongTinDangNhap.getMa() != -1) duLieu.put("ma", thongTinDangNhap.getMa());
+        if (thongTinDangNhap.getMaNguoiDung() != null) duLieu.put("sdt", thongTinDangNhap.getMaNguoiDung());
+        if (thongTinDangNhap.getTenDangNhap() != null) duLieu.put("email", thongTinDangNhap.getTenDangNhap());
+        if (thongTinDangNhap.getMatKhau() != null) duLieu.put("ten", thongTinDangNhap.getMatKhau());
+        if (thongTinDangNhap.getToken() != null) duLieu.put("loaiNguoiDung", thongTinDangNhap.getToken());
+        if (thongTinDangNhap.getThoiGianTao() != null) duLieu.put("thoiGianTao", thongTinDangNhap.getThoiGianTao());
+        if (thongTinDangNhap.getThoiGianCapNhat() != null) duLieu.put("thoiGianCapNhat", thongTinDangNhap.getThoiGianCapNhat());
+        return duLieu;
+    }
 
+    @Override
+    protected void setKhoaChinh(ThongTinDangNhap thongTinDangNhap, ResultSet rs) {
+        try {
+            if (rs.next()) thongTinDangNhap.setMa(rs.getInt(1));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public ThongTinDangNhap layThongTinDangNhap(int maNguoiDung) {
         return null;
     }
 
-    public ThongTinDangNhap layThongTinDangNhap (LinkedHashMap<String, Object> duLieu) {
+    @Override
+    public ThongTinDangNhap layThongTinDangNhap(LinkedHashMap<String, Object> duLieu) {
         ThongTinDangNhap thongTinDangNhap = null;
 
-        Connection ketNoi = this.getKetNoi();
         if (ketNoi != null) {
             try {
                 ArrayList<String> filters = new ArrayList<>();
@@ -60,11 +83,16 @@ public class ThongTinDangNhapDAO extends AbstractDAO<ThongTinDangNhap> implement
                 if (rs.next()) {
                     thongTinDangNhap = sangThucThe(rs);
                 }
-                this.dongTruyVan(ketNoi, stmt, rs);
+                this.dongTruyVan(stmt, rs);
             } catch (SQLException e) {
                 e.printStackTrace();
             }
         }
         return thongTinDangNhap;
+    }
+
+    @Override
+    public ThongTinDangNhap timTheoTaiKhoanMatKhau(LinkedHashMap<String, Object> duLieu) {
+        return layThongTinDangNhap(duLieu);
     }
 }

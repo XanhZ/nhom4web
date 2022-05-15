@@ -1,15 +1,16 @@
 package com.nhom4web.dao.impl;
 
+import com.nhom4web.dao.INguoiDungDAO;
 import com.nhom4web.model.NguoiDung;
-import com.nhom4web.service.INguoiDungService;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.LinkedHashMap;
 
-public class NguoiDungDAO extends AbstractDAO<NguoiDung> implements INguoiDungService {
+public class NguoiDungDAO extends AbstractDAO<NguoiDung> implements INguoiDungDAO {
     public NguoiDungDAO() {
-        this.setTenBang("nguoiDung");
+        super("nguoiDung");
     }
 
     @Override
@@ -34,7 +35,24 @@ public class NguoiDungDAO extends AbstractDAO<NguoiDung> implements INguoiDungSe
     }
 
     @Override
-    public NguoiDung timTheoMa(int ma) {
-        return null;
+    protected LinkedHashMap<String, Object> sangMap(NguoiDung nguoiDung) {
+        LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
+        if (nguoiDung.getMa() != -1) duLieu.put("ma", nguoiDung.getMa());
+        if (nguoiDung.getSdt() != null) duLieu.put("sdt", nguoiDung.getSdt());
+        if (nguoiDung.getEmail() != null) duLieu.put("email", nguoiDung.getEmail());
+        if (nguoiDung.getTen() != null) duLieu.put("ten", nguoiDung.getTen());
+        if (nguoiDung.getLoaiNguoiDung() != null) duLieu.put("loaiNguoiDung", nguoiDung.getLoaiNguoiDung());
+        if (nguoiDung.getThoiGianTao() != null) duLieu.put("thoiGianTao", nguoiDung.getThoiGianTao());
+        if (nguoiDung.getThoiGianCapNhat() != null) duLieu.put("thoiGianCapNhat", nguoiDung.getThoiGianCapNhat());
+        return duLieu;
+    }
+
+    @Override
+    protected void setKhoaChinh(NguoiDung nguoiDung, ResultSet rs) {
+        try {
+            if (rs.next()) nguoiDung.setMa(rs.getInt(1));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

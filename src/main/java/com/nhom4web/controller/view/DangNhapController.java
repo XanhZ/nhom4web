@@ -1,9 +1,9 @@
 package com.nhom4web.controller.view;
 
+import com.nhom4web.dao.impl.NguoiDungDAO;
+import com.nhom4web.dao.impl.ThongTinDangNhapDAO;
 import com.nhom4web.model.NguoiDung;
 import com.nhom4web.model.ThongTinDangNhap;
-import com.nhom4web.service.impl.DangNhapService;
-import com.nhom4web.service.impl.NguoiDungService;
 import com.nhom4web.utils.Hashing;
 import com.nhom4web.utils.Json;
 
@@ -22,8 +22,8 @@ import java.util.LinkedHashMap;
 @MultipartConfig
 @WebServlet("/api/dang-nhap")
 public class DangNhapController extends HttpServlet {
-    private static final DangNhapService DANG_NHAP_SERVICE = new DangNhapService();
-    private static final NguoiDungService NGUOI_DUNG_SERVICE = new NguoiDungService();
+    private static final NguoiDungDAO ND_DAO = new NguoiDungDAO();
+    private static final ThongTinDangNhapDAO TTDN_DAO = new ThongTinDangNhapDAO();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -37,11 +37,11 @@ public class DangNhapController extends HttpServlet {
             e.printStackTrace();
         }
 
-        ThongTinDangNhap thongTinDangNhap = DANG_NHAP_SERVICE.timTheoTaiKhoanMatKhau(taiKhoanMatKhau);
+        ThongTinDangNhap thongTinDangNhap = TTDN_DAO.timTheoTaiKhoanMatKhau(taiKhoanMatKhau);
         if (thongTinDangNhap != null) {
             Json.chuyenThanhJson(resp, "Đăng nhập thành công");
 
-            NguoiDung nguoiDung = NGUOI_DUNG_SERVICE.timTheoMa(thongTinDangNhap.getMaNguoiDung());
+            NguoiDung nguoiDung = ND_DAO.tim(thongTinDangNhap.getMaNguoiDung());
 
             // Tao session dang nhap
             HttpSession sessionDangNhap = req.getSession();
