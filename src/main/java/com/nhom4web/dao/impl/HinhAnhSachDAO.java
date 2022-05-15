@@ -1,8 +1,10 @@
 package com.nhom4web.dao.impl;
 
 import com.cloudinary.Cloudinary;
+import com.cloudinary.api.ApiResponse;
 import com.nhom4web.dao.IHinhAnhSachDAO;
 import com.nhom4web.model.HinhAnhSach;
+import com.nhom4web.model.Sach;
 import org.apache.commons.io.FileUtils;
 
 import javax.servlet.http.Part;
@@ -22,6 +24,11 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
 
     public HinhAnhSachDAO() {
         super("hinhAnhSach");
+    }
+
+    @Override
+    protected List<HinhAnhSach> sangThucThes(ResultSet rs) {
+        return null;
     }
 
     @Override
@@ -67,16 +74,16 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
                     String.join(", ", temp)
             );
             ketNoi.setAutoCommit(false);
-            PreparedStatement stmt = ketNoi.prepareStatement(sql);
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
             int i = 0;
             for (HinhAnhSach hinhAnhSach : hinhAnhSachs) {
-                this.setThamSoTai(stmt, ++i, maSach);
-                this.setThamSoTai(stmt, ++i, hinhAnhSach.getDuongDan());
-                this.setThamSoTai(stmt, ++i, hinhAnhSach.getPublicId());
+                this.setThamSoTai(ps, ++i, maSach);
+                this.setThamSoTai(ps, ++i, hinhAnhSach.getDuongDan());
+                this.setThamSoTai(ps, ++i, hinhAnhSach.getPublicId());
             }
-            stmt.executeUpdate();
+            ps.executeUpdate();
             ketNoi.commit();
-            this.dongTruyVan(stmt, null);
+            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
             try {
@@ -91,19 +98,19 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
     }
 
     @Override
-    public List<HinhAnhSach> layTatCa(int maSach) {
-        List<HinhAnhSach> hinhAnhSachs = new ArrayList<>();
+    public boolean timTatCa(Sach sach) {
         try {
             String sql = "SELECT ma, duongDan, publicId FROM hinhAnhSach WHERE maSach = ?";
-            PreparedStatement stmt = ketNoi.prepareStatement(sql);
-            this.setThamSoTai(stmt, 1, maSach);
-            stmt.executeQuery();
-            ResultSet rs = stmt.getResultSet();
-            while (rs.next()) hinhAnhSachs.add(this.sangThucThe(rs));
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            this.setThamSoTai(ps, 1, sach.getMa());
+            List<HinhAnhSach> hinhAnhSachs = new ArrayList<>(this.sangThucThes(ps.executeQuery()));
+            ps.close();
+            sach.setHinhAnhSachs(hinhAnhSachs);
+            return true;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return hinhAnhSachs;
+        return false;
     }
 
     private String getFileExtension(Part file) {
@@ -137,26 +144,27 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
         return hinhAnhSachs;
     }
 
-    private void xoaTrenCloud(List<String> publicIds) {
+    private boolean xoaTrenCloud(List<String> publicIds) {
         try {
             CLOUDINARY.api().deleteResources(publicIds, null);
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
-    public void xoaTrenCloud(int maSach) {
+    public boolean xoaTrenCloud(int maSach) {
         List<String> pubicIds = new ArrayList<>();
         try {
             String sql = "SELECT publicId FROM hinhAnhSach WHERE maSach = ?";
-            PreparedStatement stmt = ketNoi.prepareStatement(sql);
-            this.setThamSoTai(stmt, 1, maSach);
-            stmt.executeQuery();
-            ResultSet rs = stmt.getResultSet();
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            this.setThamSoTai(ps, 1, maSach);
+            ResultSet rs = ps.executeQuery();
             while (rs.next()) pubicIds.add(rs.getString(1));
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        this.xoaTrenCloud(pubicIds);
+        return this.xoaTrenCloud(pubicIds);
     }
 }

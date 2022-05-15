@@ -6,11 +6,18 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class Sach extends AbstractModel {
-    @Expose List<HinhAnhSach> hinhAnhSachs;
-    @Expose private String ten;
-    @Expose private int giaTien;
-    @Expose private int soLuongTrongKho;
-    @Expose private Timestamp thoiGianTao, thoiGianCapNhat;
+    @Expose
+    List<HinhAnhSach> hinhAnhSachs;
+    @Expose
+    List<DanhMuc> danhMucs;
+    @Expose
+    private String ten;
+    @Expose
+    private int giaTien;
+    @Expose
+    private int soLuongTrongKho;
+    @Expose
+    private Timestamp thoiGianTao, thoiGianCapNhat;
 
     public Sach() {
     }
@@ -39,6 +46,14 @@ public class Sach extends AbstractModel {
 
     public void setGiaTien(int giaTien) {
         this.giaTien = giaTien;
+    }
+
+    public List<DanhMuc> getDanhMucs() {
+        return danhMucs;
+    }
+
+    public void setDanhMucs(List<DanhMuc> danhMucs) {
+        this.danhMucs = danhMucs;
     }
 
     public int getSoLuongTrongKho() {

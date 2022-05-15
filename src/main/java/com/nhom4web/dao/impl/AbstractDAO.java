@@ -43,12 +43,14 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
                     String.join(", ", temp),
                     ma
             );
-            ketNoi.setAutoCommit(false);
-            PreparedStatement stmt = ketNoi.prepareStatement(sql);
-            this.setThamSoTruyVan(stmt, duLieu.values());
-            stmt.executeUpdate();
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+
+            this.setThamSoTruyVan(ps, duLieu.values());
+            ps.executeUpdate();
+
             ketNoi.commit();
-            this.dongTruyVan(stmt, null);
+            ps.close();
+
             return true;
         } catch (SQLException e) {
             try {
@@ -62,25 +64,6 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     }
 
     /**
-     * Đóng kết nối, truy vấn và kết quả
-     *
-     * @param stmt câu truy vấn
-     * @param rs   kết quả trả về của truy vấn
-     */
-    protected void dongTruyVan(PreparedStatement stmt, ResultSet rs) {
-        try {
-            if (stmt != null) {
-                stmt.close();
-            }
-            if (rs != null) {
-                rs.close();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    /**
      * Lấy tất cả các bản ghi trong cơ sở dữ liệu
      *
      * @return Danh sách các thực thể
@@ -89,12 +72,9 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
         List<T> list = new ArrayList<>();
         try {
             String sql = String.format("SELECT * FROM %s", this.tenBang);
-            PreparedStatement stmt = ketNoi.prepareStatement(sql);
-            ResultSet rs = stmt.executeQuery();
-            while (rs.next()) {
-                list.add(this.sangThucThe(rs));
-            }
-            this.dongTruyVan(stmt, rs);
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            list.addAll(this.sangThucThes(ps.executeQuery()));
+            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -111,13 +91,10 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
         T t = null;
         try {
             String sql = String.format("SELECT * FROM %s WHERE ma = ?", this.tenBang);
-            PreparedStatement stmt = ketNoi.prepareStatement(sql);
-            this.setThamSoTruyVan(stmt, ma);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                t = this.sangThucThe(rs);
-            }
-            this.dongTruyVan(stmt, rs);
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            this.setThamSoTruyVan(ps, ma);
+            t = this.sangThucThe(ps.executeQuery());
+            ps.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -127,22 +104,22 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     /**
      * Thiết lập tham số tại index chỉ định
      *
-     * @param stmt   đối tượng PreparedStatement cần chèn tham số
+     * @param ps     đối tượng PreparedStatement cần chèn tham số
      * @param index  chỉ số cần chèn
      * @param thamSo dữ liệu cần chèn
      */
-    protected final void setThamSoTai(PreparedStatement stmt, int index, Object thamSo) {
+    protected final void setThamSoTai(PreparedStatement ps, int index, Object thamSo) {
         try {
             if (thamSo instanceof Integer) {
-                stmt.setInt(index, (Integer) thamSo);
+                ps.setInt(index, (Integer) thamSo);
             } else if (thamSo instanceof Long) {
-                stmt.setLong(index, (Long) thamSo);
+                ps.setLong(index, (Long) thamSo);
             } else if (thamSo instanceof String) {
-                stmt.setString(index, (String) thamSo);
+                ps.setString(index, (String) thamSo);
             } else if (thamSo instanceof Boolean) {
-                stmt.setBoolean(index, (Boolean) thamSo);
+                ps.setBoolean(index, (Boolean) thamSo);
             } else if (thamSo instanceof Timestamp) {
-                stmt.setTimestamp(index, (Timestamp) thamSo);
+                ps.setTimestamp(index, (Timestamp) thamSo);
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -150,28 +127,28 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     }
 
     /**
-     * Chèn các tham số truy vấn vào stmt
+     * Chèn các tham số truy vấn vào ps
      *
-     * @param stmt           đối tượng PreparedStatement cần chèn tham số
+     * @param ps             đối tượng PreparedStatement cần chèn tham số
      * @param thamSoTruyVans các tham số dưới dạng args
      */
-    protected final void setThamSoTruyVan(PreparedStatement stmt, Object... thamSoTruyVans) {
+    protected final void setThamSoTruyVan(PreparedStatement ps, Object... thamSoTruyVans) {
         int i = 0;
         for (Object thamSo : thamSoTruyVans) {
-            this.setThamSoTai(stmt, ++i, thamSo);
+            this.setThamSoTai(ps, ++i, thamSo);
         }
     }
 
     /**
-     * Chèn các tham số truy vấn vào stmt
+     * Chèn các tham số truy vấn vào ps
      *
-     * @param stmt           đối tượng PreparedStatement cần chèn tham số
+     * @param ps             đối tượng PreparedStatement cần chèn tham số
      * @param thamSoTruyVans các tham số chứa trong Collection
      */
-    protected final void setThamSoTruyVan(PreparedStatement stmt, Collection<?> thamSoTruyVans) {
+    protected final void setThamSoTruyVan(PreparedStatement ps, Collection<?> thamSoTruyVans) {
         int i = 0;
         for (Object thamSo : thamSoTruyVans) {
-            this.setThamSoTai(stmt, ++i, thamSo);
+            this.setThamSoTai(ps, ++i, thamSo);
         }
     }
 
@@ -182,6 +159,7 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
         try {
             Class.forName("com.mysql.cj.jdbc.Driver");
             AbstractDAO.ketNoi = DriverManager.getConnection(URL, USERNAME, PASSWORD);
+            ketNoi.setAutoCommit(false);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -201,16 +179,18 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             String sql = String.format(
                     "INSERT INTO %s (%s) VALUES (%s)",
                     this.tenBang,
-                    String.join(", ", duLieu.keySet()), String.join(", ", temp)
+                    String.join(", ", duLieu.keySet()),
+                    String.join(", ", temp)
             );
-            ketNoi.setAutoCommit(false);
-            PreparedStatement stmt = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            this.setThamSoTruyVan(stmt, duLieu.values());
-            stmt.executeUpdate();
-            ResultSet rs = stmt.getGeneratedKeys();
-            this.setKhoaChinh(t, rs);
+            PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            this.setThamSoTruyVan(ps, duLieu.values());
+            ps.executeUpdate();
+            this.setKhoaChinh(t, ps.getGeneratedKeys());
+
             ketNoi.commit();
-            this.dongTruyVan(stmt, rs);
+            ps.close();
+
             return true;
         } catch (SQLException e) {
             try {
@@ -242,15 +222,15 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
                         String.join(", ", temp)
                 );
                 ketNoi.setAutoCommit(false);
-                PreparedStatement stmt = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                this.setThamSoTruyVan(stmt, duLieu.values());
-                stmt.executeUpdate();
-                ResultSet rs = stmt.getGeneratedKeys();
+                PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                this.setThamSoTruyVan(ps, duLieu.values());
+                ps.executeUpdate();
+                ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
                     khoaChinh = rs.getInt(1);
                 }
                 ketNoi.commit();
-                this.dongTruyVan(stmt, rs);
+                ps.close();
             } catch (SQLException e) {
                 try {
                     ketNoi.rollback();
@@ -272,12 +252,14 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     public boolean xoa(int ma) {
         try {
             String sql = String.format("DELETE FROM %s WHERE ma = ?", this.tenBang);
-            ketNoi.setAutoCommit(false);
-            PreparedStatement stmt = ketNoi.prepareStatement(sql);
-            this.setThamSoTruyVan(stmt, ma);
-            stmt.executeUpdate();
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+
+            this.setThamSoTruyVan(ps, ma);
+            ps.executeUpdate();
+
             ketNoi.commit();
-            this.dongTruyVan(stmt, null);
+            ps.close();
+
             return true;
         } catch (SQLException e) {
             try {
@@ -291,15 +273,24 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     }
 
     /**
-     * Chuyển ResultSet rs sang thực thể
+     * Chuyển ResultSet rs sang danh sách thực thể
      *
-     * @param rs một hàng của kết quả truy vấn
+     * @param rs kết quả của truy vấn
+     * @return danh sách thực thể
+     */
+    protected abstract List<T> sangThucThes(ResultSet rs);
+
+    /**
+     * Chuyển ResultSet rs sang một thực thể
+     *
+     * @param rs kết quả của truy vấn
      * @return một thực thể
      */
     protected abstract T sangThucThe(ResultSet rs);
 
     /**
      * Chuyển đối tượng sang các cột trong bảng
+     *
      * @param t đối tượng cần chuyển đối
      * @return Map Key - Value tương ứng với cột - giá trị trong bảng
      */
@@ -307,7 +298,8 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
 
     /**
      * Thiết lập khóa chính của đối tượng sau khi thêm thành công vào cơ sở dữ liệu
-     * @param t đối tượng cần thiết lập khóa chính
+     *
+     * @param t  đối tượng cần thiết lập khóa chính
      * @param rs khóa chính được trả về trong ResultSet
      */
     protected abstract void setKhoaChinh(T t, ResultSet rs);

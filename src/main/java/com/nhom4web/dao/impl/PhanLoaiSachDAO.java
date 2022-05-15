@@ -1,9 +1,12 @@
 package com.nhom4web.dao.impl;
 
 import com.nhom4web.dao.IPhanLoaiSach;
+import com.nhom4web.model.DanhMuc;
 import com.nhom4web.model.PhanLoaiSach;
+import com.nhom4web.model.Sach;
 
 import java.sql.*;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -11,6 +14,11 @@ import java.util.List;
 public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanLoaiSach {
     public PhanLoaiSachDAO() {
         super("phanLoaiSach");
+    }
+
+    @Override
+    protected List<PhanLoaiSach> sangThucThes(ResultSet rs) {
+        return null;
     }
 
     @Override
@@ -54,19 +62,43 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
                     String.join(", ", temps)
             );
             ketNoi.setAutoCommit(false);
-            PreparedStatement stmt = ketNoi.prepareStatement(sql);
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
             int i = 0;
             for (Integer maDanhMuc : maDanhMucs) {
-                this.setThamSoTai(stmt, ++i, maSach);
-                this.setThamSoTai(stmt, ++i, maDanhMuc);
+                this.setThamSoTai(ps, ++i, maSach);
+                this.setThamSoTai(ps, ++i, maDanhMuc);
             }
-            stmt.executeUpdate();
+            ps.executeUpdate();
             ketNoi.commit();
-            this.dongTruyVan(stmt, null);
+            ps.close();
         } catch (Exception e) {
             e.printStackTrace();
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean timDanhMucSach(Sach sach) {
+        try {
+            String sql = "SELECT C.ma, C.tenDanhMuc FROM sach as A, phanLoaiSach as B, danhMuc as C " +
+                    "WHERE A.ma = ? AND A.ma = B.maSach AND B.maDanhMuc = C.ma";
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            this.setThamSoTruyVan(ps, sach.getMa());
+            ps.executeQuery();
+            ResultSet rs = ps.getResultSet();
+            List<DanhMuc> danhMucs = new ArrayList<>();
+            while (rs.next()) {
+                DanhMuc danhMuc = new DanhMuc();
+                danhMuc.setMa(rs.getInt(1));
+                danhMuc.setTen(rs.getString(2));
+                danhMucs.add(danhMuc);
+            }
+            sach.setDanhMucs(danhMucs);
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }

@@ -7,10 +7,16 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
 import java.util.LinkedHashMap;
+import java.util.List;
 
 public class NguoiDungDAO extends AbstractDAO<NguoiDung> implements INguoiDungDAO {
     public NguoiDungDAO() {
         super("nguoiDung");
+    }
+
+    @Override
+    protected List<NguoiDung> sangThucThes(ResultSet rs) {
+        return null;
     }
 
     @Override

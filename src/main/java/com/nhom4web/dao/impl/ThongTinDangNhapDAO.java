@@ -15,6 +15,11 @@ public class ThongTinDangNhapDAO extends AbstractDAO<ThongTinDangNhap> implement
     }
 
     @Override
+    protected List<ThongTinDangNhap> sangThucThes(ResultSet rs) {
+        return null;
+    }
+
+    @Override
     protected ThongTinDangNhap sangThucThe(ResultSet rs) {
         try {
             int ma = rs.getInt(1);
@@ -77,13 +82,13 @@ public class ThongTinDangNhapDAO extends AbstractDAO<ThongTinDangNhap> implement
                         String.join(" AND ", filters)
                 );
 
-                PreparedStatement stmt = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+                PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-                ResultSet rs = stmt.executeQuery();
+                ResultSet rs = ps.executeQuery();
                 if (rs.next()) {
                     thongTinDangNhap = sangThucThe(rs);
                 }
-                this.dongTruyVan(stmt, rs);
+                ps.close();
             } catch (SQLException e) {
                 e.printStackTrace();
             }
