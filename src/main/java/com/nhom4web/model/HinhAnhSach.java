@@ -1,7 +1,12 @@
 package com.nhom4web.model;
 
-public class HinhAnhSach extends AbstractModel {
+import com.google.gson.annotations.Expose;
+
+public class HinhAnhSach {
+    private int ma;
+    @Expose
     private String duongDan;
+    @Expose
     private String publicId;
 
     public HinhAnhSach() {
@@ -9,9 +14,17 @@ public class HinhAnhSach extends AbstractModel {
     }
 
     public HinhAnhSach(int ma, String duongDan, String publicId) {
-        super(ma);
+        this.ma = ma;
         this.duongDan = duongDan;
         this.publicId = publicId;
+    }
+
+    public int getMa() {
+        return ma;
+    }
+
+    public void setMa(int ma) {
+        this.ma = ma;
     }
 
     public String getPublicId() {

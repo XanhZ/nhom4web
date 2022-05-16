@@ -18,15 +18,27 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
 
     @Override
     protected List<PhanLoaiSach> sangThucThes(ResultSet rs) {
-        return null;
+        List<PhanLoaiSach> phanLoaiSachs = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                PhanLoaiSach phanLoaiSach = new PhanLoaiSach();
+                phanLoaiSach.setMa(rs.getInt(1));
+                phanLoaiSachs.add(phanLoaiSach);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return phanLoaiSachs;
     }
 
     @Override
     protected PhanLoaiSach sangThucThe(ResultSet rs) {
         try {
-            PhanLoaiSach phanLoaiSach = new PhanLoaiSach();
-            phanLoaiSach.setMa(rs.getInt(1));
-            return phanLoaiSach;
+            if (rs.next()) {
+                PhanLoaiSach phanLoaiSach = new PhanLoaiSach();
+                phanLoaiSach.setMa(rs.getInt(1));
+                return phanLoaiSach;
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -61,13 +73,14 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
                     this.tenBang,
                     String.join(", ", temps)
             );
-            ketNoi.setAutoCommit(false);
+
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             int i = 0;
             for (Integer maDanhMuc : maDanhMucs) {
                 this.setThamSoTai(ps, ++i, maSach);
                 this.setThamSoTai(ps, ++i, maDanhMuc);
             }
+
             ps.executeUpdate();
             ketNoi.commit();
             ps.close();
@@ -85,8 +98,8 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
                     "WHERE A.ma = ? AND A.ma = B.maSach AND B.maDanhMuc = C.ma";
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             this.setThamSoTruyVan(ps, sach.getMa());
-            ps.executeQuery();
-            ResultSet rs = ps.getResultSet();
+
+            ResultSet rs = ps.executeQuery();
             List<DanhMuc> danhMucs = new ArrayList<>();
             while (rs.next()) {
                 DanhMuc danhMuc = new DanhMuc();
@@ -94,6 +107,7 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
                 danhMuc.setTen(rs.getString(2));
                 danhMucs.add(danhMuc);
             }
+
             sach.setDanhMucs(danhMucs);
             return true;
         } catch (Exception e) {

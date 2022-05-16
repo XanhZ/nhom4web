@@ -1,6 +1,7 @@
 package com.nhom4web.model;
 
-public class PhanLoaiSach extends AbstractModel {
+public class PhanLoaiSach {
+    private int ma;
     private Sach sach;
     private DanhMuc danhMuc;
 
@@ -9,9 +10,17 @@ public class PhanLoaiSach extends AbstractModel {
     }
 
     public PhanLoaiSach(int ma, Sach sach, DanhMuc danhMuc) {
-        super(ma);
+        this.ma = ma;
         this.sach = sach;
         this.danhMuc = danhMuc;
+    }
+
+    public int getMa() {
+        return ma;
+    }
+
+    public void setMa(int ma) {
+        this.ma = ma;
     }
 
     public DanhMuc getDanhMuc() {

@@ -1,44 +1,18 @@
 package com.nhom4web.model;
 
+import com.google.gson.annotations.Expose;
+
 import java.sql.Timestamp;
 
 public class NguoiDung {
     private Integer ma;
+    @Expose
     private String ten;
+    @Expose
     private String sdt;
+    @Expose
     private String email;
     private Integer loaiNguoiDung;
-    private Integer gioiTinh;
-    private String diaChi;
-
-    public void setMa(Integer ma) {
-        this.ma = ma;
-    }
-
-    public void setTen(String ten) {
-        this.ten = ten;
-    }
-
-    public void setSdt(String sdt) {
-        this.sdt = sdt;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setLoaiNguoiDung(Integer loaiNguoiDung) {
-        this.loaiNguoiDung = loaiNguoiDung;
-    }
-
-    public void setGioiTinh(Integer gioiTinh) {
-        this.gioiTinh = gioiTinh;
-    }
-
-    public void setDiaChi(String diaChi) {
-        this.diaChi = diaChi;
-    }
-
     private Timestamp thoiGianTao;
     private Timestamp thoiGianCapNhat;
 
@@ -48,36 +22,50 @@ public class NguoiDung {
         this.sdt = sdt;
         this.email = email;
         this.loaiNguoiDung = loaiNguoiDung;
-//        this.gioiTinh = gioiTinh;
-//        this.diaChi = diaChi;
+    }
+
+    public NguoiDung() {
+
     }
 
     public Integer getMa() {
         return ma;
     }
 
+    public void setMa(Integer ma) {
+        this.ma = ma;
+    }
+
     public String getTen() {
         return ten;
+    }
+
+    public void setTen(String ten) {
+        this.ten = ten;
     }
 
     public String getSdt() {
         return sdt;
     }
 
+    public void setSdt(String sdt) {
+        this.sdt = sdt;
+    }
+
     public String getEmail() {
         return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public Integer getLoaiNguoiDung() {
         return loaiNguoiDung;
     }
 
-    public Integer getGioiTinh() {
-        return gioiTinh;
-    }
-
-    public String getDiaChi() {
-        return diaChi;
+    public void setLoaiNguoiDung(Integer loaiNguoiDung) {
+        this.loaiNguoiDung = loaiNguoiDung;
     }
 
     public Timestamp getThoiGianTao() {
@@ -86,9 +74,5 @@ public class NguoiDung {
 
     public Timestamp getThoiGianCapNhat() {
         return thoiGianCapNhat;
-    }
-
-    public NguoiDung() {
-
     }
 }

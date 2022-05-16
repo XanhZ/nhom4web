@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@WebFilter("/api/danh-muc/*")
+@WebFilter(filterName = "danhmuc")
 @MultipartConfig
 public class DanhMucFilter extends AbstractFilter {
     public DanhMucFilter() {
@@ -37,16 +37,16 @@ public class DanhMucFilter extends AbstractFilter {
         String duongDan = req.getPathInfo();
         if (duongDan == null) {
             req.setAttribute("ma", null);
-        } else {
-            if (!Pattern.matches("/\\d*", duongDan)) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-                return false;
-            }
-            Pattern patternMa = Pattern.compile("\\d+");
-            Matcher matcher = patternMa.matcher(duongDan);
-            int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
-            req.setAttribute("ma", ma > 0 ? ma : null);
+            return true;
         }
+        if (!Pattern.matches("/\\d+", duongDan)) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return false;
+        }
+        Pattern patternMa = Pattern.compile("\\d+");
+        Matcher matcher = patternMa.matcher(duongDan);
+        int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
+        req.setAttribute("ma", ma > 0 ? ma : null);
         return true;
     }
 

@@ -28,7 +28,19 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
 
     @Override
     protected List<HinhAnhSach> sangThucThes(ResultSet rs) {
-        return null;
+        List<HinhAnhSach> hinhAnhSachs = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                HinhAnhSach hinhAnhSach = new HinhAnhSach();
+                hinhAnhSach.setMa(rs.getInt(1));
+                hinhAnhSach.setDuongDan(rs.getString(2));
+                hinhAnhSach.setPublicId(rs.getString(3));
+                hinhAnhSachs.add(hinhAnhSach);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return hinhAnhSachs;
     }
 
     @Override
@@ -73,7 +85,7 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
                     "INSERT INTO hinhAnhSach (maSach, duongDan, publicId) VALUES %s",
                     String.join(", ", temp)
             );
-            ketNoi.setAutoCommit(false);
+
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             int i = 0;
             for (HinhAnhSach hinhAnhSach : hinhAnhSachs) {
@@ -81,6 +93,7 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
                 this.setThamSoTai(ps, ++i, hinhAnhSach.getDuongDan());
                 this.setThamSoTai(ps, ++i, hinhAnhSach.getPublicId());
             }
+
             ps.executeUpdate();
             ketNoi.commit();
             ps.close();
@@ -103,9 +116,8 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
             String sql = "SELECT ma, duongDan, publicId FROM hinhAnhSach WHERE maSach = ?";
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             this.setThamSoTai(ps, 1, sach.getMa());
-            List<HinhAnhSach> hinhAnhSachs = new ArrayList<>(this.sangThucThes(ps.executeQuery()));
+            sach.setHinhAnhSachs(this.sangThucThes(ps.executeQuery()));
             ps.close();
-            sach.setHinhAnhSachs(hinhAnhSachs);
             return true;
         } catch (SQLException e) {
             e.printStackTrace();

@@ -28,4 +28,35 @@
   </filter-mapping>
   <!-- End sitemesh  -->
 
+  <!-- Begin Logged Filter  -->
+  <filter-mapping>
+    <filter-name>logged</filter-name>
+    <url-pattern>/api/dang-ky</url-pattern>
+    <url-pattern>/api/dang-nhap</url-pattern>
+  </filter-mapping>
+  <!-- End Logged Filter  -->
+
+  <!-- Begin Authentication Filter  -->
+  <filter-mapping>
+    <filter-name>auth</filter-name>
+    <url-pattern>/api/dang-xuat</url-pattern>
+    <url-pattern>/api/sach/*</url-pattern>
+    <url-pattern>/api/danh-muc/*</url-pattern>
+    <url-pattern>/api/don-hang/*</url-pattern>
+  </filter-mapping>
+  <!-- End Authentication Filter  -->
+
+  <!-- Begin Sach Filter  -->
+  <filter-mapping>
+    <filter-name>sach</filter-name>
+    <url-pattern>/api/sach/*</url-pattern>
+  </filter-mapping>
+  <!-- End Sach Filter  -->
+
+  <!-- Begin Danh Muc Filter  -->
+  <filter-mapping>
+    <filter-name>danhmuc</filter-name>
+    <url-pattern>/api/danh-muc/*</url-pattern>
+  </filter-mapping>
+  <!-- End Danh Muc Filter  -->
 </web-app>

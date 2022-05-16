@@ -5,19 +5,31 @@ import com.google.gson.annotations.Expose;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class DanhMuc extends AbstractModel {
-    @Expose private String ten;
-    @Expose private Timestamp thoiGianTao, thoiGianCapNhat;
-    private List<PhanLoaiSach> phanLoaiSachs;
+public class DanhMuc {
+    @Expose
+    private int ma;
+    @Expose
+    private String ten;
+    @Expose
+    private Timestamp thoiGianTao, thoiGianCapNhat;
+    private List<Sach> sachs;
 
     public DanhMuc() {
     }
 
     public DanhMuc(int ma, String ten, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
-        super(ma);
+        this.ma = ma;
         this.ten = ten;
         this.thoiGianTao = thoiGianTao;
         this.thoiGianCapNhat = thoiGianCapNhat;
+    }
+
+    public int getMa() {
+        return ma;
+    }
+
+    public void setMa(int ma) {
+        this.ma = ma;
     }
 
     public String getTen() {
@@ -28,12 +40,12 @@ public class DanhMuc extends AbstractModel {
         this.ten = ten;
     }
 
-    public List<PhanLoaiSach> getPhanLoaiSachs() {
-        return phanLoaiSachs;
+    public List<Sach> getSachs() {
+        return sachs;
     }
 
-    public void setPhanLoaiSachs(List<PhanLoaiSach> phanLoaiSachs) {
-        this.phanLoaiSachs = phanLoaiSachs;
+    public void setSachs(List<Sach> sachs) {
+        this.sachs = sachs;
     }
 
     public Timestamp getThoiGianTao() {

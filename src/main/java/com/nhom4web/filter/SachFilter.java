@@ -15,7 +15,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@WebFilter("/api/sach/*")
+@WebFilter(filterName = "sach")
 @MultipartConfig(maxFileSize = 1024 * 1024 * 4, // 4 MB
         maxRequestSize = 1024 * 1024 * 25 // 25 MB
 )
@@ -49,16 +49,16 @@ public class SachFilter extends AbstractFilter {
         String duongDan = req.getPathInfo();
         if (duongDan == null) {
             req.setAttribute("ma", null);
-        } else {
-            if (!Pattern.matches("/\\d*", duongDan)) {
-                resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-                return false;
-            }
-            Pattern patternMa = Pattern.compile("\\d+");
-            Matcher matcher = patternMa.matcher(duongDan);
-            int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
-            req.setAttribute("ma", ma > 0 ? ma : null);
+            return true;
         }
+        if (!Pattern.matches("/\\d+", duongDan)) {
+            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
+            return false;
+        }
+        Pattern patternMa = Pattern.compile("\\d+");
+        Matcher matcher = patternMa.matcher(duongDan);
+        int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
+        req.setAttribute("ma", ma > 0 ? ma : null);
         return true;
     }
 
@@ -70,10 +70,7 @@ public class SachFilter extends AbstractFilter {
         }
         Map<String, String> loi = this.getLoi(req);
         try {
-            Collection<Part> files = req.getParts()
-                    .stream()
-                    .filter(part -> part.getName().equals("anh"))
-                    .collect(Collectors.toList());
+            Collection<Part> files = req.getParts().stream().filter(part -> part.getName().equals("anh")).collect(Collectors.toList());
             String er = this.kiemTraFiles(files);
             if (er != null) {
                 loi.put("anh", er);

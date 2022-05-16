@@ -58,7 +58,9 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     @Override
     public List<Sach> layTatCa() {
         List<Sach> sachs = super.layTatCa();
-        for (Sach sach : sachs) HINH_ANH_SACH_DAO.timTatCa(sach);
+        for (Sach sach : sachs) {
+            if (!HINH_ANH_SACH_DAO.timTatCa(sach)) return null;
+        }
         return sachs;
     }
 

@@ -13,11 +13,13 @@ import java.util.Map;
 @MultipartConfig
 public class DangKyFilter extends AbstractFilter {
     public DangKyFilter() {
-        this.luat.put("sdt", SDT);
-        this.luat.put("email", EMAIL);
+        this.luat.put("sdt", KHONG_BO_TRONG + "/" + SDT);
+        this.luat.put("email", KHONG_BO_TRONG + "/" + EMAIL);
 
-        this.e.put("sdt.khong-hop-le", "Số điện thoại không hợp lệ");
-        this.e.put("email.khong-hop-le", "Số điện thoại không hợp lệ");
+        this.e.put("sdt.khong-bo-trong", "Không được bỏ trống");
+        this.e.put("sdt.sdt", "Số điện thoại không hợp lệ");
+        this.e.put("email.khong-bo-trong", "Không được bỏ trống");
+        this.e.put("email.email", "Email không hợp lệ");
     }
 
     @Override

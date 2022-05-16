@@ -5,11 +5,12 @@ import com.google.gson.annotations.Expose;
 import java.sql.Timestamp;
 import java.util.List;
 
-public class Sach extends AbstractModel {
+public class Sach {
     @Expose
     List<HinhAnhSach> hinhAnhSachs;
     @Expose
     List<DanhMuc> danhMucs;
+    private int ma;
     @Expose
     private String ten;
     @Expose
@@ -23,13 +24,21 @@ public class Sach extends AbstractModel {
     }
 
     public Sach(int ma, List<HinhAnhSach> hinhAnhSachs, String ten, int giaTien, int soLuongTrongKho, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
-        super(ma);
+        this.ma = ma;
         this.hinhAnhSachs = hinhAnhSachs;
         this.ten = ten;
         this.giaTien = giaTien;
         this.soLuongTrongKho = soLuongTrongKho;
         this.thoiGianTao = thoiGianTao;
         this.thoiGianCapNhat = thoiGianCapNhat;
+    }
+
+    public int getMa() {
+        return ma;
+    }
+
+    public void setMa(int ma) {
+        this.ma = ma;
     }
 
     public String getTen() {

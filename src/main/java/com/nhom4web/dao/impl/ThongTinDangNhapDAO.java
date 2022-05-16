@@ -22,15 +22,17 @@ public class ThongTinDangNhapDAO extends AbstractDAO<ThongTinDangNhap> implement
     @Override
     protected ThongTinDangNhap sangThucThe(ResultSet rs) {
         try {
-            int ma = rs.getInt(1);
-            int maNguoiDung = rs.getInt(2);
-            String tenDangNhap = rs.getString(3);
-            String matKhau = rs.getString(4);
-            String token = rs.getString(5);
-            Timestamp thoiGianTao = rs.getTimestamp(6);
-            Timestamp thoiGianCapNhat = rs.getTimestamp(7);
+            if (rs.next()) {
+                int ma = rs.getInt(1);
+                int maNguoiDung = rs.getInt(2);
+                String tenDangNhap = rs.getString(3);
+                String matKhau = rs.getString(4);
+                String token = rs.getString(5);
+                Timestamp thoiGianTao = rs.getTimestamp(6);
+                Timestamp thoiGianCapNhat = rs.getTimestamp(7);
 
-            return new ThongTinDangNhap(ma, maNguoiDung, tenDangNhap, matKhau, token);
+                return new ThongTinDangNhap(ma, maNguoiDung, tenDangNhap, matKhau, token);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -83,11 +85,7 @@ public class ThongTinDangNhapDAO extends AbstractDAO<ThongTinDangNhap> implement
                 );
 
                 PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-                ResultSet rs = ps.executeQuery();
-                if (rs.next()) {
-                    thongTinDangNhap = sangThucThe(rs);
-                }
+                thongTinDangNhap = sangThucThe(ps.executeQuery());
                 ps.close();
             } catch (SQLException e) {
                 e.printStackTrace();

@@ -6,6 +6,7 @@ import com.nhom4web.model.NguoiDung;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 
@@ -16,27 +17,40 @@ public class NguoiDungDAO extends AbstractDAO<NguoiDung> implements INguoiDungDA
 
     @Override
     protected List<NguoiDung> sangThucThes(ResultSet rs) {
-        return null;
+        List<NguoiDung> nguoiDungs = new ArrayList<>();
+        try {
+            while (rs.next()) {
+                int ma = rs.getInt(1);
+                String sdt = rs.getString(2);
+                String email = rs.getString(3);
+                String ten = rs.getString(4);
+                int loaiNguoiDung = rs.getInt(5);
+                Timestamp thoiGianTao = rs.getTimestamp(6);
+                Timestamp thoiGianCapNhat = rs.getTimestamp(7);
+                nguoiDungs.add(new NguoiDung(ma, sdt, email, ten, loaiNguoiDung));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return nguoiDungs;
     }
 
     @Override
     protected NguoiDung sangThucThe(ResultSet rs) {
         try {
-            int ma = rs.getInt(1);
-            String sdt = rs.getString(2);
-            String email = rs.getString(3);
-            String ten = rs.getString(4);
-            int loaiNguoiDung = rs.getInt(5);
-            Timestamp thoiGianTao = rs.getTimestamp(6);
-            Timestamp thoiGianCapNhat = rs.getTimestamp(7);
-//            int gioiTinh = rs.getInt(8);
-//            String diaChi = rs.getString(9);
-
-            return new NguoiDung(ma, sdt, email, ten, loaiNguoiDung);
+            if (rs.next()) {
+                int ma = rs.getInt(1);
+                String sdt = rs.getString(2);
+                String email = rs.getString(3);
+                String ten = rs.getString(4);
+                int loaiNguoiDung = rs.getInt(5);
+                Timestamp thoiGianTao = rs.getTimestamp(6);
+                Timestamp thoiGianCapNhat = rs.getTimestamp(7);
+                return new NguoiDung(ma, sdt, email, ten, loaiNguoiDung);
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-
         return null;
     }
 

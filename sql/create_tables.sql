@@ -48,6 +48,7 @@ CREATE TABLE `donHang`
 (
     `ma`              INT PRIMARY KEY AUTO_INCREMENT,
     `maNguoiDung`     INT,
+    `diaChi`          VARCHAR(255) NOT NULL,
     `trangThai`       ENUM('dangCho', 'xacNhan', 'huy') DEFAULT 'dangCho',
     `thoiGianTao`     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     `thoiGianCapNhat` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
