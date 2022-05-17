@@ -1,0 +1,96 @@
+header {
+	background-color: #2a2185;
+	position: sticky;
+	top: 0;
+	width: 100%;
+	height: 65px;
+	line-height: 65px;
+	z-index: 999;
+}
+
+header .dongGoi {
+	padding: 0 30px;
+	position: relative;
+	width: 100%;
+	display: flex;
+	align-items: center;
+	height: 100%;
+}
+
+.dongGoi .timKiem {
+	display: flex;
+	height: 50%;
+	margin: 0px 5px;
+	border-radius: 25px;
+}
+
+.dongGoi .timKiem input {
+	height: 100%;
+	width: 350px;
+	outline: none;
+	border-radius: 25px;
+	padding-left: 10px;
+	border: none;
+}
+
+.dongGoi .dieuHuong-duongDan {
+	display: inline-flex;
+}
+
+.dongGoi .logo a {
+	text-decoration: none;
+	color: #fff;
+	font-size: 27px;
+	font-weight: 600;
+}
+
+.dieuHuong {
+	display: flex;
+	flex: 1;
+	justify-content: space-evenly;
+}
+
+.dieuHuong>div,
+.dieuHuong>a,
+.danhMuc li a {
+	cursor: pointer;
+	color: #fff;
+	font-size: 18px;
+	font-weight: 500;
+	padding: 0px 15px;
+	transition: all 0.3s ease;
+}
+
+.dieuHuong>div:hover,
+.dieuHuong>a:hover,
+.danhMuc li a:hover {
+	background: #fff;
+	color: #2a2185;
+}
+
+.dieuHuong__danhMuc {
+	position: relative;
+}
+
+.danhMuc {
+	display: none;
+	list-style: none;
+	position: absolute;
+	left: 0px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	background-color: #2a2185;
+	z-index: 1;
+}
+
+.dieuHuong__danhMuc:hover .danhMuc {
+	display: block;
+}
+
+.danhMuc li {
+	min-width: max-content;
+	display: block;
+}
+
+.danhMuc li a {
+	display: block;
+}

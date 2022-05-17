@@ -59,4 +59,9 @@
     <url-pattern>/api/danh-muc/*</url-pattern>
   </filter-mapping>
   <!-- End Danh Muc Filter  -->
+  
+  
+  <welcome-file-list>
+    <welcome-file>/views/trangchu.jsp</welcome-file>
+  </welcome-file-list>
 </web-app>

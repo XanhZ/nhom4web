@@ -53,16 +53,16 @@ public class DangNhapController extends HttpServlet {
              * 2. Nguoi dung co loaiNguoiDung = 1 => Admin => Redirect den trang admin
              */
             if (nguoiDung.getLoaiNguoiDung() == 0) {
-                req.getRequestDispatcher("views/homepage.jsp").forward(req, resp);
+                req.getRequestDispatcher("views/trangchu.jsp").forward(req, resp);
             } else {
-                req.getRequestDispatcher("views/admin.jsp").forward(req, resp);
+                req.getRequestDispatcher("views/sach_admin.jsp").forward(req, resp);
             }
             return;
         } else {
             Json.chuyenThanhJson(resp, "Đăng nhập thất bại");
         }
 
-        RequestDispatcher rd = req.getRequestDispatcher("views/login.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("views/dangnhap.jsp");
         rd.forward(req, resp);
     }
 }
