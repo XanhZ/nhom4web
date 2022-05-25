@@ -18,20 +18,22 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     @Override
     protected Sach sangThucThe(ResultSet rs) {
         try {
-            if (rs.next()) {
-                Sach sach = new Sach();
-                sach.setMa(rs.getInt(1));
-                sach.setTen(rs.getString(2));
-                sach.setGiaTien(rs.getInt(3));
-                sach.setSoLuongTrongKho(rs.getInt(4));
-                sach.setThoiGianTao(rs.getTimestamp(5));
-                sach.setThoiGianCapNhat(rs.getTimestamp(6));
-                return sach;
-            }
+            if (rs.next()) return this.rsSangThucThe(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    protected List<Sach> sangThucThes(ResultSet rs) {
+        List<Sach> sachs = new ArrayList<>();
+        try {
+            while (rs.next()) sachs.add(this.rsSangThucThe(rs));
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return sachs;
     }
 
     @Override
@@ -60,6 +62,7 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
         List<Sach> sachs = super.layTatCa();
         for (Sach sach : sachs) {
             if (!HINH_ANH_SACH_DAO.timTatCa(sach)) return null;
+            if (!PHAN_LOAI_SACH_DAO.timDanhMucSach(sach)) return null;
         }
         return sachs;
     }
@@ -81,28 +84,16 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     }
 
     @Override
-    public boolean xoa(int ma) {
-        if (!HINH_ANH_SACH_DAO.xoaTrenCloud(ma)) return false;
-        return super.xoa(ma);
+    public boolean capNhat(Sach sach, List<Part> hinhAnhs, List<Integer> maDanhMucs) {
+        sach.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
+        return super.capNhat(sach) &&
+                PHAN_LOAI_SACH_DAO.capNhat(sach.getMa(), maDanhMucs) &&
+                HINH_ANH_SACH_DAO.capNhat(sach.getMa(), hinhAnhs);
     }
 
     @Override
-    protected List<Sach> sangThucThes(ResultSet rs) {
-        List<Sach> sachs = new ArrayList<>();
-        try {
-            while (rs.next()) {
-                Sach sach = new Sach();
-                sach.setMa(rs.getInt(1));
-                sach.setTen(rs.getString(2));
-                sach.setGiaTien(rs.getInt(3));
-                sach.setSoLuongTrongKho(rs.getInt(4));
-                sach.setThoiGianTao(rs.getTimestamp(5));
-                sach.setThoiGianCapNhat(rs.getTimestamp(6));
-                sachs.add(sach);
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return sachs;
+    public boolean xoa(int ma) {
+        if (!HINH_ANH_SACH_DAO.xoaTrenCloud(ma)) return false;
+        return super.xoa(ma);
     }
 }

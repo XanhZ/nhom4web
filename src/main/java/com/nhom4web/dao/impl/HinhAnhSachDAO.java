@@ -1,7 +1,6 @@
 package com.nhom4web.dao.impl;
 
 import com.cloudinary.Cloudinary;
-import com.cloudinary.api.ApiResponse;
 import com.nhom4web.dao.IHinhAnhSachDAO;
 import com.nhom4web.model.HinhAnhSach;
 import com.nhom4web.model.Sach;
@@ -30,13 +29,7 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
     protected List<HinhAnhSach> sangThucThes(ResultSet rs) {
         List<HinhAnhSach> hinhAnhSachs = new ArrayList<>();
         try {
-            while (rs.next()) {
-                HinhAnhSach hinhAnhSach = new HinhAnhSach();
-                hinhAnhSach.setMa(rs.getInt(1));
-                hinhAnhSach.setDuongDan(rs.getString(2));
-                hinhAnhSach.setPublicId(rs.getString(3));
-                hinhAnhSachs.add(hinhAnhSach);
-            }
+            while (rs.next()) hinhAnhSachs.add(this.rsSangThucThe(rs));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -46,11 +39,7 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
     @Override
     protected HinhAnhSach sangThucThe(ResultSet rs) {
         try {
-            HinhAnhSach hinhAnhSach = new HinhAnhSach();
-            hinhAnhSach.setMa(rs.getInt(1));
-            hinhAnhSach.setDuongDan(rs.getString(2));
-            hinhAnhSach.setPublicId(rs.getString(3));
-            return hinhAnhSach;
+            if (rs.next()) return this.rsSangThucThe(rs);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,6 +100,49 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
     }
 
     @Override
+    public boolean capNhat(int maSach, List<Part> hinhAnhs) {
+        if (this.xoaTrenCloud(maSach)) {
+            try {
+                String sql = String.format("DELETE FROM %s WHERE maSach = ?", this.tenBang);
+                PreparedStatement ps1 = ketNoi.prepareStatement(sql);
+                this.setThamSoTruyVan(ps1, maSach);
+                ps1.executeUpdate();
+                ps1.close();
+
+                List<HinhAnhSach> hinhAnhSachs = this.luuVaoCloud(hinhAnhs);
+                String[] temp = new String[hinhAnhSachs.size()];
+                Arrays.fill(temp, "(?, ?, ?)");
+                sql = String.format(
+                        "INSERT INTO %s (maSach, duongDan, publicId) VALUES %s",
+                        this.tenBang,
+                        String.join(", ", temp)
+                );
+
+                PreparedStatement ps2 = ketNoi.prepareStatement(sql);
+                int i = 0;
+                for (HinhAnhSach hinhAnhSach : hinhAnhSachs) {
+                    this.setThamSoTai(ps2, ++i, maSach);
+                    this.setThamSoTai(ps2, ++i, hinhAnhSach.getDuongDan());
+                    this.setThamSoTai(ps2, ++i, hinhAnhSach.getPublicId());
+                }
+
+                ps2.executeUpdate();
+                ketNoi.commit();
+                ps2.close();
+                return true;
+            } catch (SQLException e1) {
+                e1.printStackTrace();
+                try {
+                    ketNoi.rollback();
+                } catch (SQLException e2) {
+                    e2.printStackTrace();
+                }
+            }
+        }
+        return false;
+    }
+
+    @Override
     public boolean timTatCa(Sach sach) {
         try {
             String sql = "SELECT ma, duongDan, publicId FROM hinhAnhSach WHERE maSach = ?";
@@ -144,7 +176,6 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
                 File temp = File.createTempFile("temp", this.getFileExtension(hinhAnh));
                 FileUtils.copyInputStreamToFile(hinhAnh.getInputStream(), temp);
                 Map res = CLOUDINARY.uploader().upload(temp, null);
-                System.out.println();
                 hinhAnhSach.setDuongDan((String) res.get("secure_url"));
                 hinhAnhSach.setPublicId((String) res.get("public_id"));
                 hinhAnhSachs.add(hinhAnhSach);

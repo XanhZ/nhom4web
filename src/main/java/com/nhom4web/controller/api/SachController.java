@@ -17,11 +17,11 @@ import java.util.stream.Collectors;
 @WebServlet("/api/sach/*")
 @MultipartConfig
 public class SachController extends HttpServlet {
-    private static final SachDAO SACH_DAO = new SachDAO();
+    private static final SachDAO DAO = new SachDAO();
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (SACH_DAO.xoa((Integer) req.getAttribute("ma"))) {
+        if (DAO.xoa((Integer) req.getAttribute("ma"))) {
             Json.chuyenThanhJson(resp, true);
             return;
         }
@@ -33,11 +33,11 @@ public class SachController extends HttpServlet {
         Object maObj = req.getAttribute("ma");
 
         if (maObj == null) {
-            Json.chuyenThanhJson(resp, SACH_DAO.layTatCa());
+            Json.chuyenThanhJson(resp, DAO.layTatCa());
             return;
         }
 
-        Sach sach = SACH_DAO.tim((Integer) maObj);
+        Sach sach = DAO.tim((Integer) maObj);
         if (sach != null) {
             Json.chuyenThanhJson(resp, sach);
             return;
@@ -54,7 +54,7 @@ public class SachController extends HttpServlet {
         sach.setSoLuongTrongKho(Integer.parseInt(req.getParameter("soLuongTrongKho")));
         Json.chuyenThanhJson(
                 resp,
-                SACH_DAO.them(
+                DAO.them(
                         sach,
                         req.getParts()
                                 .stream()
@@ -69,6 +69,23 @@ public class SachController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPut(req, resp);
+        Sach sach = new Sach();
+        sach.setMa((Integer) req.getAttribute("ma"));
+        sach.setTen(req.getParameter("tenSach"));
+        sach.setGiaTien(Integer.parseInt(req.getParameter("giaTien")));
+        sach.setSoLuongTrongKho(Integer.parseInt(req.getParameter("soLuongTrongKho")));
+        Json.chuyenThanhJson(
+                resp,
+                DAO.capNhat(
+                        sach,
+                        req.getParts()
+                                .stream()
+                                .filter(part -> part.getName().equals("anh"))
+                                .collect(Collectors.toList()),
+                        Arrays.stream(req.getParameterMap().get("maDanhMuc"))
+                                .map(Integer::parseInt)
+                                .collect(Collectors.toList())
+                ) ? "Sửa thành công" : "Đã xảy ra lỗi"
+        );
     }
 }

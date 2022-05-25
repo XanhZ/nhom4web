@@ -15,8 +15,8 @@ import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
 import java.util.LinkedHashMap;
 
-@MultipartConfig
 @WebServlet("/api/dang-ky")
+@MultipartConfig
 public class DangKyController extends HttpServlet {
     private static final NguoiDungDAO ND_DAO = new NguoiDungDAO();
     private static final ThongTinDangNhapDAO TTDN_DAO = new ThongTinDangNhapDAO();
@@ -29,7 +29,6 @@ public class DangKyController extends HttpServlet {
         thongTinNguoiDung.put("sdt", req.getParameter("sdt"));
         thongTinNguoiDung.put("email", req.getParameter("email"));
         thongTinNguoiDung.put("ten", req.getParameter("ten"));
-        thongTinNguoiDung.put("loaiNguoiDung", Integer.parseInt(req.getParameter("loaiNguoiDung")));
 
         int maNguoiDung = ND_DAO.them(thongTinNguoiDung);
 

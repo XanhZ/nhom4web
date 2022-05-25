@@ -1,4 +1,3 @@
-DROP TABLE IF EXISTS `nguoiDung`;
 CREATE TABLE `nguoiDung`
 (
     `ma`              INT PRIMARY KEY AUTO_INCREMENT,
@@ -8,9 +7,8 @@ CREATE TABLE `nguoiDung`
     `loaiNguoiDung`   ENUM ('0', '1') NOT NULL DEFAULT 1,
     `thoiGianTao`     TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     `thoiGianCapNhat` TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP()
-) ENGINE = InnoDB AUTO_INCREMENT = 0 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) AUTO_INCREMENT = 0;
 
-DROP TABLE IF EXISTS `thongTinDangNhap`;
 CREATE TABLE `thongTinDangNhap`
 (
     `ma`              INT PRIMARY KEY AUTO_INCREMENT,
@@ -21,9 +19,8 @@ CREATE TABLE `thongTinDangNhap`
     `thoiGianTao`     TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     `thoiGianCapNhat` TIMESTAMP          NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     FOREIGN KEY (`maNguoiDung`) REFERENCES `nguoiDung` (`ma`) ON DELETE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 0 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) AUTO_INCREMENT = 0;
 
-DROP TABLE IF EXISTS `sach`;
 CREATE TABLE `sach`
 (
     `ma`              INT PRIMARY KEY AUTO_INCREMENT,
@@ -32,18 +29,16 @@ CREATE TABLE `sach`
     `soLuongTrongKho` INT          NOT NULL CHECK (`soLuongTrongKho` >= 0),
     `thoiGianTao`     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     `thoiGianCapNhat` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP()
-) ENGINE = InnoDB AUTO_INCREMENT = 0 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) AUTO_INCREMENT = 0;
 
-DROP TABLE IF EXISTS `danhMuc`;
 CREATE TABLE `danhMuc`
 (
     `ma`              INT PRIMARY KEY AUTO_INCREMENT,
     `tenDanhMuc`      VARCHAR(100) UNIQUE NOT NULL,
     `thoiGianTao`     TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     `thoiGianCapNhat` TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP()
-) ENGINE = InnoDB AUTO_INCREMENT = 0 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) AUTO_INCREMENT = 0;
 
-DROP TABLE IF EXISTS `donHang`;
 CREATE TABLE `donHang`
 (
     `ma`              INT PRIMARY KEY AUTO_INCREMENT,
@@ -53,9 +48,8 @@ CREATE TABLE `donHang`
     `thoiGianTao`     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     `thoiGianCapNhat` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     FOREIGN KEY (`maNguoiDung`) REFERENCES `nguoiDung` (`ma`) ON DELETE SET NULL
-) ENGINE = InnoDB AUTO_INCREMENT = 0 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) AUTO_INCREMENT = 0;
 
-DROP TABLE IF EXISTS `dongDonHang`;
 CREATE TABLE `dongDonHang`
 (
     `ma`        INT PRIMARY KEY AUTO_INCREMENT,
@@ -66,9 +60,8 @@ CREATE TABLE `dongDonHang`
     FOREIGN KEY (`maSach`) REFERENCES `sach` (`ma`) ON DELETE CASCADE,
     FOREIGN KEY (`maDonHang`) REFERENCES `donHang` (`ma`) ON DELETE CASCADE,
     CONSTRAINT U_DonDonHang UNIQUE (`maSach`, `maDonHang`)
-) ENGINE = InnoDB AUTO_INCREMENT = 0 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) AUTO_INCREMENT = 0;
 
-DROP TABLE IF EXISTS `hinhAnhSach`;
 CREATE TABLE `hinhAnhSach`
 (
     `ma`       INT PRIMARY KEY AUTO_INCREMENT,
@@ -76,9 +69,8 @@ CREATE TABLE `hinhAnhSach`
     `duongDan` VARCHAR(255) UNIQUE NOT NULL,
     `publicId` VARCHAR(255)        NOT NULL,
     FOREIGN KEY (`maSach`) REFERENCES `sach` (`ma`) ON DELETE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 0 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) AUTO_INCREMENT = 0;
 
-DROP TABLE IF EXISTS `phanLoaiSach`;
 CREATE TABLE `phanLoaiSach`
 (
     `ma`        INT PRIMARY KEY AUTO_INCREMENT,
@@ -87,9 +79,8 @@ CREATE TABLE `phanLoaiSach`
     FOREIGN KEY (`maSach`) REFERENCES `sach` (`ma`) ON DELETE CASCADE,
     FOREIGN KEY (`maDanhMuc`) REFERENCES `danhMuc` (`ma`) ON DELETE CASCADE,
     CONSTRAINT U_PhanLoaiSach UNIQUE (`maSach`, `maDanhMuc`)
-) ENGINE = InnoDB AUTO_INCREMENT = 0 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) AUTO_INCREMENT = 0;
 
-DROP TABLE IF EXISTS `binhLuan`;
 CREATE TABLE `binhLuan`
 (
     `ma`              INT PRIMARY KEY AUTO_INCREMENT,
@@ -100,4 +91,4 @@ CREATE TABLE `binhLuan`
     `thoiGianCapNhat` TIMESTAMP  NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     FOREIGN KEY (`maSach`) REFERENCES `sach` (`ma`) ON DELETE CASCADE,
     FOREIGN KEY (`maNguoiDung`) REFERENCES `nguoiDung` (`ma`) ON DELETE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 0 DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci;
+) AUTO_INCREMENT = 0;

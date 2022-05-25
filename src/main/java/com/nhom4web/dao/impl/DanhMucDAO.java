@@ -4,7 +4,6 @@ import com.nhom4web.dao.IDanhMucDAO;
 import com.nhom4web.model.DanhMuc;
 import com.nhom4web.model.Sach;
 
-import javax.inject.Inject;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,14 +19,7 @@ public class DanhMucDAO extends AbstractDAO<DanhMuc> implements IDanhMucDAO {
     protected List<DanhMuc> sangThucThes(ResultSet rs) {
         List<DanhMuc> danhMucs = new ArrayList<>();
         try {
-            while (rs.next()) {
-                DanhMuc danhMuc = new DanhMuc();
-                danhMuc.setMa(rs.getInt(1));
-                danhMuc.setTen(rs.getString(2));
-                danhMuc.setThoiGianTao(rs.getTimestamp(3));
-                danhMuc.setThoiGianCapNhat(rs.getTimestamp(4));
-                danhMucs.add(danhMuc);
-            }
+            while (rs.next()) danhMucs.add(this.rsSangThucThe(rs));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -37,14 +29,7 @@ public class DanhMucDAO extends AbstractDAO<DanhMuc> implements IDanhMucDAO {
     @Override
     protected DanhMuc sangThucThe(ResultSet rs) {
         try {
-            if (rs.next()) {
-                DanhMuc danhMuc = new DanhMuc();
-                danhMuc.setMa(rs.getInt(1));
-                danhMuc.setTen(rs.getString(2));
-                danhMuc.setThoiGianTao(rs.getTimestamp(3));
-                danhMuc.setThoiGianCapNhat(rs.getTimestamp(4));
-                return danhMuc;
-            }
+            if (rs.next()) return this.rsSangThucThe(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }

@@ -20,11 +20,7 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
     protected List<PhanLoaiSach> sangThucThes(ResultSet rs) {
         List<PhanLoaiSach> phanLoaiSachs = new ArrayList<>();
         try {
-            while (rs.next()) {
-                PhanLoaiSach phanLoaiSach = new PhanLoaiSach();
-                phanLoaiSach.setMa(rs.getInt(1));
-                phanLoaiSachs.add(phanLoaiSach);
-            }
+            while (rs.next()) phanLoaiSachs.add(this.rsSangThucThe(rs));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -34,11 +30,7 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
     @Override
     protected PhanLoaiSach sangThucThe(ResultSet rs) {
         try {
-            if (rs.next()) {
-                PhanLoaiSach phanLoaiSach = new PhanLoaiSach();
-                phanLoaiSach.setMa(rs.getInt(1));
-                return phanLoaiSach;
-            }
+            if (rs.next()) return this.rsSangThucThe(rs);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -89,6 +81,45 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
             return false;
         }
         return true;
+    }
+
+    @Override
+    public boolean capNhat(int maSach, List<Integer> maDanhMucs) {
+        try {
+            String sql = String.format("DELETE FROM %s WHERE maSach = ?", this.tenBang);
+            PreparedStatement ps1 = ketNoi.prepareStatement(sql);
+            this.setThamSoTruyVan(ps1, maSach);
+            ps1.executeUpdate();
+            ps1.close();
+
+            String[] temps = new String[maDanhMucs.size()];
+            Arrays.fill(temps, "(?, ?)");
+            sql = String.format(
+                    "INSERT INTO %s (maSach, maDanhMuc) VALUES %s",
+                    this.tenBang,
+                    String.join(", ", temps)
+            );
+
+            PreparedStatement ps2 = ketNoi.prepareStatement(sql);
+            int i = 0;
+            for (Integer maDanhMuc : maDanhMucs) {
+                this.setThamSoTai(ps2, ++i, maSach);
+                this.setThamSoTai(ps2, ++i, maDanhMuc);
+            }
+
+            ps2.executeUpdate();
+            ketNoi.commit();
+            ps2.close();
+            return true;
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            try {
+                ketNoi.rollback();
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+        }
+        return false;
     }
 
     @Override

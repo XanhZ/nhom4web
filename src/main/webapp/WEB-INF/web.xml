@@ -37,13 +37,13 @@
   <!-- End Logged Filter  -->
 
   <!-- Begin Authentication Filter  -->
-  <filter-mapping>
+  <!--<filter-mapping>
     <filter-name>auth</filter-name>
     <url-pattern>/api/dang-xuat</url-pattern>
     <url-pattern>/api/sach/*</url-pattern>
     <url-pattern>/api/danh-muc/*</url-pattern>
     <url-pattern>/api/don-hang/*</url-pattern>
-  </filter-mapping>
+  </filter-mapping>-->
   <!-- End Authentication Filter  -->
 
   <!-- Begin Sach Filter  -->
