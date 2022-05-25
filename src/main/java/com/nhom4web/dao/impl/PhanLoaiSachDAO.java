@@ -74,13 +74,12 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
             }
 
             ps.executeUpdate();
-            ketNoi.commit();
             ps.close();
+            return true;
         } catch (Exception e) {
             e.printStackTrace();
-            return false;
         }
-        return true;
+        return false;
     }
 
     @Override
@@ -108,16 +107,10 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
             }
 
             ps2.executeUpdate();
-            ketNoi.commit();
             ps2.close();
             return true;
-        } catch (SQLException e1) {
-            e1.printStackTrace();
-            try {
-                ketNoi.rollback();
-            } catch (SQLException e2) {
-                e2.printStackTrace();
-            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
         return false;
     }

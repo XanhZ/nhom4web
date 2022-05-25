@@ -15,6 +15,8 @@ public interface IHinhAnhSachDAO {
 
     boolean timTatCa(Sach sach);
 
+    List<HinhAnhSach> timTatCa(int maSach);
+
     default HinhAnhSach rsSangThucThe(ResultSet rs) throws SQLException {
         HinhAnhSach hinhAnhSach = new HinhAnhSach();
         hinhAnhSach.setMa(rs.getInt("ma"));

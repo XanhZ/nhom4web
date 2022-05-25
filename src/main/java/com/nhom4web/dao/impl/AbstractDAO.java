@@ -31,8 +31,11 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      * Cập nhật đối tượng trong cơ sở dữ liệu
      *
      * @param t đối tượng cần cập nhật
+     * @param luu commit vào cơ sở dữ liệu (true|false)
+     * @return true nếu thành công, false nếu thất bại
      */
-    public boolean capNhat(T t) {
+    @Override
+    public boolean capNhat(T t, boolean luu) {
         try {
             LinkedHashMap<String, Object> duLieu = this.sangMap(t);
             int ma = (int) duLieu.remove("ma");
@@ -48,17 +51,19 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             this.setThamSoTruyVan(ps, duLieu.values());
             ps.executeUpdate();
 
-            ketNoi.commit();
+            if (luu) ketNoi.commit();
             ps.close();
 
             return true;
-        } catch (SQLException e) {
-            try {
-                ketNoi.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
+        } catch (SQLException e1) {
+            if (luu) {
+                try {
+                    ketNoi.rollback();
+                } catch (SQLException e2) {
+                    e2.printStackTrace();
+                }
             }
-            e.printStackTrace();
+            e1.printStackTrace();
         }
         return false;
     }
@@ -68,6 +73,7 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      *
      * @return Danh sách các thực thể
      */
+    @Override
     public List<T> layTatCa() {
         List<T> list = new ArrayList<>();
         try {
@@ -87,6 +93,7 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      * @param ma mã của thực thể cần tìm
      * @return một thực thể nếu tìm thấy, ngược lại trả về null
      */
+    @Override
     public T tim(int ma) {
         T t = null;
         try {
@@ -169,9 +176,11 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      * Thêm một hàng vào cơ sở dữ liệu
      *
      * @param t đối tượng thêm vào cơ sở dữ liệu
+     * @param luu commit vào cơ sở dữ liệu (true|false)
      * @return true nếu thành công, ngược lại trả về false
      */
-    public boolean them(T t) {
+    @Override
+    public boolean them(T t, boolean luu) {
         try {
             LinkedHashMap<String, Object> duLieu = this.sangMap(t);
             String[] temp = new String[duLieu.size()];
@@ -188,17 +197,19 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             ps.executeUpdate();
             this.setKhoaChinh(t, ps.getGeneratedKeys());
 
-            ketNoi.commit();
+            if (luu) ketNoi.commit();
             ps.close();
 
             return true;
-        } catch (SQLException e) {
-            try {
-                ketNoi.rollback();
-            } catch (SQLException e1) {
-                e1.printStackTrace();
+        } catch (SQLException e1) {
+            if (luu) {
+                try {
+                    ketNoi.rollback();
+                } catch (SQLException e2) {
+                    e2.printStackTrace();
+                }
             }
-            e.printStackTrace();
+            e1.printStackTrace();
         }
         return false;
     }
@@ -247,9 +258,11 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      * Xóa bản ghi theo mã
      *
      * @param ma mã của thực thể cần xóa
-     * @return true nếu xóa thành công
+     * @param luu commit vào cơ sở dữ liệu (true|false)
+     * @return true nếu thành công, false nếu thất bại
      */
-    public boolean xoa(int ma) {
+    @Override
+    public boolean xoa(int ma, boolean luu) {
         try {
             String sql = String.format("DELETE FROM %s WHERE ma = ?", this.tenBang);
             PreparedStatement ps = ketNoi.prepareStatement(sql);
@@ -257,17 +270,19 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             this.setThamSoTruyVan(ps, ma);
             ps.executeUpdate();
 
-            ketNoi.commit();
+            if (luu) ketNoi.commit();
             ps.close();
 
             return true;
-        } catch (SQLException e) {
-            try {
-                ketNoi.rollback();
-            } catch (SQLException e1) {
-                e.printStackTrace();
+        } catch (SQLException e1) {
+            if (luu) {
+                try {
+                    ketNoi.rollback();
+                } catch (SQLException e2) {
+                    e2.printStackTrace();
+                }
             }
-            e.printStackTrace();
+            e1.printStackTrace();
         }
         return false;
     }

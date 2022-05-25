@@ -12,7 +12,7 @@ CREATE TABLE `nguoiDung`
 CREATE TABLE `thongTinDangNhap`
 (
     `ma`              INT PRIMARY KEY AUTO_INCREMENT,
-    `maNguoiDung`     INT UNIQUE     NOT NULL,
+    `maNguoiDung`     INT UNIQUE         NOT NULL,
     `tenDangNhap`     VARCHAR(50) UNIQUE NOT NULL,
     `matKhau`         VARCHAR(128)       NOT NULL,
     `token`           varchar(300)                DEFAULT NULL,
@@ -34,9 +34,9 @@ CREATE TABLE `sach`
 CREATE TABLE `danhMuc`
 (
     `ma`              INT PRIMARY KEY AUTO_INCREMENT,
-    `tenDanhMuc`      VARCHAR(100) UNIQUE NOT NULL,
-    `thoiGianTao`     TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    `thoiGianCapNhat` TIMESTAMP           NOT NULL DEFAULT CURRENT_TIMESTAMP()
+    `tenDanhMuc`      VARCHAR(100) NOT NULL,
+    `thoiGianTao`     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    `thoiGianCapNhat` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP()
 ) AUTO_INCREMENT = 0;
 
 CREATE TABLE `donHang`
@@ -45,8 +45,8 @@ CREATE TABLE `donHang`
     `maNguoiDung`     INT,
     `diaChi`          VARCHAR(255) NOT NULL,
     `trangThai`       ENUM('dangCho', 'xacNhan', 'huy') DEFAULT 'dangCho',
-    `thoiGianTao`     TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
-    `thoiGianCapNhat` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    `thoiGianTao`     TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP(),
+    `thoiGianCapNhat` TIMESTAMP    NOT NULL DEFAULT CURRENT_TIMESTAMP(),
     FOREIGN KEY (`maNguoiDung`) REFERENCES `nguoiDung` (`ma`) ON DELETE SET NULL
 ) AUTO_INCREMENT = 0;
 

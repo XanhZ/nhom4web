@@ -78,22 +78,48 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
 
     @Override
     public boolean them(Sach sach, List<Part> hinhAnhs, List<Integer> maDanhMucs) {
-        return super.them(sach) &&
-                PHAN_LOAI_SACH_DAO.them(sach.getMa(), maDanhMucs) &&
-                HINH_ANH_SACH_DAO.them(sach.getMa(), hinhAnhs);
+        try {
+            if (super.them(sach, false) &&
+                    PHAN_LOAI_SACH_DAO.them(sach.getMa(), maDanhMucs) &&
+                    HINH_ANH_SACH_DAO.them(sach.getMa(), hinhAnhs)) {
+                ketNoi.commit();
+                return true;
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            try {
+                ketNoi.rollback();
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+        }
+        return false;
     }
 
     @Override
     public boolean capNhat(Sach sach, List<Part> hinhAnhs, List<Integer> maDanhMucs) {
         sach.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
-        return super.capNhat(sach) &&
-                PHAN_LOAI_SACH_DAO.capNhat(sach.getMa(), maDanhMucs) &&
-                HINH_ANH_SACH_DAO.capNhat(sach.getMa(), hinhAnhs);
+        try {
+            if (super.capNhat(sach, false) &&
+                    PHAN_LOAI_SACH_DAO.capNhat(sach.getMa(), maDanhMucs) &&
+                    HINH_ANH_SACH_DAO.capNhat(sach.getMa(), hinhAnhs)) {
+                ketNoi.commit();
+                return true;
+            }
+        } catch (SQLException e1) {
+            e1.printStackTrace();
+            try {
+                ketNoi.rollback();
+            } catch (SQLException e2) {
+                e2.printStackTrace();
+            }
+        }
+        return false;
     }
 
     @Override
-    public boolean xoa(int ma) {
+    public boolean xoa(int ma, boolean commit) {
         if (!HINH_ANH_SACH_DAO.xoaTrenCloud(ma)) return false;
-        return super.xoa(ma);
+        return super.xoa(ma, commit);
     }
 }

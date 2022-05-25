@@ -39,7 +39,7 @@ public class DanhMucDAO extends AbstractDAO<DanhMuc> implements IDanhMucDAO {
     @Override
     protected LinkedHashMap<String, Object> sangMap(DanhMuc danhMuc) {
         LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
-        if (danhMuc.getMa() != -1) duLieu.put("ma", danhMuc.getMa());
+        if (danhMuc.getMa() > 0) duLieu.put("ma", danhMuc.getMa());
         if (danhMuc.getTen() != null) duLieu.put("tenDanhMuc", danhMuc.getTen());
         if (danhMuc.getThoiGianTao() != null) duLieu.put("thoiGianTao", danhMuc.getThoiGianTao());
         if (danhMuc.getThoiGianCapNhat() != null) duLieu.put("thoiGianCapNhat", danhMuc.getThoiGianCapNhat());

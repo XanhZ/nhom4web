@@ -9,9 +9,7 @@ public class HinhAnhSach {
     @Expose
     private String publicId;
 
-    public HinhAnhSach() {
-
-    }
+    public HinhAnhSach() {}
 
     public HinhAnhSach(int ma, String duongDan, String publicId) {
         this.ma = ma;

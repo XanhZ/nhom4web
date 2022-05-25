@@ -21,7 +21,7 @@ public class SachController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (DAO.xoa((Integer) req.getAttribute("ma"))) {
+        if (DAO.xoa((Integer) req.getAttribute("ma"), true)) {
             Json.chuyenThanhJson(resp, true);
             return;
         }
@@ -63,7 +63,7 @@ public class SachController extends HttpServlet {
                         Arrays.stream(req.getParameterMap().get("maDanhMuc"))
                                 .map(Integer::parseInt)
                                 .collect(Collectors.toList())
-                ) ? "Thêm thành công" : "Đã xảy ra lỗi"
+                )
         );
     }
 
@@ -85,7 +85,7 @@ public class SachController extends HttpServlet {
                         Arrays.stream(req.getParameterMap().get("maDanhMuc"))
                                 .map(Integer::parseInt)
                                 .collect(Collectors.toList())
-                ) ? "Sửa thành công" : "Đã xảy ra lỗi"
+                )
         );
     }
 }

@@ -18,19 +18,15 @@ import java.sql.Timestamp;
 public class DanhMucController extends HttpServlet {
     private static final DanhMucDAO DAO = new DanhMucDAO();
 
-    // Url: /api/danh-muc/{id}
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (DAO.xoa((Integer) req.getAttribute("ma"))) {
+        if (DAO.xoa((Integer) req.getAttribute("ma"), true)) {
             Json.chuyenThanhJson(resp, true);
             return;
         }
         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    // Url: /api/danh-muc
-    // Url: /api/danh-muc/
-    // Url: /api/danh-muc/{id}
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Object maObj = req.getAttribute("ma");
@@ -48,24 +44,17 @@ public class DanhMucController extends HttpServlet {
         resp.sendError(HttpServletResponse.SC_NOT_FOUND);
     }
 
-    // Url: /api/danh-muc/
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        System.out.println(req.getCharacterEncoding());
-        req.setCharacterEncoding("UTF-8");
-        System.out.println(req.getCharacterEncoding());
-        System.out.println(req.getParameter("tenDanhMuc"));
         DanhMuc danhMuc = new DanhMuc();
-        danhMuc.setTen("Hoàng Tiến Đạt 123");
-        System.out.println(danhMuc.getTen());
-        if (DAO.them(danhMuc)) {
-            Json.chuyenThanhJson(resp, "Thêm thành công");
+        danhMuc.setTen(req.getParameter("tenDanhMuc"));
+        if (DAO.them(danhMuc, true)) {
+            Json.chuyenThanhJson(resp, true);
             return;
         }
         resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
-    // Url: /api/danh-muc/{id}
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         DanhMuc danhMuc = new DanhMuc();
@@ -73,8 +62,8 @@ public class DanhMucController extends HttpServlet {
         danhMuc.setTen(req.getParameter("tenDanhMuc"));
         danhMuc.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
 
-        if (DAO.capNhat(danhMuc)) {
-            Json.chuyenThanhJson(resp, "Cập nhật thành công");
+        if (DAO.capNhat(danhMuc, true)) {
+            Json.chuyenThanhJson(resp, true);
             return;
         }
         resp.sendError(HttpServletResponse.SC_BAD_REQUEST);

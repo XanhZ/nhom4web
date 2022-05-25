@@ -17,7 +17,7 @@
     <junit.version>5.8.2</junit.version>
 
     <jstl.version>1.2</jstl.version>
-    <mysql.version>8.0.28</mysql.version>
+    <mysql.version>8.0.29</mysql.version>
     <weld.version>2.4.8.Final</weld.version>
     <gson.version>2.9.0</gson.version>
     <sitemesh.version>2.4.2</sitemesh.version>
