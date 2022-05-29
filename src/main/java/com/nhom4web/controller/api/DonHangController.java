@@ -18,11 +18,11 @@ public class DonHangController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (DAO.xoa((Integer) req.getAttribute("ma"), true)) {
-            Json.chuyenThanhJson(resp, true);
-            return;
-        }
-        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        resp.setStatus(
+                DAO.xoa((Integer) req.getAttribute("ma"), true) ?
+                        HttpServletResponse.SC_OK :
+                        HttpServletResponse.SC_BAD_REQUEST
+        );
     }
 
     @Override

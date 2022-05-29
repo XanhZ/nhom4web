@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,11 +22,11 @@ public class SachController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        if (DAO.xoa((Integer) req.getAttribute("ma"), true)) {
-            Json.chuyenThanhJson(resp, true);
-            return;
-        }
-        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        resp.setStatus(
+                DAO.xoa((Integer) req.getAttribute("ma"), true) ?
+                        HttpServletResponse.SC_OK :
+                        HttpServletResponse.SC_BAD_REQUEST
+        );
     }
 
     @Override
@@ -38,54 +39,60 @@ public class SachController extends HttpServlet {
         }
 
         Sach sach = DAO.tim((Integer) maObj);
-        if (sach != null) {
-            Json.chuyenThanhJson(resp, sach);
+        if (sach == null) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
 
-        resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+        Json.chuyenThanhJson(resp, sach);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Sach sach = new Sach();
-        sach.setTen(req.getParameter("tenSach"));
-        sach.setGiaTien(Integer.parseInt(req.getParameter("giaTien")));
-        sach.setSoLuongTrongKho(Integer.parseInt(req.getParameter("soLuongTrongKho")));
-        Json.chuyenThanhJson(
-                resp,
-                DAO.them(
-                        sach,
-                        req.getParts()
-                                .stream()
-                                .filter(part -> part.getName().equals("anh"))
-                                .collect(Collectors.toList()),
-                        Arrays.stream(req.getParameterMap().get("maDanhMuc"))
-                                .map(Integer::parseInt)
-                                .collect(Collectors.toList())
-                )
+        Sach sach = new Sach(
+                req.getParameter("tenSach"),
+                Integer.parseInt(req.getParameter("giaTien")),
+                Integer.parseInt(req.getParameter("soLuongTrongKho")),
+                new Timestamp(System.currentTimeMillis()),
+                new Timestamp(System.currentTimeMillis())
         );
+        if (DAO.them(
+                sach,
+                req.getParts()
+                        .stream()
+                        .filter(part -> part.getName().equals("anh"))
+                        .collect(Collectors.toList()),
+                Arrays.stream(req.getParameterMap().get("maDanhMuc"))
+                        .map(Integer::parseInt)
+                        .collect(Collectors.toList())
+        )) {
+            resp.setStatus(HttpServletResponse.SC_CREATED);
+            Json.chuyenThanhJson(resp, sach);
+        }
+
+        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Sach sach = new Sach();
-        sach.setMa((Integer) req.getAttribute("ma"));
+        Sach sach = DAO.tim((Integer) req.getAttribute("ma"));
+        if (sach == null) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
         sach.setTen(req.getParameter("tenSach"));
         sach.setGiaTien(Integer.parseInt(req.getParameter("giaTien")));
         sach.setSoLuongTrongKho(Integer.parseInt(req.getParameter("soLuongTrongKho")));
-        Json.chuyenThanhJson(
-                resp,
-                DAO.capNhat(
-                        sach,
-                        req.getParts()
-                                .stream()
-                                .filter(part -> part.getName().equals("anh"))
-                                .collect(Collectors.toList()),
-                        Arrays.stream(req.getParameterMap().get("maDanhMuc"))
-                                .map(Integer::parseInt)
-                                .collect(Collectors.toList())
-                )
-        );
+        sach.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
+        if (DAO.capNhat(
+                sach,
+                req.getParts().stream().filter(part -> part.getName().equals("anh")).collect(Collectors.toList()),
+                Arrays.stream(req.getParameterMap().get("maDanhMuc")).map(Integer::parseInt).collect(Collectors.toList())
+        )) {
+            Json.chuyenThanhJson(resp, sach);
+            return;
+        }
+
+        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 }

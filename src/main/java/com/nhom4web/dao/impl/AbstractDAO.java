@@ -55,15 +55,9 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             ps.close();
 
             return true;
-        } catch (SQLException e1) {
-            if (luu) {
-                try {
-                    ketNoi.rollback();
-                } catch (SQLException e2) {
-                    e2.printStackTrace();
-                }
-            }
-            e1.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            if (luu) this.rollback();
         }
         return false;
     }
@@ -173,6 +167,17 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     }
 
     /**
+     * Rollback lại transaction
+     */
+    protected void rollback() {
+       try {
+           ketNoi.rollback();
+       } catch (SQLException e) {
+           e.printStackTrace();
+       }
+    }
+
+    /**
      * Thêm một hàng vào cơ sở dữ liệu
      *
      * @param t đối tượng thêm vào cơ sở dữ liệu
@@ -201,15 +206,9 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             ps.close();
 
             return true;
-        } catch (SQLException e1) {
-            if (luu) {
-                try {
-                    ketNoi.rollback();
-                } catch (SQLException e2) {
-                    e2.printStackTrace();
-                }
-            }
-            e1.printStackTrace();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            if (luu) this.rollback();
         }
         return false;
     }
@@ -274,15 +273,9 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             ps.close();
 
             return true;
-        } catch (SQLException e1) {
-            if (luu) {
-                try {
-                    ketNoi.rollback();
-                } catch (SQLException e2) {
-                    e2.printStackTrace();
-                }
-            }
-            e1.printStackTrace();
+        } catch (SQLException e) {
+            if (luu) this.rollback();
+            e.printStackTrace();
         }
         return false;
     }

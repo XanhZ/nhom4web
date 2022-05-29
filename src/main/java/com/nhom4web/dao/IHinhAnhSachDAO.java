@@ -9,9 +9,9 @@ import java.sql.SQLException;
 import java.util.List;
 
 public interface IHinhAnhSachDAO {
-    boolean them(int maSach, List<Part> hinhAnhs);
+    List<HinhAnhSach> them(int maSach, List<Part> hinhAnhs, boolean luu);
 
-    boolean capNhat(int maSach, List<Part> hinhAnhs);
+    List<HinhAnhSach> capNhat(int maSach, List<Part> hinhAnhs);
 
     boolean timTatCa(Sach sach);
 

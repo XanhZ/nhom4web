@@ -12,8 +12,7 @@ public class DongDonHang {
     @Expose
     private int donGia;
 
-    public DongDonHang() {
-    }
+    public DongDonHang() {}
 
     public int getMa() {
         return ma;

@@ -2,7 +2,6 @@ package com.nhom4web.dao.impl;
 
 import com.nhom4web.dao.IDanhMucDAO;
 import com.nhom4web.model.DanhMuc;
-import com.nhom4web.model.Sach;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -55,8 +54,4 @@ public class DanhMucDAO extends AbstractDAO<DanhMuc> implements IDanhMucDAO {
         }
     }
 
-    @Override
-    public List<Sach> sachTrongDanhMuc(DanhMuc danhMuc) {
-        return null;
-    }
 }

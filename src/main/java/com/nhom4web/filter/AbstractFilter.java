@@ -1,7 +1,6 @@
 package com.nhom4web.filter;
 
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
+import com.nhom4web.utils.Json;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -81,18 +80,6 @@ public abstract class AbstractFilter implements Filter {
     }
 
     /**
-     * Đọc dữ liệu từ request body nếu Content-Type = application/json
-     *
-     * @param req Request cần đọc body
-     * @return Dữ liệu sau khi được chuyển về Map
-     * @throws IOException
-     */
-    private Map<String, Object> docJsonBody(HttpServletRequest req) throws IOException {
-        return new Gson().fromJson(req.getReader(), new TypeToken<Map<String, Object>>() {
-        }.getType());
-    }
-
-    /**
      * Kiểm tra dữ liệu của Request dựa trên các luật
      *
      * @param req Request cần kiểm tra dữ liệu
@@ -122,10 +109,19 @@ public abstract class AbstractFilter implements Filter {
     public String kiemTraFiles(Collection<Part> files) {
         for (Part file : files) {
             String tenFile = this.layTenFile(file);
-            if (!Pattern.matches(REGEX_HINH_ANH, tenFile)) {
-                return "Hình ảnh không hợp lệ";
-            }
+            if (!Pattern.matches(REGEX_HINH_ANH, tenFile)) return "Hình ảnh không đúng định dạng";
         }
+        return null;
+    }
+
+    /**
+     * Kiểm tra tên file gửi đến có phải là file image
+     * @param file file được gửi đến từ Request
+     * @return Lỗi nếu tên file không hợp lệ ngược lại trả về null
+     */
+    public String kiemTraFile(Part file) {
+        if (file == null) return "Không được để trống ảnh";
+        if (!Pattern.matches(REGEX_HINH_ANH, this.layTenFile(file))) return "Hình ảnh không đúng định dạng";
         return null;
     }
 
@@ -178,11 +174,67 @@ public abstract class AbstractFilter implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {}
 
-    protected abstract boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException;
+    protected boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String duongDan = req.getPathInfo();
+        if (duongDan == null || !Pattern.matches("/\\d+", duongDan)) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return false;
+        }
+        Pattern patternMa = Pattern.compile("\\d+");
+        Matcher matcher = patternMa.matcher(duongDan);
+        int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
+        req.setAttribute("ma", ma > 0 ? ma : null);
+        return true;
+    }
 
-    protected abstract boolean kiemTraGet(HttpServletRequest req, HttpServletResponse resp) throws IOException;
+    protected boolean kiemTraGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String duongDan = req.getPathInfo();
+        if (duongDan == null) {
+            req.setAttribute("ma", null);
+            return true;
+        }
+        if (!Pattern.matches("/\\d+", duongDan)) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return false;
+        }
+        Pattern patternMa = Pattern.compile("\\d+");
+        Matcher matcher = patternMa.matcher(duongDan);
+        int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
+        req.setAttribute("ma", ma > 0 ? ma : null);
+        return true;
+    }
 
-    protected abstract boolean kiemTraPost(HttpServletRequest req, HttpServletResponse resp) throws IOException;
+    protected boolean kiemTraPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String duongDan = req.getPathInfo();
+        if (duongDan != null) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return false;
+        }
+        Map<String, String> loi = this.getLoi(req);
+        if (loi.size() != 0) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            Json.chuyenThanhJson(resp, loi);
+            return false;
+        }
+        return true;
+    }
 
-    protected abstract boolean kiemTraPut(HttpServletRequest req, HttpServletResponse resp) throws IOException;
+    protected boolean kiemTraPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        String duongDan = req.getPathInfo();
+        if (duongDan == null || !Pattern.matches("/\\d+", duongDan)) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            return false;
+        }
+        Pattern patternMa = Pattern.compile("\\d+");
+        Matcher matcher = patternMa.matcher(duongDan);
+        int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
+        Map<String, String> loi = this.getLoi(req);
+        if (loi.size() != 0) {
+            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            Json.chuyenThanhJson(resp, loi);
+            return false;
+        }
+        req.setAttribute("ma", ma > 0 ? ma : null);
+        return true;
+    }
 }

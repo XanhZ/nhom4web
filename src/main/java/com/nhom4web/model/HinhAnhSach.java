@@ -3,6 +3,7 @@ package com.nhom4web.model;
 import com.google.gson.annotations.Expose;
 
 public class HinhAnhSach {
+    @Expose
     private int ma;
     @Expose
     private String duongDan;
@@ -10,12 +11,6 @@ public class HinhAnhSach {
     private String publicId;
 
     public HinhAnhSach() {}
-
-    public HinhAnhSach(int ma, String duongDan, String publicId) {
-        this.ma = ma;
-        this.duongDan = duongDan;
-        this.publicId = publicId;
-    }
 
     public int getMa() {
         return ma;

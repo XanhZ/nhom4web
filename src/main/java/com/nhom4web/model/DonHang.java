@@ -22,8 +22,7 @@ public class DonHang {
     @Expose
     private Timestamp thoiGianCapNhat;
 
-    public DonHang() {
-    }
+    public DonHang() {}
 
     public int getMa() {
         return ma;

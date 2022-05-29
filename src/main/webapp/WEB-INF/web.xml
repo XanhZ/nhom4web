@@ -46,17 +46,31 @@
   </filter-mapping>-->
   <!-- End Authentication Filter  -->
 
+  <!-- Begin Danh Muc Filter  -->
+  <filter-mapping>
+    <filter-name>Danh-Muc-Filter</filter-name>
+    <url-pattern>/api/danh-muc/*</url-pattern>
+  </filter-mapping>
+  <!-- End Danh Muc Filter  -->
+
   <!-- Begin Sach Filter  -->
   <filter-mapping>
-    <filter-name>sach</filter-name>
+    <filter-name>Sach-Filter</filter-name>
     <url-pattern>/api/sach/*</url-pattern>
   </filter-mapping>
   <!-- End Sach Filter  -->
 
-  <!-- Begin Danh Muc Filter  -->
+  <!-- Begin Hinh Anh Sach Filter  -->
   <filter-mapping>
-    <filter-name>danhmuc</filter-name>
-    <url-pattern>/api/danh-muc/*</url-pattern>
+    <filter-name>Hinh-Anh-Sach-Filter</filter-name>
+    <url-pattern>/api/hinh-anh-sach/*</url-pattern>
   </filter-mapping>
-  <!-- End Danh Muc Filter  -->
+  <!-- End Hinh Anh Sach Filter  -->
+
+  <!-- Begin Phan Loai Sach Filter  -->
+  <filter-mapping>
+    <filter-name>Phan-Loai-Sach-Filter</filter-name>
+    <url-pattern>/api/phan-loai-sach/*</url-pattern>
+  </filter-mapping>
+  <!-- End Phan Loai Sach Filter  -->
 </web-app>

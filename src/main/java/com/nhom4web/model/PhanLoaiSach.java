@@ -1,19 +1,16 @@
 package com.nhom4web.model;
 
+import com.google.gson.annotations.Expose;
+
 public class PhanLoaiSach {
+    @Expose
     private int ma;
+    @Expose
     private Sach sach;
+    @Expose
     private DanhMuc danhMuc;
 
-    public PhanLoaiSach() {
-
-    }
-
-    public PhanLoaiSach(int ma, Sach sach, DanhMuc danhMuc) {
-        this.ma = ma;
-        this.sach = sach;
-        this.danhMuc = danhMuc;
-    }
+    public PhanLoaiSach() {}
 
     public int getMa() {
         return ma;

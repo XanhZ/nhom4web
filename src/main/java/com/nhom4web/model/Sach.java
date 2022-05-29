@@ -9,7 +9,6 @@ public class Sach {
     @Expose
     List<HinhAnhSach> hinhAnhSachs;
     @Expose
-    List<DanhMuc> danhMucs;
     private int ma;
     @Expose
     private String ten;
@@ -20,12 +19,9 @@ public class Sach {
     @Expose
     private Timestamp thoiGianTao, thoiGianCapNhat;
 
-    public Sach() {
-    }
+    public Sach() {}
 
-    public Sach(int ma, List<HinhAnhSach> hinhAnhSachs, String ten, int giaTien, int soLuongTrongKho, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
-        this.ma = ma;
-        this.hinhAnhSachs = hinhAnhSachs;
+    public Sach(String ten, int giaTien, int soLuongTrongKho, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
         this.ten = ten;
         this.giaTien = giaTien;
         this.soLuongTrongKho = soLuongTrongKho;
@@ -55,14 +51,6 @@ public class Sach {
 
     public void setGiaTien(int giaTien) {
         this.giaTien = giaTien;
-    }
-
-    public List<DanhMuc> getDanhMucs() {
-        return danhMucs;
-    }
-
-    public void setDanhMucs(List<DanhMuc> danhMucs) {
-        this.danhMucs = danhMucs;
     }
 
     public int getSoLuongTrongKho() {

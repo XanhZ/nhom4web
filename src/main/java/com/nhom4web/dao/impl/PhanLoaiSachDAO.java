@@ -1,17 +1,13 @@
 package com.nhom4web.dao.impl;
 
-import com.nhom4web.dao.IPhanLoaiSach;
+import com.nhom4web.dao.IPhanLoaiSachDAO;
 import com.nhom4web.model.DanhMuc;
 import com.nhom4web.model.PhanLoaiSach;
-import com.nhom4web.model.Sach;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.List;
+import java.util.*;
 
-public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanLoaiSach {
+public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanLoaiSachDAO {
     public PhanLoaiSachDAO() {
         super("phanLoaiSach");
     }
@@ -56,7 +52,7 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
     }
 
     @Override
-    public boolean them(int maSach, List<Integer> maDanhMucs) {
+    public boolean them(int maSach, List<Integer> maDanhMucs, boolean luu) {
         try {
             String[] temps = new String[maDanhMucs.size()];
             Arrays.fill(temps, "(?, ?)");
@@ -74,69 +70,65 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
             }
 
             ps.executeUpdate();
+            if (luu) ketNoi.commit();
             ps.close();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
+            this.rollback();
         }
         return false;
     }
 
     @Override
-    public boolean capNhat(int maSach, List<Integer> maDanhMucs) {
+    public boolean capNhat(int maSach, List<Integer> maDanhMucs, boolean luu) {
         try {
             String sql = String.format("DELETE FROM %s WHERE maSach = ?", this.tenBang);
-            PreparedStatement ps1 = ketNoi.prepareStatement(sql);
-            this.setThamSoTruyVan(ps1, maSach);
-            ps1.executeUpdate();
-            ps1.close();
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            this.setThamSoTruyVan(ps, maSach);
+            ps.executeUpdate();
+            ps.close();
 
-            String[] temps = new String[maDanhMucs.size()];
-            Arrays.fill(temps, "(?, ?)");
-            sql = String.format(
-                    "INSERT INTO %s (maSach, maDanhMuc) VALUES %s",
-                    this.tenBang,
-                    String.join(", ", temps)
-            );
+            this.them(maSach, maDanhMucs, luu);
+            if (luu) ketNoi.commit();
 
-            PreparedStatement ps2 = ketNoi.prepareStatement(sql);
-            int i = 0;
-            for (Integer maDanhMuc : maDanhMucs) {
-                this.setThamSoTai(ps2, ++i, maSach);
-                this.setThamSoTai(ps2, ++i, maDanhMuc);
-            }
-
-            ps2.executeUpdate();
-            ps2.close();
             return true;
         } catch (SQLException e) {
             e.printStackTrace();
+            if (luu) this.rollback();
         }
         return false;
     }
 
     @Override
-    public boolean timDanhMucSach(Sach sach) {
+    public List<PhanLoaiSach> timDanhMucSach(int maSach) {
         try {
-            String sql = "SELECT C.ma, C.tenDanhMuc FROM sach as A, phanLoaiSach as B, danhMuc as C " +
-                    "WHERE A.ma = ? AND A.ma = B.maSach AND B.maDanhMuc = C.ma";
+            List<PhanLoaiSach> phanLoaiSachs = new LinkedList<>();
+            String sql = "SELECT B.ma, B.maDanhMuc, A.tenDanhMuc, A.thoiGianTao, A.thoiGianCapNhat " +
+                    "FROM danhMuc AS A, phanLoaiSach AS B " +
+                    "WHERE B.maSach = ? AND B.maDanhMuc = A.ma";
             PreparedStatement ps = ketNoi.prepareStatement(sql);
-            this.setThamSoTruyVan(ps, sach.getMa());
-
+            this.setThamSoTai(ps, 1, maSach);
             ResultSet rs = ps.executeQuery();
-            List<DanhMuc> danhMucs = new ArrayList<>();
             while (rs.next()) {
-                DanhMuc danhMuc = new DanhMuc();
-                danhMuc.setMa(rs.getInt(1));
-                danhMuc.setTen(rs.getString(2));
-                danhMucs.add(danhMuc);
-            }
+                PhanLoaiSach phanLoaiSach = new PhanLoaiSach();
+                phanLoaiSach.setMa(rs.getInt("ma"));
 
-            sach.setDanhMucs(danhMucs);
-            return true;
-        } catch (Exception e) {
+                DanhMuc danhMuc = new DanhMuc();
+                danhMuc.setMa(rs.getInt("maDanhMuc"));
+                danhMuc.setTen(rs.getString("tenDanhMuc"));
+                danhMuc.setThoiGianTao(rs.getTimestamp("thoiGianTao"));
+                danhMuc.setThoiGianCapNhat(rs.getTimestamp("thoiGianCapNhat"));
+
+                phanLoaiSach.setDanhMuc(danhMuc);
+
+                phanLoaiSachs.add(phanLoaiSach);
+            }
+            ps.close();
+            return phanLoaiSachs;
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        return false;
+        return null;
     }
 }

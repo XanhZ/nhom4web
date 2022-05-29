@@ -14,11 +14,9 @@ public class DanhMuc {
     private Timestamp thoiGianTao, thoiGianCapNhat;
     private List<Sach> sachs;
 
-    public DanhMuc() {
-    }
+    public DanhMuc() {}
 
-    public DanhMuc(int ma, String ten, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
-        this.ma = ma;
+    public DanhMuc(String ten, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
         this.ten = ten;
         this.thoiGianTao = thoiGianTao;
         this.thoiGianCapNhat = thoiGianCapNhat;
