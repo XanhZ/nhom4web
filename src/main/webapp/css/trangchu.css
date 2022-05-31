@@ -1,0 +1,122 @@
+@import url('chung.css');
+
+/*----------------QUANG CAO----------------*/
+
+#thungQuangCao {
+	display: flex;
+	overflow: hidden;
+	margin: auto;
+	height: 1000px;
+	z-index: -1;
+}
+
+.quangCao {
+	background-image: url('https://file.hstatic.net/200000123069/file/20220419_banner_shop_248edbe1f4924486b3fd1548abf5a796.jpg');
+	width: 100%;
+	height: 100%;
+	display: inline-block;
+	transition: 1s ease-in-out;
+	position: relative;
+}
+
+
+/*----------------SAN PHAM----------------*/
+
+.loaiSanPham {
+	width: 100%;
+	margin: 50px 0;
+	height: 600px;
+	border-bottom: 2px solid #8f9194;
+}
+
+.loaiSanPham .tieuDe {
+	margin: 40px 0;
+	text-align: center;
+	font-size: 25px;
+	font-weight: 400;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+}
+
+.loaiSanPham .tieuDe p {
+	border-bottom: 1px solid black;
+	display: inline-block;
+}
+
+.loaiSanPham .trungBay {
+	display: flex;
+	padding: 10px 40px 30px 40px;
+	justify-content: space-around;
+	width: 100%;
+	height: 100%;
+}
+
+.sach {
+	display: block;
+	position: relative;
+	transition: all 0.3s ease;
+	border: 1px solid #cacaca;
+	height: fit-content;
+	padding: 6px 8px;
+}
+
+.hinh-anh-sach {
+	position: relative;
+}
+
+.hinh-anh-sach img {
+	display: inline-block;
+	width: 270px;
+	height: 300px;
+}
+
+.manMo {
+	display: none;
+	width: 100%;
+	height: 300px;
+	background-color: rgba(255, 255, 255, 0.5);
+	position: absolute;
+	top: 0;
+	left: 0;
+	opacity: 0;
+	align-items: flex-end;
+	justify-content: space-around;
+	cursor: pointer;
+}
+
+.manMo>button {
+	cursor: pointer;
+	line-height: 30px;
+	height: 30px;
+	width: 120px;
+	background-color: #242526;
+	text-transform: uppercase;
+	font-size: 12px;
+	color: white;
+}
+
+.sach .giamGia {
+	position: absolute;
+	top: 10px;
+	left: 10px;
+	display: block;
+	background-color: #0dd6f3;
+	padding: 5px 7px;
+	border-radius: 4px;
+	color: #fff;
+	font-size: 15px;
+}
+
+.sach:hover .manMo {
+	opacity: 1;
+	display: flex;
+}
+
+.ten-sach--tran {
+	width: 300px;
+	white-space: normal;
+	overflow: hidden;
+	-webkit-line-clamp: 1;
+	-webkit-box-orient: vertical;
+	display: -webkit-box;
+}

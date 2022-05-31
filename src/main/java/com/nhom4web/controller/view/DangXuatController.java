@@ -20,7 +20,7 @@ public class DangXuatController extends HttpServlet {
 
         Json.chuyenThanhJson(resp, "Đăng xuất");
 
-        RequestDispatcher rd = req.getRequestDispatcher("views/login.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("views/dangnhap.jsp");
         rd.forward(req, resp);
     }
 }

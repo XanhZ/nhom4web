@@ -1,0 +1,33 @@
+@import url('chung.css');
+
+/* Session */
+.phan-than {
+  margin-top: 100px;
+  margin-bottom: 50px;
+  height: 1000px;
+  width: 85%;
+  margin: 100px auto 50px auto;
+}
+
+.phan-dau-gioi-thieu {
+  margin-top: 100px;
+}
+
+.phan-dau-gioi-thieu>h1 {
+  font-size: 30px;
+  font-weight: 700;
+}
+
+.noi-dung {
+  margin: 50px;
+}
+
+.noi-dung>p {
+  padding-bottom: 20px;
+  line-height: 21px;
+  font-size: 14px;
+}
+
+.hinh-anh {
+  width: 50%;
+}

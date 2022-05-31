@@ -1,0 +1,91 @@
+@import url('chung.css');
+
+.lien-he {
+	background-color: #fafafa;
+}
+
+/* Session */
+.phan-than {
+	margin-bottom: 50px;
+	height: 1000px;
+	background-color: #acb0b1;
+	display: flex;
+}
+
+.ban-do {
+	width: 50%;
+	background-color: #fafafa;
+	display: flex;
+	align-items: center;
+	border: 1px solid #ccc;
+}
+
+.form-lien-he {
+	width: 50%;
+	background-color: #fafafa;
+	border: 1px solid #ccc;
+}
+
+.ptit {
+	width: 95%;
+	height: 80%;
+}
+
+.tieu-de-form {
+	color: #5c5c5c;
+	margin: 52px;
+	font-size: 30px;
+}
+
+.lien-he-con {
+	font-size: 14px;
+	line-height: 14px;
+	color: #5c5c5c;
+}
+
+.lien-he-con>li {
+	margin: 30px;
+}
+
+.strong-lien-he {
+	font-weight: 600;
+
+}
+
+.form-thac-mac {
+	margin: 40px 0px;
+	width: 80%;
+}
+
+.chieu-cao-nho {
+	border: 1px solid #e7e7e7;
+	padding: 0 20px;
+	height: 45px;
+	border-radius: 2px;
+	margin: 15px 0px;
+}
+
+.chieu-cao-lon {
+	border: 1px solid #e7e7e7;
+	padding: 20px;
+	height: 130px;
+	border-radius: 2px;
+	margin: 15px 0px;
+}
+
+.do-dai {
+	width: 100%;
+}
+
+.do-dai>input {
+	width: calc(50% - 5px);
+
+}
+
+.submit-form {
+	background-color: #68c9fb;
+	color: #fff;
+	border: none;
+	width: 40%;
+	height: 30px;
+}

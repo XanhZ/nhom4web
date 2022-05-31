@@ -1,0 +1,73 @@
+.cuoiTrang {
+	width: 100%;
+	display: flex;
+	justify-content: space-between;
+	padding: 0px 40px;
+}
+
+.cuoiTrang>div {
+	width: 22%;
+}
+
+.cuoiTrang img {
+	width: 60%;
+}
+
+.cuoiTrang .mangXaHoi {
+	width: 60%;
+}
+
+.mxh-bieuTuong {
+	height: 30px;
+	width: 30px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 0.45rem;
+	color: #333;
+	border-radius: 50%;
+	border: 1px solid #333;
+	text-decoration: none;
+	font-size: 1.1rem;
+	transition: 0.3s;
+}
+
+.mangXaHoi {
+	margin: 20px 0;
+	display: flex;
+	justify-content: center;
+	border: none;
+	outline: none;
+}
+
+.mxh-bieuTuong:hover {
+	color: #2a2185;
+	border-color: #2a2185;
+	border: none;
+	outline: none;
+}
+
+.cuoiTrang .tieuDe {
+	text-transform: uppercase;
+	font-size: 18px;
+	display: inline-block;
+	margin-bottom: 25px;
+	color: #939494;
+}
+
+.cuoiTrang li {
+	list-style-type: none;
+	font-size: 15px;
+	color: #acb0b1;
+	display: block;
+	margin: 5px 0;
+}
+
+.cuoiTrang li a {
+	text-decoration: none;
+	color: #acb0b1;
+}
+
+.cuoiTrang li a:hover {
+	color: #2a2185;
+}
