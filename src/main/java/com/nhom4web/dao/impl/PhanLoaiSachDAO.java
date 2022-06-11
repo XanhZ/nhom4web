@@ -16,9 +16,10 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
     protected List<PhanLoaiSach> sangThucThes(ResultSet rs) {
         List<PhanLoaiSach> phanLoaiSachs = new ArrayList<>();
         try {
-            while (rs.next()) phanLoaiSachs.add(this.rsSangThucThe(rs));
+            while (rs.next()) phanLoaiSachs.add(IPhanLoaiSachDAO.rsSangThucThe(rs));
         } catch (Exception e) {
             e.printStackTrace();
+            return null;
         }
         return phanLoaiSachs;
     }
@@ -26,7 +27,7 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
     @Override
     protected PhanLoaiSach sangThucThe(ResultSet rs) {
         try {
-            if (rs.next()) return this.rsSangThucThe(rs);
+            if (rs.next()) return IPhanLoaiSachDAO.rsSangThucThe(rs);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -65,8 +66,8 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             int i = 0;
             for (Integer maDanhMuc : maDanhMucs) {
-                this.setThamSoTai(ps, ++i, maSach);
-                this.setThamSoTai(ps, ++i, maDanhMuc);
+                PhanLoaiSachDAO.setThamSoTai(ps, ++i, maSach);
+                PhanLoaiSachDAO.setThamSoTai(ps, ++i, maDanhMuc);
             }
 
             ps.executeUpdate();
@@ -83,16 +84,14 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
     @Override
     public boolean capNhat(int maSach, List<Integer> maDanhMucs, boolean luu) {
         try {
-            String sql = String.format("DELETE FROM %s WHERE maSach = ?", this.tenBang);
+            String sql = String.format("DELETE FROM %s WHERE maSach = %d", this.tenBang, maSach);
             PreparedStatement ps = ketNoi.prepareStatement(sql);
-            this.setThamSoTruyVan(ps, maSach);
             ps.executeUpdate();
             ps.close();
-
-            this.them(maSach, maDanhMucs, luu);
-            if (luu) ketNoi.commit();
-
-            return true;
+            if (this.them(maSach, maDanhMucs, false)) {
+                if (luu) ketNoi.commit();
+                return true;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
             if (luu) this.rollback();
@@ -108,7 +107,7 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
                     "FROM danhMuc AS A, phanLoaiSach AS B " +
                     "WHERE B.maSach = ? AND B.maDanhMuc = A.ma";
             PreparedStatement ps = ketNoi.prepareStatement(sql);
-            this.setThamSoTai(ps, 1, maSach);
+            PhanLoaiSachDAO.setThamSoTai(ps, 1, maSach);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
                 PhanLoaiSach phanLoaiSach = new PhanLoaiSach();

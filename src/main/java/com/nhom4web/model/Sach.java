@@ -7,8 +7,6 @@ import java.util.List;
 
 public class Sach {
     @Expose
-    List<HinhAnhSach> hinhAnhSachs;
-    @Expose
     private int ma;
     @Expose
     private String ten;
@@ -18,15 +16,19 @@ public class Sach {
     private int soLuongTrongKho;
     @Expose
     private Timestamp thoiGianTao, thoiGianCapNhat;
+    @Expose
+    List<HinhAnhSach> hinhAnhSachs;
 
-    public Sach() {}
+    public Sach() {
+    }
 
-    public Sach(String ten, int giaTien, int soLuongTrongKho, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
+    public Sach(String ten, int giaTien, int soLuongTrongKho, Timestamp thoiGianTao, Timestamp thoiGianCapNhat, List<HinhAnhSach> hinhAnhSachs) {
         this.ten = ten;
         this.giaTien = giaTien;
         this.soLuongTrongKho = soLuongTrongKho;
         this.thoiGianTao = thoiGianTao;
         this.thoiGianCapNhat = thoiGianCapNhat;
+        this.hinhAnhSachs = hinhAnhSachs;
     }
 
     public int getMa() {

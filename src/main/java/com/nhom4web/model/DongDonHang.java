@@ -6,13 +6,19 @@ public class DongDonHang {
     @Expose
     private int ma;
     @Expose
-    private Sach sach;
-    @Expose
     private int soLuong;
     @Expose
     private int donGia;
+    @Expose
+    private Sach sach;
 
     public DongDonHang() {}
+
+    public DongDonHang(int maSach, int soLuong) {
+        this.sach = new Sach();
+        this.sach.setMa(maSach);
+        this.soLuong = soLuong;
+    }
 
     public int getMa() {
         return ma;

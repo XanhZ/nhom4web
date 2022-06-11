@@ -1,7 +1,9 @@
 package com.nhom4web.controller.api;
 
 import com.nhom4web.dao.impl.SachDAO;
+import com.nhom4web.model.HinhAnhSach;
 import com.nhom4web.model.Sach;
+import com.nhom4web.utils.HinhAnh;
 import com.nhom4web.utils.Json;
 
 import javax.servlet.ServletException;
@@ -22,11 +24,12 @@ public class SachController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setStatus(
-                DAO.xoa((Integer) req.getAttribute("ma"), true) ?
-                        HttpServletResponse.SC_OK :
-                        HttpServletResponse.SC_BAD_REQUEST
-        );
+        int ma = (Integer) req.getAttribute("ma");
+        if (DAO.tim(ma) == null) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        resp.setStatus(DAO.xoa(ma, true) ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Override
@@ -49,25 +52,32 @@ public class SachController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Sach sach = new Sach(
-                req.getParameter("tenSach"),
-                Integer.parseInt(req.getParameter("giaTien")),
-                Integer.parseInt(req.getParameter("soLuongTrongKho")),
-                new Timestamp(System.currentTimeMillis()),
-                new Timestamp(System.currentTimeMillis())
-        );
-        if (DAO.them(
-                sach,
+        List<HinhAnhSach> hinhAnhSachs = HinhAnh.luuVaoCloud(
                 req.getParts()
-                        .stream()
-                        .filter(part -> part.getName().equals("anh"))
-                        .collect(Collectors.toList()),
-                Arrays.stream(req.getParameterMap().get("maDanhMuc"))
-                        .map(Integer::parseInt)
-                        .collect(Collectors.toList())
-        )) {
-            resp.setStatus(HttpServletResponse.SC_CREATED);
-            Json.chuyenThanhJson(resp, sach);
+                    .stream()
+                    .filter(part -> part.getName().equals("anh"))
+                    .collect(Collectors.toList())
+        );
+        if (hinhAnhSachs != null) {
+            Sach sach = new Sach(
+                    req.getParameter("tenSach"),
+                    Integer.parseInt(req.getParameter("giaTien")),
+                    Integer.parseInt(req.getParameter("soLuongTrongKho")),
+                    new Timestamp(System.currentTimeMillis()),
+                    new Timestamp(System.currentTimeMillis()),
+                    hinhAnhSachs
+            );
+            if (DAO.them(
+                    sach,
+                    Arrays.stream(req.getParameterMap().get("maDanhMuc"))
+                            .map(Integer::parseInt)
+                            .collect(Collectors.toList())
+
+            )) {
+                resp.setStatus(HttpServletResponse.SC_CREATED);
+                Json.chuyenThanhJson(resp, sach);
+                return;
+            }
         }
 
         resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -80,17 +90,32 @@ public class SachController extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        sach.setTen(req.getParameter("tenSach"));
-        sach.setGiaTien(Integer.parseInt(req.getParameter("giaTien")));
-        sach.setSoLuongTrongKho(Integer.parseInt(req.getParameter("soLuongTrongKho")));
-        sach.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
-        if (DAO.capNhat(
-                sach,
-                req.getParts().stream().filter(part -> part.getName().equals("anh")).collect(Collectors.toList()),
-                Arrays.stream(req.getParameterMap().get("maDanhMuc")).map(Integer::parseInt).collect(Collectors.toList())
-        )) {
-            Json.chuyenThanhJson(resp, sach);
-            return;
+
+        List<HinhAnhSach> hinhAnhSachs = HinhAnh.luuVaoCloud(
+                req.getParts()
+                        .stream()
+                        .filter(part -> part.getName().equals("anh"))
+                        .collect(Collectors.toList())
+        );
+        if (hinhAnhSachs != null) {
+            sach.setTen(req.getParameter("tenSach"));
+            sach.setGiaTien(Integer.parseInt(req.getParameter("giaTien")));
+            sach.setSoLuongTrongKho(Integer.parseInt(req.getParameter("soLuongTrongKho")));
+            sach.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
+            sach.setHinhAnhSachs(hinhAnhSachs);
+            if (DAO.capNhat(
+                    sach,
+                    Arrays.stream(req.getParameterMap()
+                                    .get("maDanhMuc"))
+                                    .map(Integer::parseInt)
+                                    .collect(Collectors.toList())
+            )) {
+                Json.chuyenThanhJson(resp, sach);
+                return;
+            }
+            else {
+                HinhAnh.xoaTrenCloud(hinhAnhSachs.stream().map(HinhAnhSach::getPublicId).collect(Collectors.toList()));
+            }
         }
 
         resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);

@@ -1,4 +1,4 @@
-package com.nhom4web.controller.view;
+package com.nhom4web.controller.api;
 
 import com.nhom4web.dao.impl.NguoiDungDAO;
 import com.nhom4web.dao.impl.ThongTinDangNhapDAO;
@@ -7,7 +7,6 @@ import com.nhom4web.model.ThongTinDangNhap;
 import com.nhom4web.utils.Hashing;
 import com.nhom4web.utils.Json;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.annotation.WebServlet;
@@ -39,30 +38,13 @@ public class DangNhapController extends HttpServlet {
 
         ThongTinDangNhap thongTinDangNhap = TTDN_DAO.timTheoTaiKhoanMatKhau(taiKhoanMatKhau);
         if (thongTinDangNhap != null) {
-            Json.chuyenThanhJson(resp, "Đăng nhập thành công");
-
             NguoiDung nguoiDung = ND_DAO.tim(thongTinDangNhap.getMaNguoiDung());
-
-            // Tao session dang nhap
             HttpSession sessionDangNhap = req.getSession();
             sessionDangNhap.setAttribute("nguoiDung", nguoiDung);
-
-            /*
-             * Phan quyen
-             * 1. Nguoi dung co loaiNguoiDung = 0 => User => Redirect den trang chu
-             * 2. Nguoi dung co loaiNguoiDung = 1 => Admin => Redirect den trang admin
-             */
-            if (nguoiDung.getLoaiNguoiDung() == 0) {
-                req.getRequestDispatcher("views/trangchu.jsp").forward(req, resp);
-            } else {
-                req.getRequestDispatcher("views/sach_admin.jsp").forward(req, resp);
-            }
+            Json.chuyenThanhJson(resp, "Đăng nhập thành công");
             return;
-        } else {
-            Json.chuyenThanhJson(resp, "Đăng nhập thất bại");
         }
-
-        RequestDispatcher rd = req.getRequestDispatcher("views/dangnhap.jsp");
-        rd.forward(req, resp);
+        resp.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+        Json.chuyenThanhJson(resp, "Tên đăng nhập hoặc mật khẩu không đúng");
     }
 }

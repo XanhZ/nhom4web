@@ -22,11 +22,12 @@ public class PhanLoaiSachController extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.setStatus(
-                DAO.xoa((Integer) req.getAttribute("ma"), true) ?
-                        HttpServletResponse.SC_OK :
-                        HttpServletResponse.SC_BAD_REQUEST
-        );
+        int ma = (Integer) req.getAttribute("ma");
+        if (DAO.tim(ma) == null) {
+            resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
+            return;
+        }
+        resp.setStatus(DAO.xoa(ma, true) ? HttpServletResponse.SC_OK : HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Override

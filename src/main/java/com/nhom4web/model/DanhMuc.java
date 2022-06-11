@@ -12,7 +12,6 @@ public class DanhMuc {
     private String ten;
     @Expose
     private Timestamp thoiGianTao, thoiGianCapNhat;
-    private List<Sach> sachs;
 
     public DanhMuc() {}
 
@@ -36,14 +35,6 @@ public class DanhMuc {
 
     public void setTen(String ten) {
         this.ten = ten;
-    }
-
-    public List<Sach> getSachs() {
-        return sachs;
-    }
-
-    public void setSachs(List<Sach> sachs) {
-        this.sachs = sachs;
     }
 
     public Timestamp getThoiGianTao() {

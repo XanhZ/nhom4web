@@ -13,7 +13,7 @@ public interface IPhanLoaiSachDAO {
 
     List<PhanLoaiSach> timDanhMucSach(int maSach);
 
-    default PhanLoaiSach rsSangThucThe(ResultSet rs) throws SQLException {
+    static PhanLoaiSach rsSangThucThe(ResultSet rs) throws SQLException {
         PhanLoaiSach phanLoaiSach = new PhanLoaiSach();
         phanLoaiSach.setMa(rs.getInt("ma"));
         return phanLoaiSach;

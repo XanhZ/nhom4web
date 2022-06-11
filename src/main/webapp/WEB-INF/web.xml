@@ -12,9 +12,9 @@
     <tracking-mode>COOKIE</tracking-mode>
   </session-config>
 
-  <!-- Web context listener to preven leak memory when connect to MySQL -->
+  <!-- Web context listener to prevent leak memory when connect to MySQL -->
   <listener>
-    <listener-class>com.nhom4web.WebAppContextListener</listener-class>
+    <listener-class>com.nhom4web.HuyJdbcListener</listener-class>
   </listener>
 
   <!-- Sitemesh decorator  -->
@@ -30,20 +30,23 @@
 
   <!-- Begin Logged Filter  -->
   <filter-mapping>
-    <filter-name>logged</filter-name>
+    <filter-name>Logged</filter-name>
     <url-pattern>/api/dang-ky</url-pattern>
     <url-pattern>/api/dang-nhap</url-pattern>
   </filter-mapping>
   <!-- End Logged Filter  -->
 
   <!-- Begin Authentication Filter  -->
-  <!--<filter-mapping>
-    <filter-name>auth</filter-name>
+  <filter-mapping>
+    <filter-name>Auth</filter-name>
     <url-pattern>/api/dang-xuat</url-pattern>
     <url-pattern>/api/sach/*</url-pattern>
+    <url-pattern>/api/hinh-anh-sach/*</url-pattern>
     <url-pattern>/api/danh-muc/*</url-pattern>
     <url-pattern>/api/don-hang/*</url-pattern>
-  </filter-mapping>-->
+    <url-pattern>/api/dong-don-hang/*</url-pattern>
+    <url-pattern>/api/binh-luan/*</url-pattern>
+  </filter-mapping>
   <!-- End Authentication Filter  -->
 
   <!-- Begin Danh Muc Filter  -->
@@ -73,8 +76,18 @@
     <url-pattern>/api/phan-loai-sach/*</url-pattern>
   </filter-mapping>
   <!-- End Phan Loai Sach Filter  -->
-  <!-- End Danh Muc Filter  -->
-  <welcome-file-list>
-    <welcome-file>/views/trangchu.jsp</welcome-file>
-  </welcome-file-list>
+
+  <!-- Begin Don Hang Filter  -->
+  <filter-mapping>
+    <filter-name>Don-Hang-Filter</filter-name>
+    <url-pattern>/api/don-hang/*</url-pattern>
+  </filter-mapping>
+  <!-- End Don Hang Filter  -->
+
+  <!-- Begin Dong Don Hang Filter  -->
+  <filter-mapping>
+    <filter-name>Dong-Don-Hang-Filter</filter-name>
+    <url-pattern>/api/dong-don-hang/*</url-pattern>
+  </filter-mapping>
+  <!-- End Dong Don Hang Filter  -->
 </web-app>

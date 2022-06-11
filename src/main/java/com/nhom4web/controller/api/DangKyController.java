@@ -1,4 +1,4 @@
-package com.nhom4web.controller.view;
+package com.nhom4web.controller.api;
 
 import com.nhom4web.dao.impl.NguoiDungDAO;
 import com.nhom4web.dao.impl.ThongTinDangNhapDAO;

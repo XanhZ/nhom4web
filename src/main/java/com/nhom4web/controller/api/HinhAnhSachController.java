@@ -1,7 +1,9 @@
 package com.nhom4web.controller.api;
 
+import com.nhom4web.dao.IHinhAnhSachDAO;
 import com.nhom4web.dao.impl.HinhAnhSachDAO;
 import com.nhom4web.model.HinhAnhSach;
+import com.nhom4web.utils.HinhAnh;
 import com.nhom4web.utils.Json;
 
 import javax.servlet.ServletException;
@@ -42,12 +44,10 @@ public class HinhAnhSachController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         int maSach = Integer.parseInt(req.getParameter("maSach"));
-        List<HinhAnhSach> hinhAnhSachs = DAO.them(
-                maSach,
-                req.getParts().stream().filter(o -> o.getName().equals("anh")).collect(Collectors.toList()),
-                true
+        List<HinhAnhSach> hinhAnhSachs = HinhAnh.luuVaoCloud(
+                req.getParts().stream().filter(o -> o.getName().equals("anh")).collect(Collectors.toList())
         );
-        if (hinhAnhSachs != null) {
+        if (hinhAnhSachs != null && DAO.them(maSach, hinhAnhSachs, true)) {
             Json.chuyenThanhJson(resp, hinhAnhSachs);
             return;
         }

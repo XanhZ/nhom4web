@@ -18,9 +18,10 @@ public class DanhMucDAO extends AbstractDAO<DanhMuc> implements IDanhMucDAO {
     protected List<DanhMuc> sangThucThes(ResultSet rs) {
         List<DanhMuc> danhMucs = new ArrayList<>();
         try {
-            while (rs.next()) danhMucs.add(this.rsSangThucThe(rs));
+            while (rs.next()) danhMucs.add(IDanhMucDAO.rsSangThucThe(rs));
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
         return danhMucs;
     }
@@ -28,7 +29,7 @@ public class DanhMucDAO extends AbstractDAO<DanhMuc> implements IDanhMucDAO {
     @Override
     protected DanhMuc sangThucThe(ResultSet rs) {
         try {
-            if (rs.next()) return this.rsSangThucThe(rs);
+            if (rs.next()) return IDanhMucDAO.rsSangThucThe(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -53,5 +54,4 @@ public class DanhMucDAO extends AbstractDAO<DanhMuc> implements IDanhMucDAO {
             e.printStackTrace();
         }
     }
-
 }

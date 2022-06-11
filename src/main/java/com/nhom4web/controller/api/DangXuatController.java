@@ -1,8 +1,7 @@
-package com.nhom4web.controller.view;
+package com.nhom4web.controller.api;
 
 import com.nhom4web.utils.Json;
 
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -18,9 +17,6 @@ public class DangXuatController extends HttpServlet {
         HttpSession sessionDangNhap = req.getSession();
         sessionDangNhap.invalidate();
 
-        Json.chuyenThanhJson(resp, "Đăng xuất");
-
-        RequestDispatcher rd = req.getRequestDispatcher("views/dangnhap.jsp");
-        rd.forward(req, resp);
+        Json.chuyenThanhJson(resp, "Đăng xuất thành công");
     }
 }

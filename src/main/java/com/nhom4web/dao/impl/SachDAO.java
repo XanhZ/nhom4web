@@ -3,14 +3,10 @@ package com.nhom4web.dao.impl;
 import com.nhom4web.dao.ISachDAO;
 import com.nhom4web.model.Sach;
 
-import javax.servlet.http.Part;
 import java.sql.*;
 import java.util.*;
 
 public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
-    private static final PhanLoaiSachDAO PHAN_LOAI_SACH_DAO = new PhanLoaiSachDAO();
-    private static final HinhAnhSachDAO HINH_ANH_SACH_DAO = new HinhAnhSachDAO();
-
     public SachDAO() {
         super("sach");
     }
@@ -18,7 +14,7 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     @Override
     protected Sach sangThucThe(ResultSet rs) {
         try {
-            if (rs.next()) return this.rsSangThucThe(rs);
+            if (rs.next()) return ISachDAO.rsSangThucThe(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -29,7 +25,7 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     protected List<Sach> sangThucThes(ResultSet rs) {
         List<Sach> sachs = new ArrayList<>();
         try {
-            while (rs.next()) sachs.add(this.rsSangThucThe(rs));
+            while (rs.next()) sachs.add(ISachDAO.rsSangThucThe(rs));
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -61,7 +57,7 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     public List<Sach> layTatCa() {
         List<Sach> sachs = super.layTatCa();
         for (Sach sach : sachs) {
-            if (!HINH_ANH_SACH_DAO.timTatCa(sach)) return null;
+            if (!this.hinhAnhSachs(sach)) return null;
         }
         return sachs;
     }
@@ -70,18 +66,17 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     public Sach tim(int ma) {
         Sach sach = super.tim(ma);
         if (sach == null) return null;
-        return HINH_ANH_SACH_DAO.timTatCa(sach) ? sach : null;
+        return this.hinhAnhSachs(sach) ? sach : null;
     }
 
     @Override
-    public boolean them(Sach sach, List<Part> hinhAnhs, List<Integer> maDanhMucs) {
+    public boolean them(Sach sach, List<Integer> maDanhMucs) {
         try {
-            if (!super.them(sach, false) || !PHAN_LOAI_SACH_DAO.them(sach.getMa(), maDanhMucs, false)) {
-                throw new Exception();
-            }
-
-            sach.setHinhAnhSachs(HINH_ANH_SACH_DAO.them(sach.getMa(), hinhAnhs, false));
-            if (sach.getHinhAnhSachs() == null) throw new Exception();
+            if (
+                    !super.them(sach, false) ||
+                    !new PhanLoaiSachDAO().them(sach.getMa(), maDanhMucs, false) ||
+                    !new HinhAnhSachDAO().them(sach.getMa(), sach.getHinhAnhSachs(), false)
+            ) throw new Exception();
 
             ketNoi.commit();
             return true;
@@ -93,15 +88,13 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     }
 
     @Override
-    public boolean capNhat(Sach sach, List<Part> hinhAnhs, List<Integer> maDanhMucs) {
+    public boolean capNhat(Sach sach, List<Integer> maDanhMucs) {
         try {
-            if (!super.capNhat(sach, false) || !PHAN_LOAI_SACH_DAO.capNhat(sach.getMa(), maDanhMucs, false)) {
-                throw new Exception();
-            }
-            if (hinhAnhs != null && hinhAnhs.size() != 0) {
-                sach.setHinhAnhSachs(HINH_ANH_SACH_DAO.capNhat(sach.getMa(), hinhAnhs));
-            }
-            if (sach.getHinhAnhSachs() == null) throw new Exception();
+            if (
+                    !super.capNhat(sach, false) ||
+                    !new PhanLoaiSachDAO().capNhat(sach.getMa(), maDanhMucs, false) ||
+                    !new HinhAnhSachDAO().capNhat(sach.getMa(), sach.getHinhAnhSachs(), false)
+            ) throw new Exception();
 
             ketNoi.commit();
             return true;
@@ -139,7 +132,7 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
 
     @Override
     public boolean xoa(int ma, boolean commit) {
-        if (!HINH_ANH_SACH_DAO.xoaTrenCloud(ma)) return false;
+        if (!new HinhAnhSachDAO().xoaTrenCloud(ma)) return false;
         return super.xoa(ma, commit);
     }
 }

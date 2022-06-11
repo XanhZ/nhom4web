@@ -48,7 +48,7 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             );
             PreparedStatement ps = ketNoi.prepareStatement(sql);
 
-            this.setThamSoTruyVan(ps, duLieu.values());
+            AbstractDAO.setThamSoTruyVan(ps, duLieu.values());
             ps.executeUpdate();
 
             if (luu) ketNoi.commit();
@@ -65,20 +65,20 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     /**
      * Lấy tất cả các bản ghi trong cơ sở dữ liệu
      *
-     * @return Danh sách các thực thể
+     * @return Danh sách các thực thể nếu thành công, ngược lại trả về null
      */
     @Override
     public List<T> layTatCa() {
-        List<T> list = new ArrayList<>();
         try {
             String sql = String.format("SELECT * FROM %s", this.tenBang);
             PreparedStatement ps = ketNoi.prepareStatement(sql);
-            list.addAll(this.sangThucThes(ps.executeQuery()));
+            List<T> list = this.sangThucThes(ps.executeQuery());
             ps.close();
+            return list;
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return list;
+        return null;
     }
 
     /**
@@ -91,9 +91,8 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     public T tim(int ma) {
         T t = null;
         try {
-            String sql = String.format("SELECT * FROM %s WHERE ma = ?", this.tenBang);
+            String sql = String.format("SELECT * FROM %s WHERE ma = %d", this.tenBang, ma);
             PreparedStatement ps = ketNoi.prepareStatement(sql);
-            this.setThamSoTruyVan(ps, ma);
             t = this.sangThucThe(ps.executeQuery());
             ps.close();
         } catch (SQLException e) {
@@ -109,7 +108,7 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      * @param index  chỉ số cần chèn
      * @param thamSo dữ liệu cần chèn
      */
-    protected final void setThamSoTai(PreparedStatement ps, int index, Object thamSo) {
+    public static void setThamSoTai(PreparedStatement ps, int index, Object thamSo) {
         try {
             if (thamSo instanceof Integer) {
                 ps.setInt(index, (Integer) thamSo);
@@ -133,10 +132,10 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      * @param ps             đối tượng PreparedStatement cần chèn tham số
      * @param thamSoTruyVans các tham số dưới dạng args
      */
-    protected final void setThamSoTruyVan(PreparedStatement ps, Object... thamSoTruyVans) {
+    public static void setThamSoTruyVan(PreparedStatement ps, Object... thamSoTruyVans) {
         int i = 0;
         for (Object thamSo : thamSoTruyVans) {
-            this.setThamSoTai(ps, ++i, thamSo);
+            AbstractDAO.setThamSoTai(ps, ++i, thamSo);
         }
     }
 
@@ -146,10 +145,10 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      * @param ps             đối tượng PreparedStatement cần chèn tham số
      * @param thamSoTruyVans các tham số chứa trong Collection
      */
-    protected final void setThamSoTruyVan(PreparedStatement ps, Collection<?> thamSoTruyVans) {
+    public static void setThamSoTruyVan(PreparedStatement ps, Collection<?> thamSoTruyVans) {
         int i = 0;
         for (Object thamSo : thamSoTruyVans) {
-            this.setThamSoTai(ps, ++i, thamSo);
+            AbstractDAO.setThamSoTai(ps, ++i, thamSo);
         }
     }
 
@@ -198,7 +197,7 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             );
             PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
-            this.setThamSoTruyVan(ps, duLieu.values());
+            AbstractDAO.setThamSoTruyVan(ps, duLieu.values());
             ps.executeUpdate();
             this.setKhoaChinh(t, ps.getGeneratedKeys());
 
@@ -233,7 +232,7 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
                 );
                 ketNoi.setAutoCommit(false);
                 PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                this.setThamSoTruyVan(ps, duLieu.values());
+                AbstractDAO.setThamSoTruyVan(ps, duLieu.values());
                 ps.executeUpdate();
                 ResultSet rs = ps.getGeneratedKeys();
                 if (rs.next()) {
@@ -266,7 +265,7 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             String sql = String.format("DELETE FROM %s WHERE ma = ?", this.tenBang);
             PreparedStatement ps = ketNoi.prepareStatement(sql);
 
-            this.setThamSoTruyVan(ps, ma);
+            AbstractDAO.setThamSoTruyVan(ps, ma);
             ps.executeUpdate();
 
             if (luu) ketNoi.commit();

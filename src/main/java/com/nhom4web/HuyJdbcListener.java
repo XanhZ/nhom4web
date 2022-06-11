@@ -9,17 +9,9 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Enumeration;
 
-public class WebAppContextListener implements ServletContextListener {
-    @Override
-    public void contextInitialized(ServletContextEvent servletContextEvent) {
-        System.out.println("************** Khoi tao WebAppContextListener **************");
-    }
-
+public class HuyJdbcListener implements ServletContextListener {
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        System.out.println("************** Dong WebAppContextListener **************");
-        System.out.println("Huy Context...");
-        System.out.println("MySQL AbandonedConnectionCleanupThread checkedShutdown...");
         AbandonedConnectionCleanupThread.checkedShutdown();
 
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
@@ -30,14 +22,14 @@ public class WebAppContextListener implements ServletContextListener {
 
             if (driver.getClass().getClassLoader() == cl) {
                 try {
-                    System.out.println("Huy dang ky JDBC driver");
+                    System.out.println("************* Huy dang ky JDBC driver *************");
                     DriverManager.deregisterDriver(driver);
                 } catch (SQLException e) {
-                    System.out.println("Loi huy dang ky JDBC driver");
+                    System.out.println("************* Loi huy dang ky JDBC driver *************");
                     e.printStackTrace();
                 }
             } else {
-                System.out.println("Khong the huy JDBC driver vi khong co trong webapp's ClassLoader");
+                System.out.println("************* Khong the huy JDBC driver vi khong co trong webapp's ClassLoader *************");
             }
         }
     }

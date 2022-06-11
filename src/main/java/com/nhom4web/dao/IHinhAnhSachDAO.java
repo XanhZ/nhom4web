@@ -1,27 +1,31 @@
 package com.nhom4web.dao;
 
 import com.nhom4web.model.HinhAnhSach;
-import com.nhom4web.model.Sach;
 
-import javax.servlet.http.Part;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public interface IHinhAnhSachDAO {
-    List<HinhAnhSach> them(int maSach, List<Part> hinhAnhs, boolean luu);
-
-    List<HinhAnhSach> capNhat(int maSach, List<Part> hinhAnhs);
-
-    boolean timTatCa(Sach sach);
-
-    List<HinhAnhSach> timTatCa(int maSach);
-
-    default HinhAnhSach rsSangThucThe(ResultSet rs) throws SQLException {
+    static HinhAnhSach rsSangThucThe(ResultSet rs) throws SQLException {
+        ResultSetMetaData rsmd = rs.getMetaData();
+        Set<String> truongs = new HashSet<>();
+        for (int i = 1; i <= rsmd.getColumnCount(); ++i) {
+            truongs.add(rsmd.getColumnName(i));
+        }
         HinhAnhSach hinhAnhSach = new HinhAnhSach();
-        hinhAnhSach.setMa(rs.getInt("ma"));
-        hinhAnhSach.setDuongDan(rs.getString("duongDan"));
-        hinhAnhSach.setPublicId(rs.getString("publicId"));
+        if (truongs.contains("ma")) hinhAnhSach.setMa(rs.getInt("ma"));
+        if (truongs.contains("duongDan")) hinhAnhSach.setDuongDan(rs.getString("duongDan"));
+        if (truongs.contains("publicId")) hinhAnhSach.setPublicId(rs.getString("publicId"));
         return hinhAnhSach;
     }
+
+    boolean them(int maSach, List<HinhAnhSach> hinhAnhSachs, boolean luu);
+
+    boolean capNhat(int maSach, List<HinhAnhSach> hinhAnhSachs, boolean luu);
+
+    List<HinhAnhSach> timTatCa(int maSach);
 }

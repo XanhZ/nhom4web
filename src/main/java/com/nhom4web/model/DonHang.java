@@ -7,22 +7,32 @@ import java.util.List;
 
 public class DonHang {
     @Expose
+    private int ma;
+    @Expose
     private String diaChi;
     @Expose
-    private List<DongDonHang> dongDonHangs;
-    @Expose
-    private int ma;
-    private NguoiDung nguoiDung;
-    @Expose
     private String trangThai;
-    @Expose
     private int tongTien;
     @Expose
     private Timestamp thoiGianTao;
     @Expose
     private Timestamp thoiGianCapNhat;
+    @Expose
+    private NguoiDung nguoiDung;
+    @Expose
+    private List<DongDonHang> dongDonHangs;
 
-    public DonHang() {}
+    public DonHang() {
+    }
+
+    public DonHang(String diaChi, List<DongDonHang> dongDonHangs, NguoiDung nguoiDung, String trangThai, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
+        this.diaChi = diaChi;
+        this.dongDonHangs = dongDonHangs;
+        this.nguoiDung = nguoiDung;
+        this.trangThai = trangThai;
+        this.thoiGianTao = thoiGianTao;
+        this.thoiGianCapNhat = thoiGianCapNhat;
+    }
 
     public int getMa() {
         return ma;

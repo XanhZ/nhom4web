@@ -41,9 +41,6 @@ public abstract class AbstractFilter implements Filter {
     public final Map<String, String> e = new HashMap<>();
 
     @Override
-    public void destroy() {}
-
-    @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
         // Kiểm tra hợp lệ
         boolean hopLe = true;
@@ -87,9 +84,8 @@ public abstract class AbstractFilter implements Filter {
      */
     public Map<String, String> getLoi(HttpServletRequest req) {
         Map<String, String> loi = new HashMap<>();
-        Map<String, String[]> paraMap = req.getParameterMap();
         this.luat.forEach((truong, luatStr) -> {
-            String[] duLieus = paraMap.get(truong);
+            String[] duLieus = req.getParameterValues(truong);
             String[] luats = luatStr.split("/");
             for (String luat : luats) {
                 if (!isHopLe(duLieus, luat)) {
@@ -108,7 +104,7 @@ public abstract class AbstractFilter implements Filter {
      */
     public String kiemTraFiles(Collection<Part> files) {
         for (Part file : files) {
-            String tenFile = this.layTenFile(file);
+            String tenFile = file.getSubmittedFileName();
             if (!Pattern.matches(REGEX_HINH_ANH, tenFile)) return "Hình ảnh không đúng định dạng";
         }
         return null;
@@ -121,21 +117,7 @@ public abstract class AbstractFilter implements Filter {
      */
     public String kiemTraFile(Part file) {
         if (file == null) return "Không được để trống ảnh";
-        if (!Pattern.matches(REGEX_HINH_ANH, this.layTenFile(file))) return "Hình ảnh không đúng định dạng";
-        return null;
-    }
-
-    /**
-     * Lấy tên file từ Content-Disposition
-     * @param file Part được gửi tới từ request
-     * @return tên file
-     */
-    private String layTenFile(Part file) {
-        Matcher matcher = Pattern.compile("filename=\".*\"").matcher(file.getHeader("content-disposition"));
-        if (matcher.find()) {
-            String tmp = matcher.group();
-            return tmp.substring(10, tmp.length() - 1);
-        }
+        if (!Pattern.matches(REGEX_HINH_ANH, file.getSubmittedFileName())) return "Hình ảnh không đúng định dạng";
         return null;
     }
 
@@ -170,9 +152,6 @@ public abstract class AbstractFilter implements Filter {
         }
         return true;
     }
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {}
 
     protected boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String duongDan = req.getPathInfo();
