@@ -11,6 +11,11 @@ import java.util.Enumeration;
 
 public class HuyJdbcListener implements ServletContextListener {
     @Override
+    public void contextInitialized(ServletContextEvent sce) {
+        System.out.println("************* Khoi tao Context Listner *************");
+    }
+
+    @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
         AbandonedConnectionCleanupThread.checkedShutdown();
 

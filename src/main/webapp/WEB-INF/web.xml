@@ -79,6 +79,13 @@
 
   <!-- Begin Don Hang Filter  -->
   <filter-mapping>
+    <filter-name>Gio-Hang-Filter</filter-name>
+    <url-pattern>/api/gio-hang/*</url-pattern>
+  </filter-mapping>
+  <!-- End Don Hang Filter  -->
+
+  <!-- Begin Don Hang Filter  -->
+  <filter-mapping>
     <filter-name>Don-Hang-Filter</filter-name>
     <url-pattern>/api/don-hang/*</url-pattern>
   </filter-mapping>

@@ -2,7 +2,6 @@ package com.nhom4web.dao.impl;
 
 import com.nhom4web.dao.IHinhAnhSachDAO;
 import com.nhom4web.model.HinhAnhSach;
-import com.nhom4web.model.Sach;
 import com.nhom4web.utils.HinhAnh;
 
 import java.sql.PreparedStatement;
@@ -10,7 +9,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnhSachDAO {
     public HinhAnhSachDAO() {
@@ -108,11 +106,12 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
             ps2.executeUpdate();
             ps2.close();
 
-            if (!HinhAnh.xoaTrenCloud(publicIds)) throw new Exception("Khong the xoa tren cloud");
-
-            return this.them(maSach, hinhAnhSachs, luu);
+            if (this.them(maSach, hinhAnhSachs, luu) && HinhAnh.xoaTrenCloud(publicIds)) {
+                if (luu) ketNoi.commit();
+            }
         } catch (Exception e) {
             e.printStackTrace();
+            if (luu) this.rollback();
         }
         return false;
     }
