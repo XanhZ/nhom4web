@@ -153,7 +153,9 @@ form {
     cursor: pointer;
     transition: 0.5s;
 }
-
+.saiThongTinDangNhap{
+    color:red;
+}
 .btn:hover {
     background-color: #4084eb;
 }
