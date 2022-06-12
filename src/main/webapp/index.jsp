@@ -1,2 +1,2 @@
 <%@ include file="/common/taglib.jsp" %>
-hello nhom 4 web
+<%@ include file="/views/trangchu.jsp" %>

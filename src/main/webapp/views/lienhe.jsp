@@ -19,13 +19,13 @@
 <header>
     <div class="dongGoi">
         <div class="logo">
-            <a href="trangchu.html">BookShop</a>
+            <a href="/trang-chu">BookShop</a>
         </div>
         <div class="timKiem">
             <input type="text" name="q" id="q" placeholder="Tìm kiếm...">
         </div>
         <nav class="dieuHuong">
-            <a href="trangchu.html" class="dieuHuong__duongDan">Trang chủ</a>
+            <a href="/trang-chu" class="dieuHuong__duongDan">Trang chủ</a>
             <div class="dieuHuong__danhMuc">
                 <div class="btn-danhMuc">Tủ sách</div>
                 <ul class="danhMuc">
@@ -36,10 +36,10 @@
                     <li><a href="#">Sách kỹ năng</a></li>
                 </ul>
             </div>
-            <a href="gioithieu.html" class="dieuHuong__duongDan">Giới thiệu</a>
-            <a href="lienhe.html" class="dieuHuong__duongDan">Liên hệ</a>
-            <a href="dangnhap.html" class="dieuHuong__duongDan">Đăng nhập</a>
-            <a href="dangky.html" class="dieuHuong__duongDan">Đăng ký</a>
+            <a href="/gioi-thieu" class="dieuHuong__duongDan">Giới thiệu</a>
+            <a href="/lien-he" class="dieuHuong__duongDan">Liên hệ</a>
+            <a href="/dang-nhap" class="dieuHuong__duongDan">Đăng nhập</a>
+            <a href="/dang-ky" class="dieuHuong__duongDan">Đăng ký</a>
         </nav>
     </div>
 </header>

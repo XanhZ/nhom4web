@@ -11,37 +11,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.0/css/all.min.css">
     <link rel="stylesheet" href="${pageContext.request.contextPath}/css/sign.css">
     <title>Đăng nhập</title>
-    <link rel="icon" href="${pageContext.request.contextPath}/logo/logo.png" sizes="32x32">
+    <link rel="icon" href="${pageContext.request.contextPath}/img/logo.png" sizes="32x32">
 </head>
 
 <body>
-<!-- <header>
-    <div class="dongGoi">
-        <div class="logo">
-            <a href="trangchu.html">BookShop</a>
-        </div>
-        <div class="timKiem">
-            <input type="text" name="q" id="q" placeholder="Tìm kiếm...">
-        </div>
-        <nav class="dieuHuong">
-            <a href="trangchu.html" class="dieuHuong__duongDan">Trang chủ</a>
-            <div class="dieuHuong__danhMuc">
-                <div class="btn-danhMuc">Tủ sách</div>
-                <ul class="danhMuc">
-                    <li><a href="#">Sách hướng nghiệp</a></li>
-                    <li><a href="#">Sách IT</a></li>
-                    <li><a href="#">Sách văn học</a></li>
-                    <li><a href="#">Sách toán học</a></li>
-                    <li><a href="#">Sách kỹ năng</a></li>
-                </ul>
-            </div>
-            <a href="gioithieu.html" class="dieuHuong__duongDan">Giới thiệu</a>
-            <a href="lienhe.html" class="dieuHuong__duongDan">Liên hệ</a>
-            <a href="dangnhap.html" class="dieuHuong__duongDan">Đăng nhập</a>
-            <a href="dangky.html" class="dieuHuong__duongDan">Đăng ký</a>
-        </nav>
-    </div>
-</header> -->
 <div class="thungDung">
     <div class="thungDungBieuMau">
         <div class="hinh-anh">
@@ -49,7 +22,7 @@
         </div>
         <form action="#" class="bieuMauDangKi">
             <div class="veTrangChu">
-                <a href="#">
+                <a href="/trang-chu">
                     <img src="${pageContext.request.contextPath}/img/logo.png" alt="logo">
                 </a>
             </div>
