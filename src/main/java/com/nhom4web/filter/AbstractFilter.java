@@ -41,14 +41,10 @@ public abstract class AbstractFilter implements Filter {
     public final Map<String, String> e = new HashMap<>();
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
-    }
+    public void init(FilterConfig filterConfig) throws ServletException {}
 
     @Override
-    public void destroy() {
-        Filter.super.destroy();
-    }
+    public void destroy() {}
 
     @Override
     public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
