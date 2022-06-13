@@ -1,10 +1,12 @@
 # Yêu cầu
 1. Tomcat 9.0.63+
 2. JDK 15+
-#Cài đặt cơ sở dữ liệu</h1>
+
+# Cài đặt cơ sở dữ liệu</h1>
 1. Vào src/main/java/com/nhom4web/dao/impl/AbstractDAO.java thay đổi USERNAME, PASSWORD
 2. Vào sql/create_tables.sql copy và thực thi trên MySQL với tên DB: nhom4_web
-#API
+
+# API
 1. Danh mục
 - /api/danh-muc: POST, GET
 - /api/danh-muc/{id}: GET, PUT, DELETE
