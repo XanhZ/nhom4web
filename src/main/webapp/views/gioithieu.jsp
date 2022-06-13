@@ -1,5 +1,4 @@
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-
+<%@ include file="../common/taglib.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,7 +13,6 @@
 </head>
 <body>
 <%@ include file="header.jsp"%>
-
 <main class="phan-than">
     <div class="gioi-thieu-con">
         <div class="phan-dau-gioi-thieu">

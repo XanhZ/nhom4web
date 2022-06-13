@@ -7,10 +7,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Danh mục</title>
+    <title>Admin - Sách</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/category-admin.css">
     <link rel="icon" href="${pageContext.request.contextPath}/img/logo.png" sizes="32x32">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/book_admin.css">
 </head>
 <body>
 <div class="thungChua">
@@ -26,7 +26,7 @@
             </li>
 
             <li>
-                <a href="./khachHang_admin.html">
+                <a href="${pageContext.request.contextPath}/views/ad_khachhang.jsp">
                         <span class="bieuTuong">
                           <i class="fa-solid fa-users"></i>
                         </span>
@@ -34,8 +34,8 @@
                 </a>
             </li>
 
-            <li class="hoatDong">
-                <a href="#">
+            <li>
+                <a href="${pageContext.request.contextPath}/views/ad_danhmuc.jsp">
                         <span class="bieuTuong">
                           <i class="fa-solid fa-book-bookmark"></i>
                         </span>
@@ -43,8 +43,8 @@
                 </a>
             </li>
 
-            <li>
-                <a href="./book_admim.html">
+            <li class="hoatDong">
+                <a href="">
                         <span class="bieuTuong">
                           <i class="fa-solid fa-book"></i>
                         </span>
@@ -76,30 +76,33 @@
                 </label>
             </div>
         </div>
-
-
         <div class="noiDung">
             <div class="danhSach">
-                <form onsubmit="return themSach()" class="bangThemDanhMuc">
-                    <input type="text" placeholder="Tên danh mục">
-                    <input type="submit" value="Thêm danh mục" class="nutThemSach">
+                <form onsubmit="return themSach()" class="bangThemSach">
+                    <input type="text" placeholder="Tên sách">
+                    <input type="text" placeholder="Danh mục">
+                    <input type="text" placeholder="Giá">
+                    <input type="text" placeholder="Số lượng">
+                    <input type="text" placeholder="Đường dẫn ảnh">
+                    <input type="submit" value="Thêm sách" class="nutThemSach">
                 </form>
                 <table>
                     <thead>
                     <tr>
+                        <td>Tên</td>
                         <td>Danh mục</td>
-                        <td>Thời gian tạo</td>
-                        <td>Thời gian cập nhập</td>
-                        <td>Số loại sách</td>
+                        <td>Giá bán</td>
+                        <td>Số lượng</td>
                     </tr>
                     </thead>
 
                     <tbody>
                     <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
+                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
+                        <td>Sách hướng nghiệp</td>
+                        <td>100000</td>
                         <td>20</td>
+                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
                         <td>
                             <div class="chinhSua">
                                 <i class="fa-solid fa-pen nutSua"></i>
@@ -108,10 +111,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
+                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
+                        <td>Sách hướng nghiệp</td>
+                        <td>100000</td>
                         <td>20</td>
+                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
                         <td>
                             <div class="chinhSua">
                                 <i class="fa-solid fa-pen nutSua"></i>
@@ -120,10 +124,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
+                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
+                        <td>Sách hướng nghiệp</td>
+                        <td>100000</td>
                         <td>20</td>
+                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
                         <td>
                             <div class="chinhSua">
                                 <i class="fa-solid fa-pen nutSua"></i>
@@ -132,10 +137,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
+                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
+                        <td>Sách hướng nghiệp</td>
+                        <td>100000</td>
                         <td>20</td>
+                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
                         <td>
                             <div class="chinhSua">
                                 <i class="fa-solid fa-pen nutSua"></i>
@@ -144,10 +150,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
+                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
+                        <td>Sách hướng nghiệp</td>
+                        <td>100000</td>
                         <td>20</td>
+                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
                         <td>
                             <div class="chinhSua">
                                 <i class="fa-solid fa-pen nutSua"></i>
@@ -156,10 +163,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
+                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
+                        <td>Sách hướng nghiệp</td>
+                        <td>100000</td>
                         <td>20</td>
+                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
                         <td>
                             <div class="chinhSua">
                                 <i class="fa-solid fa-pen nutSua"></i>
@@ -168,10 +176,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
+                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
+                        <td>Sách hướng nghiệp</td>
+                        <td>100000</td>
                         <td>20</td>
+                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
                         <td>
                             <div class="chinhSua">
                                 <i class="fa-solid fa-pen nutSua"></i>
@@ -180,10 +189,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
+                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
+                        <td>Sách hướng nghiệp</td>
+                        <td>100000</td>
                         <td>20</td>
+                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
                         <td>
                             <div class="chinhSua">
                                 <i class="fa-solid fa-pen nutSua"></i>
@@ -192,10 +202,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
+                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
+                        <td>Sách hướng nghiệp</td>
+                        <td>100000</td>
                         <td>20</td>
+                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
                         <td>
                             <div class="chinhSua">
                                 <i class="fa-solid fa-pen nutSua"></i>
@@ -204,10 +215,11 @@
                         </td>
                     </tr>
                     <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
+                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
+                        <td>Sách hướng nghiệp</td>
+                        <td>100000</td>
                         <td>20</td>
+                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
                         <td>
                             <div class="chinhSua">
                                 <i class="fa-solid fa-pen nutSua"></i>
@@ -215,43 +227,6 @@
                             </div>
                         </td>
                     </tr>
-                    <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
-                        <td>20</td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
-                        <td>20</td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Sách Hướng nghiệp</td>
-                        <td>08:00:00 12/05/2022</td>
-                        <td>09:00:00 13/05/2022</td>
-                        <td>20</td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-
                     </tbody>
                 </table>
             </div>

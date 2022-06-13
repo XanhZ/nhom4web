@@ -17,7 +17,7 @@
     <div class="dieuHuong">
         <ul>
             <li>
-                <a href="#">
+                <a href="">
                         <span class="bieuTuong">
                           <i class="fa-solid fa-layer-group"></i>
                         </span>
@@ -26,7 +26,7 @@
             </li>
 
             <li class="hoatDong">
-                <a href="#">
+                <a href="">
                         <span class="bieuTuong">
                           <i class="fa-solid fa-users"></i>
                         </span>
@@ -35,7 +35,7 @@
             </li>
 
             <li>
-                <a href="./category-admin.html">
+                <a href="${pageContext.request.contextPath}/views/ad_danhmuc.jsp">
                         <span class="bieuTuong">
                           <i class="fa-solid fa-book-bookmark"></i>
                         </span>
@@ -44,7 +44,7 @@
             </li>
 
             <li>
-                <a href="./book_admim.html">
+                <a href="${pageContext.request.contextPath}/views/ad_sach.jsp">
                         <span class="bieuTuong">
                           <i class="fa-solid fa-book"></i>
                         </span>
@@ -366,6 +366,7 @@
         </div>
     </div>
 </div>
+<%--Modal--%>
 </body>
 <script src="${pageContext.request.contextPath}/js/admin.js"></script>
 

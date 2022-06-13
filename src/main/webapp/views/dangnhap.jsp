@@ -51,7 +51,6 @@
         thongBao.innerHTML = '';
         let tenDangNhap = document.querySelector('input[name="tenDangNhap"]').value;
         let matKhau = document.querySelector('input[name="matKhau"]').value;
-        console.log(tenDangNhap+" "+matKhau);
         if(tenDangNhap == '' || matKhau ==''){
             thongBao.innerHTML = '<p>Vui lòng nhập đầy đủ thông tin !</p>';
             setTimeout(()=>{
@@ -61,26 +60,22 @@
             const foo = new FormData();
             foo.append("tenDangNhap",tenDangNhap);
             foo.append("matKhau",matKhau);
-            console.log(foo);
             fetch('/api/dang-nhap', {
                 method: 'POST',
                 body: foo,
             })
-                .then(response => response.json())
-                .then(data => {
-                    console.log(data);
-                    if(data == 'Đăng nhập thành công'){
-                        location.assign('views/trangchu.jsp');
-                    }else{
-                        thongBao.innerHTML = '<p>Sai tài khoản, mật khẩu !</p>';
-                        setTimeout(()=>{
-                            thongBao.innerHTML = '';
-                        },3000);
+                .then(response => {
+                    if (response.status !== 200 && response.status !== 201) {
+                        throw response
                     }
+                    return response.json()
                 })
-                .catch((error) => {
-                    alert(error);
-                });
+                .then(data => {
+                    location.assign('/trang-chu');
+                })
+                .catch(async function(err) {
+                    thongBao.innerHTML = await err.json()
+                })
         }
     }
 </script>
