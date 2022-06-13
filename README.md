@@ -1,36 +1,32 @@
-<h1>Cài đặt cơ sở dữ liệu</h1>
-<p>Vào thư mục sql copy nội dung file create_tables.sql và thực thi trên Xampp</p>
-
-<h1>API</h1>
-<h3>Danh mục</h3>
-<ul>
-    <li>/api/danh-muc: POST, GET</li>
-    <li>/api/danh-muc/{id}: GET, PUT, DELETE</li>
-</ul>
-<h3>Đăng ký, đăng nhập</h3>
-<ul>
-    <li>/api/dang-ky: POST</li>
-    <li>/api/dang-nhap: POST</li>
-    <li>/api/dang-xuat: POST</li>
-</ul>
-
-<h1>Filter</h1>
-<ul>
-    <li>Tất cả các Filter phải extends từ AbstractFilter và ghi đè kiemTraDelete(), kiemTraGet(), kiemTraPost(), kiemTraGet()</li>
-    <li>Các Filter có thể xử lý lỗi dữ liệu nhờ lớp tương ứng từ utils/request</li>
-</ul>
-
-<h1>Request Validation Data</h1>
-<h4>Ví dụ: Gửi dữ liệu để tạo sách</h4>
-<p>Định nghĩa các luật của dữ liệu (Map)</p>
-<ul>
-    <li>tenSach: khong-bo-trong</li>
-    <li>giaTien: so-nguyen-duong</li>
-    <li>soLuongTrongKho: so-nguyen-duong</li>
-</ul>
-<p>Định nghĩa các message trả về tương ứng khi có lỗi (Map)</p>
-<ul>
-    <li>tenSach.khong-bo-trong: Không được bỏ trống</li>
-    <li>giaTien.so-nguyen-duong: Là số nguyên dương</li>
-    <li>soLuongTrongKho.so-nguyen-duong: Là số nguyên dương</li>
-</ul>
+# Yêu cầu
+1. Tomcat 9.0.63+
+2. JDK 15+
+#Cài đặt cơ sở dữ liệu</h1>
+1. Vào src/main/java/com/nhom4web/dao/impl/AbstractDAO.java thay đổi USERNAME, PASSWORD
+2. Vào sql/create_tables.sql copy và thực thi trên MySQL với tên DB: nhom4_web
+#API
+1. Danh mục
+- /api/danh-muc: POST, GET
+- /api/danh-muc/{id}: GET, PUT, DELETE
+----------------------------------------------
+2. Đăng ký, đăng nhập
+- /api/dang-ky: POST
+- /api/dang-nhap: POST
+- /api/dang-xuat: POST
+----------------------------------------------
+3. Sách
+- /api/sach: POST, GET
+- /api/sach/{id}: GET, PUT, DELETE
+----------------------------------------------
+4. Hình ảnh sách
+- /api/sach/{sach_id}/hinh-anh-sach: POST, GET
+- /api/sach/{sach_id}/hinh-anh-sach/{id}: GET, PUT, DELETE
+----------------------------------------------
+5. Phân loại sách
+- /api/sach/{sach_id}/phan-loai-sach: POST, GET
+- /api/sach/{sach_id}/phan-loai-sach/{id}: GET, PUT, DELETE
+----------------------------------------------
+6. Đơn hàng
+- /api/don-hang: POST
+- /api/don-hang?trangThai={trangThai}: GET
+- /api/don-hang/{id}: GET, PUT, DELETE
