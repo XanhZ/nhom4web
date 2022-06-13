@@ -18,14 +18,13 @@ public interface IHinhAnhSachDAO {
         }
         HinhAnhSach hinhAnhSach = new HinhAnhSach();
         if (truongs.contains("ma")) hinhAnhSach.setMa(rs.getInt("ma"));
+        if (truongs.contains("maSach")) hinhAnhSach.setMaSach(rs.getInt("maSach"));
         if (truongs.contains("duongDan")) hinhAnhSach.setDuongDan(rs.getString("duongDan"));
         if (truongs.contains("publicId")) hinhAnhSach.setPublicId(rs.getString("publicId"));
         return hinhAnhSach;
     }
 
-    boolean them(int maSach, List<HinhAnhSach> hinhAnhSachs, boolean luu);
-
-    boolean capNhat(int maSach, List<HinhAnhSach> hinhAnhSachs, boolean luu);
+    boolean xoaTheoMaSach(int maSach);
 
     List<HinhAnhSach> timTatCa(int maSach);
 }

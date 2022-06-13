@@ -63,6 +63,21 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     }
 
     /**
+     * Cập nhật một danh sách các đối tượng trong cơ sở dữ liệu
+     *
+     * @param list danh sách các đối tượng cần cập nhật
+     * @param luu  commit vào cơ sở dữ liệu (true|false)
+     * @return true nếu thành công, ngược lại trả về false
+     */
+    @Override
+    public boolean capNhat(List<T> list, boolean luu) {
+        for (T t : list) {
+            if (!this.capNhat(t, luu)) return false;
+        }
+        return true;
+    }
+
+    /**
      * Lấy tất cả các bản ghi trong cơ sở dữ liệu
      *
      * @return Danh sách các thực thể nếu thành công, ngược lại trả về null
@@ -187,13 +202,11 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
     public boolean them(T t, boolean luu) {
         try {
             LinkedHashMap<String, Object> duLieu = this.sangMap(t);
-            String[] temp = new String[duLieu.size()];
-            Arrays.fill(temp, "?");
             String sql = String.format(
                     "INSERT INTO %s (%s) VALUES (%s)",
                     this.tenBang,
                     String.join(", ", duLieu.keySet()),
-                    String.join(", ", temp)
+                    String.join(", ", Collections.nCopies(duLieu.size(), "?"))
             );
             PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
 
@@ -205,7 +218,49 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
             ps.close();
 
             return true;
-        } catch (SQLException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (luu) this.rollback();
+        }
+        return false;
+    }
+
+    /**
+     * Thêm nhiều hàng vào cơ sở dữ liệu
+     *
+     * @param list danh sách đối tượng cần thêm vào cơ sở dữ liệu
+     * @param luu commit vào cơ sở dữ liệu (true|false)
+     * @return true nếu thành công, ngược lại trả về false
+     */
+    @Override
+    public boolean them(List<T> list, boolean luu) {
+        try {
+            LinkedHashMap<String, Object> duLieu = this.sangMap(list.get(0));
+            String temp = String.join(", ", Collections.nCopies(duLieu.size(), "?"));
+            String sql = String.format(
+                    "INSERT INTO %s (%s) VALUES %s",
+                    this.tenBang,
+                    String.join(", ", duLieu.keySet()),
+                    String.join(", ", Collections.nCopies(list.size(), "(" + temp + ")"))
+            );
+            PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
+            int i = 0;
+            for (T t: list) {
+                for (Object o : this.sangMap(t).values()) {
+                    AbstractDAO.setThamSoTai(ps, ++i, o);
+                }
+            }
+
+            ps.executeUpdate();
+            ResultSet rs = ps.getGeneratedKeys();
+            for (T t : list) this.setKhoaChinh(t, rs);
+
+            if (luu) ketNoi.commit();
+            ps.close();
+
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
             if (luu) this.rollback();
         }
@@ -309,5 +364,9 @@ public abstract class AbstractDAO<T> implements IDAO<T> {
      * @param t  đối tượng cần thiết lập khóa chính
      * @param rs khóa chính được trả về trong ResultSet
      */
-    protected abstract void setKhoaChinh(T t, ResultSet rs);
+    protected void setKhoaChinh(T t, ResultSet rs) throws Exception {
+        if (rs.next()) {
+            t.getClass().getMethod("setMa", Integer.class).invoke(t, rs.getInt(1));
+        }
+    }
 }

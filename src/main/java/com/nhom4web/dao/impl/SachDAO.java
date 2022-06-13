@@ -1,12 +1,16 @@
 package com.nhom4web.dao.impl;
 
 import com.nhom4web.dao.ISachDAO;
+import com.nhom4web.model.HinhAnhSach;
+import com.nhom4web.model.PhanLoaiSach;
 import com.nhom4web.model.Sach;
 
 import java.sql.*;
 import java.util.*;
 
 public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
+    private static final PhanLoaiSachDAO PHAN_LOAI_SACH_DAO = new PhanLoaiSachDAO();
+    private static final HinhAnhSachDAO HINH_ANH_SACH_DAO = new HinhAnhSachDAO();
     public SachDAO() {
         super("sach");
     }
@@ -45,15 +49,6 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     }
 
     @Override
-    protected void setKhoaChinh(Sach sach, ResultSet rs) {
-        try {
-            if (rs.next()) sach.setMa(rs.getInt(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public List<Sach> layTatCa() {
         List<Sach> sachs = super.layTatCa();
         for (Sach sach : sachs) {
@@ -70,39 +65,27 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     }
 
     @Override
-    public boolean them(Sach sach, List<Integer> maDanhMucs) {
+    public boolean them(Sach sach, boolean luu) {
         try {
-            if (
-                    !super.them(sach, false) ||
-                    !new PhanLoaiSachDAO().them(sach.getMa(), maDanhMucs, false) ||
-                    !new HinhAnhSachDAO().them(sach.getMa(), sach.getHinhAnhSachs(), false)
+            if (!super.them(sach, false)) throw new Exception();
+
+            for (HinhAnhSach hinhAnhSach : sach.getHinhAnhSachs()) {
+                hinhAnhSach.setMaSach(sach.getMa());
+            }
+            for (PhanLoaiSach phanLoaiSach : sach.getPhanLoaiSachs()) {
+                phanLoaiSach.setMaSach(sach.getMa());
+            }
+
+            if (!PHAN_LOAI_SACH_DAO.them(sach.getPhanLoaiSachs(), false) ||
+                    !HINH_ANH_SACH_DAO.them(sach.getHinhAnhSachs(), false)
             ) throw new Exception();
 
-            ketNoi.commit();
+            if (luu) ketNoi.commit();
             return true;
         } catch (Exception e) {
             e.printStackTrace();
-            this.rollback();
+            if (luu) this.rollback();
         }
-        return false;
-    }
-
-    @Override
-    public boolean capNhat(Sach sach, List<Integer> maDanhMucs) {
-        try {
-            if (
-                    !super.capNhat(sach, false) ||
-                    !new PhanLoaiSachDAO().capNhat(sach.getMa(), maDanhMucs, false) ||
-                    !new HinhAnhSachDAO().capNhat(sach.getMa(), sach.getHinhAnhSachs(), false)
-            ) throw new Exception();
-
-            ketNoi.commit();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.rollback();
-        }
-
         return false;
     }
 
@@ -128,6 +111,25 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
             e.printStackTrace();
         }*/
         return null;
+    }
+
+    @Override
+    public boolean capNhatToanBo(Sach sach, boolean luu) {
+        try {
+            if (
+                    !super.capNhat(sach, false) ||
+                            !PHAN_LOAI_SACH_DAO.xoaTheoMaSach(sach.getMa()) ||
+                            !PHAN_LOAI_SACH_DAO.them(sach.getPhanLoaiSachs(), false) ||
+                            !HINH_ANH_SACH_DAO.xoaTheoMaSach(sach.getMa()) ||
+                            !HINH_ANH_SACH_DAO.them(sach.getHinhAnhSachs(), false)
+            ) throw new Exception();
+            if (luu) ketNoi.commit();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (luu) this.rollback();
+        }
+        return false;
     }
 
     @Override

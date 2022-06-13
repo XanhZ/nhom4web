@@ -45,13 +45,4 @@ public class DanhMucDAO extends AbstractDAO<DanhMuc> implements IDanhMucDAO {
         if (danhMuc.getThoiGianCapNhat() != null) duLieu.put("thoiGianCapNhat", danhMuc.getThoiGianCapNhat());
         return duLieu;
     }
-
-    @Override
-    protected void setKhoaChinh(DanhMuc danhMuc, ResultSet rs) {
-        try {
-            if (rs.next()) danhMuc.setMa(rs.getInt(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 }

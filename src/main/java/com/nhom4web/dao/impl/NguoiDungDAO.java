@@ -5,7 +5,6 @@ import com.nhom4web.model.NguoiDung;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -19,18 +18,10 @@ public class NguoiDungDAO extends AbstractDAO<NguoiDung> implements INguoiDungDA
     protected List<NguoiDung> sangThucThes(ResultSet rs) {
         List<NguoiDung> nguoiDungs = new ArrayList<>();
         try {
-            while (rs.next()) {
-                int ma = rs.getInt(1);
-                String sdt = rs.getString(2);
-                String email = rs.getString(3);
-                String ten = rs.getString(4);
-                int loaiNguoiDung = rs.getInt(5);
-                Timestamp thoiGianTao = rs.getTimestamp(6);
-                Timestamp thoiGianCapNhat = rs.getTimestamp(7);
-                nguoiDungs.add(new NguoiDung(ma, sdt, email, ten, loaiNguoiDung));
-            }
+            while (rs.next()) nguoiDungs.add(INguoiDungDAO.rsSangThucThe(rs));
         } catch (SQLException e) {
             e.printStackTrace();
+            return null;
         }
         return nguoiDungs;
     }
@@ -38,16 +29,7 @@ public class NguoiDungDAO extends AbstractDAO<NguoiDung> implements INguoiDungDA
     @Override
     protected NguoiDung sangThucThe(ResultSet rs) {
         try {
-            if (rs.next()) {
-                int ma = rs.getInt(1);
-                String sdt = rs.getString(2);
-                String email = rs.getString(3);
-                String ten = rs.getString(4);
-                int loaiNguoiDung = rs.getInt(5);
-                Timestamp thoiGianTao = rs.getTimestamp(6);
-                Timestamp thoiGianCapNhat = rs.getTimestamp(7);
-                return new NguoiDung(ma, sdt, email, ten, loaiNguoiDung);
-            }
+            if (rs.next()) return INguoiDungDAO.rsSangThucThe(rs);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -65,14 +47,5 @@ public class NguoiDungDAO extends AbstractDAO<NguoiDung> implements INguoiDungDA
         if (nguoiDung.getThoiGianTao() != null) duLieu.put("thoiGianTao", nguoiDung.getThoiGianTao());
         if (nguoiDung.getThoiGianCapNhat() != null) duLieu.put("thoiGianCapNhat", nguoiDung.getThoiGianCapNhat());
         return duLieu;
-    }
-
-    @Override
-    protected void setKhoaChinh(NguoiDung nguoiDung, ResultSet rs) {
-        try {
-            if (rs.next()) nguoiDung.setMa(rs.getInt(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 }

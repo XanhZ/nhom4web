@@ -48,6 +48,7 @@ public class DanhMucController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         DanhMuc danhMuc = new DanhMuc(
                 req.getParameter("tenDanhMuc"),
                 new Timestamp(System.currentTimeMillis()),
@@ -56,26 +57,25 @@ public class DanhMucController extends HttpServlet {
         if (DAO.them(danhMuc, true)) {
             resp.setStatus(HttpServletResponse.SC_CREATED);
             Json.chuyenThanhJson(resp, danhMuc);
+            return;
         }
-        else {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-        }
+        resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.setCharacterEncoding("UTF-8");
         DanhMuc danhMuc = DAO.tim((Integer) req.getAttribute("ma"));
         if (danhMuc == null) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-        danhMuc.setTen(req.getParameter("ten").trim());
+        danhMuc.setTen(req.getParameter("tenDanhMuc").trim());
         danhMuc.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
         if (DAO.capNhat(danhMuc, true)) {
             Json.chuyenThanhJson(resp, danhMuc);
+            return;
         }
-        else {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-        }
+        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 }

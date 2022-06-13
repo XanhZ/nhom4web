@@ -27,6 +27,7 @@ public interface IDonHangDAO {
         }
         DonHang donHang = new DonHang();
         if (truongs.contains("ma")) donHang.setMa(rs.getInt("ma"));
+        if (truongs.contains("maNguoiDung")) donHang.setMaNguoiDung(rs.getInt("maNguoiDung"));
         if (truongs.contains("diaChi")) donHang.setDiaChi(rs.getString("diaChi"));
         if (truongs.contains("trangThai")) donHang.setTrangThai(rs.getString("trangThai"));
         if (truongs.contains("thoiGianTao")) donHang.setThoiGianTao(rs.getTimestamp("thoiGianTao"));

@@ -6,30 +6,24 @@ import java.sql.Timestamp;
 import java.util.List;
 
 public class DonHang {
-    @Expose
-    private int ma;
-    @Expose
-    private String diaChi;
-    @Expose
-    private String trangThai;
-    private int tongTien;
-    @Expose
-    private Timestamp thoiGianTao;
-    @Expose
-    private Timestamp thoiGianCapNhat;
-    @Expose
-    private NguoiDung nguoiDung;
-    @Expose
-    private List<DongDonHang> dongDonHangs;
+    @Expose private int ma;
+    @Expose private String diaChi;
+    @Expose private String trangThai;
+            private int tongTien;
+            private int maNguoiDung;
+    @Expose private Timestamp thoiGianTao;
+    @Expose private Timestamp thoiGianCapNhat;
+    @Expose private NguoiDung nguoiDung;
+    @Expose private List<DongDonHang> dongDonHangs;
 
     public DonHang() {
     }
 
-    public DonHang(String diaChi, List<DongDonHang> dongDonHangs, NguoiDung nguoiDung, String trangThai, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
+    public DonHang(String diaChi, List<DongDonHang> dongDonHangs, NguoiDung nguoiDung, Timestamp thoiGianTao, Timestamp thoiGianCapNhat) {
+        this.maNguoiDung = nguoiDung.getMa();
         this.diaChi = diaChi;
         this.dongDonHangs = dongDonHangs;
         this.nguoiDung = nguoiDung;
-        this.trangThai = trangThai;
         this.thoiGianTao = thoiGianTao;
         this.thoiGianCapNhat = thoiGianCapNhat;
     }
@@ -38,7 +32,7 @@ public class DonHang {
         return ma;
     }
 
-    public void setMa(int ma) {
+    public void setMa(Integer ma) {
         this.ma = ma;
     }
 
@@ -64,6 +58,14 @@ public class DonHang {
 
     public void setTongTien(int tongTien) {
         this.tongTien = tongTien;
+    }
+
+    public int getMaNguoiDung() {
+        return maNguoiDung;
+    }
+
+    public void setMaNguoiDung(int maNguoiDung) {
+        this.maNguoiDung = maNguoiDung;
     }
 
     public Timestamp getThoiGianTao() {

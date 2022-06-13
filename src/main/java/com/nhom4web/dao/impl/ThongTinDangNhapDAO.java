@@ -54,15 +54,6 @@ public class ThongTinDangNhapDAO extends AbstractDAO<ThongTinDangNhap> implement
     }
 
     @Override
-    protected void setKhoaChinh(ThongTinDangNhap thongTinDangNhap, ResultSet rs) {
-        try {
-            if (rs.next()) thongTinDangNhap.setMa(rs.getInt(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
     public ThongTinDangNhap layThongTinDangNhap(int maNguoiDung) {
         return null;
     }

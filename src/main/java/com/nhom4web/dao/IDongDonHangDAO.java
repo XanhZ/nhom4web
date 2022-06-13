@@ -13,8 +13,6 @@ import java.util.Set;
 import static com.nhom4web.dao.impl.AbstractDAO.ketNoi;
 
 public interface IDongDonHangDAO {
-    boolean them(int maDonHang, List<DongDonHang> dongDonHangs, boolean luu);
-
     boolean them(int maDonHang, DongDonHang dongDonHang, boolean luu);
 
     List<DongDonHang> timTatCa(int maDonHang);
@@ -27,6 +25,8 @@ public interface IDongDonHangDAO {
         }
         DongDonHang dongDonHang = new DongDonHang();
         if (truongs.contains("ma")) dongDonHang.setMa(rs.getInt("ma"));
+        if (truongs.contains("maDonHang")) dongDonHang.setMaDonHang(rs.getInt("maDonHang"));
+        if (truongs.contains("maSach")) dongDonHang.setMaSach(rs.getInt("maSach"));
         if (truongs.contains("donGia")) dongDonHang.setDonGia(rs.getInt("donGia"));
         if (truongs.contains("soLuong")) dongDonHang.setSoLuong(rs.getInt("soLuong"));
         return dongDonHang;
@@ -35,17 +35,12 @@ public interface IDongDonHangDAO {
     default boolean sach(DongDonHang dongDonHang) {
         try {
             String sql = String.format(
-                    "SELECT ma, tenSach, thoiGianTao, thoiGianCapNhat FROM sach, dongDonHang " +
+                    "SELECT sach.* FROM sach, dongDonHang " +
                             "WHERE sach.ma = dongDonHang.maSach AND dongDonHang.ma = %d",
                     dongDonHang.getMa());
             ResultSet rs = ketNoi.prepareStatement(sql).executeQuery();
             if (rs.next()) {
-                Sach sach = new Sach();
-                sach.setMa(rs.getInt("ma"));
-                sach.setTen(rs.getString("tenSach"));
-                sach.setThoiGianTao(rs.getTimestamp("thoiGianTao"));
-                sach.setThoiGianCapNhat(rs.getTimestamp("thoiGianCapNhat"));
-                dongDonHang.setSach(sach);
+                dongDonHang.setSach(ISachDAO.rsSangThucThe(rs));
                 return true;
             }
         } catch (SQLException e) {

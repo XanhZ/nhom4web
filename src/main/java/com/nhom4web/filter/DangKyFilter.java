@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Map;
 
-@WebFilter("/api/dang-ky/")
+@WebFilter("/api/dang-ky")
 @MultipartConfig
 public class DangKyFilter extends AbstractFilter {
     public DangKyFilter() {
@@ -23,17 +23,19 @@ public class DangKyFilter extends AbstractFilter {
     }
 
     @Override
-    protected boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
         return false;
     }
 
     @Override
-    protected boolean kiemTraGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public boolean kiemTraGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
         return false;
     }
 
     @Override
-    protected boolean kiemTraPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public boolean kiemTraPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, String> loi = this.getLoi(req);
         if (loi.size() != 0) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -45,7 +47,8 @@ public class DangKyFilter extends AbstractFilter {
     }
 
     @Override
-    protected boolean kiemTraPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public boolean kiemTraPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        resp.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
         return false;
     }
 }

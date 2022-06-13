@@ -1,10 +1,10 @@
-package com.nhom4web.filter;
+package com.nhom4web.filter.sach;
 
+import com.nhom4web.filter.AbstractFilter;
 import com.nhom4web.utils.Json;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
-import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
@@ -15,7 +15,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@WebFilter(filterName = "Sach-Filter")
 @MultipartConfig(maxFileSize = 1024 * 1024 * 4, // 4 MB
         maxRequestSize = 1024 * 1024 * 25 // 25 MB
 )
@@ -33,12 +32,7 @@ public class SachFilter extends AbstractFilter {
     }
 
     @Override
-    protected boolean kiemTraPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String duongDan = req.getPathInfo();
-        if (duongDan != null) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return false;
-        }
+    public boolean kiemTraPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Map<String, String> loi = this.getLoi(req);
         try {
             Collection<Part> files = req.getParts()
@@ -62,14 +56,9 @@ public class SachFilter extends AbstractFilter {
     }
 
     @Override
-    protected boolean kiemTraPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String duongDan = req.getPathInfo();
-        if (duongDan == null || !Pattern.matches("/\\d+", duongDan)) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST);
-            return false;
-        }
+    public boolean kiemTraPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         Pattern patternMa = Pattern.compile("\\d+");
-        Matcher matcher = patternMa.matcher(duongDan);
+        Matcher matcher = patternMa.matcher(req.getRequestURI());
         int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
 
         Map<String, String> loi = this.getLoi(req);
@@ -93,6 +82,24 @@ public class SachFilter extends AbstractFilter {
             Json.chuyenThanhJson(resp, loi);
             return false;
         }
+        req.setAttribute("ma", ma > 0 ? ma : null);
+        return true;
+    }
+
+    @Override
+    public boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Pattern patternMa = Pattern.compile("\\d+");
+        Matcher matcher = patternMa.matcher(req.getRequestURI());
+        int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
+        req.setAttribute("ma", ma > 0 ? ma : null);
+        return true;
+    }
+
+    @Override
+    public boolean kiemTraGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        Pattern patternMa = Pattern.compile("\\d+");
+        Matcher matcher = patternMa.matcher(req.getRequestURI());
+        int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
         req.setAttribute("ma", ma > 0 ? ma : null);
         return true;
     }

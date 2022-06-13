@@ -3,6 +3,7 @@ package com.nhom4web.filter;
 import com.nhom4web.utils.Json;
 
 import javax.servlet.*;
+import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.Part;
@@ -13,7 +14,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public abstract class AbstractFilter implements Filter {
+public abstract class AbstractFilter extends HttpFilter {
     /**
      * Một số luật cơ bản của dữ liệu
      */
@@ -41,48 +42,34 @@ public abstract class AbstractFilter implements Filter {
     public final Map<String, String> e = new HashMap<>();
 
     @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        Filter.super.init(filterConfig);
-    }
-
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
-    }
-
-    @Override
-    public void doFilter(ServletRequest servletRequest, ServletResponse servletResponse, FilterChain filterChain) throws IOException, ServletException {
-        // Kiểm tra hợp lệ
-        boolean hopLe = true;
-        HttpServletRequest req = (HttpServletRequest) servletRequest;
-        HttpServletResponse resp = (HttpServletResponse) servletResponse;
+    protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
+        boolean hopLe;
         String httpMethod = req.getMethod();
         switch (httpMethod) {
             case "DELETE": {
-                hopLe = this.kiemTraDelete(req, resp);
+                hopLe = this.kiemTraDelete(req, res);
                 break;
             }
             case "GET": {
-                hopLe = this.kiemTraGet(req, resp);
+                hopLe = this.kiemTraGet(req, res);
                 break;
             }
             case "POST": {
-                hopLe = this.kiemTraPost(req, resp);
+                hopLe = this.kiemTraPost(req, res);
                 break;
             }
             case "PUT": {
-                hopLe = this.kiemTraPut(req, resp);
+                hopLe = this.kiemTraPut(req, res);
                 break;
             }
             default: {
                 hopLe = false;
-                resp.sendError(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+                res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
                 break;
             }
         }
-        // Chuyển tiếp tới filter, controller tiếp theo nếu hợp lệ
         if (hopLe) {
-            filterChain.doFilter(servletRequest, servletResponse);
+            chain.doFilter(req, res);
         }
     }
 
@@ -163,7 +150,7 @@ public abstract class AbstractFilter implements Filter {
         return true;
     }
 
-    protected boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String duongDan = req.getPathInfo();
         if (duongDan == null || !Pattern.matches("/\\d+", duongDan)) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -176,7 +163,7 @@ public abstract class AbstractFilter implements Filter {
         return true;
     }
 
-    protected boolean kiemTraGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public boolean kiemTraGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String duongDan = req.getPathInfo();
         if (duongDan == null) {
             req.setAttribute("ma", null);
@@ -193,7 +180,7 @@ public abstract class AbstractFilter implements Filter {
         return true;
     }
 
-    protected boolean kiemTraPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public boolean kiemTraPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String duongDan = req.getPathInfo();
         if (duongDan != null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -208,7 +195,7 @@ public abstract class AbstractFilter implements Filter {
         return true;
     }
 
-    protected boolean kiemTraPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+    public boolean kiemTraPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         String duongDan = req.getPathInfo();
         if (duongDan == null || !Pattern.matches("/\\d+", duongDan)) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);

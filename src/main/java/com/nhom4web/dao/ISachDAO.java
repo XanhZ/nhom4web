@@ -11,13 +11,11 @@ import java.util.*;
 import static com.nhom4web.dao.impl.AbstractDAO.ketNoi;
 
 public interface ISachDAO {
-    boolean them(Sach sach, List<Integer> maDanhMucs);
-
-    boolean capNhat(Sach sach, List<Integer> maDanhMucs);
-
     List<Sach> timSachLienQuan(int maSach);
 
     List<Sach> timSachTheo(Map<String, Object> thuocTinhs);
+
+    boolean capNhatToanBo(Sach sach, boolean luu);
 
     static Sach rsSangThucThe(ResultSet rs) throws SQLException {
         ResultSetMetaData rsmd = rs.getMetaData();

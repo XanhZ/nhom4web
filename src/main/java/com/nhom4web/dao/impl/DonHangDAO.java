@@ -2,10 +2,10 @@ package com.nhom4web.dao.impl;
 
 import com.nhom4web.dao.IDonHangDAO;
 import com.nhom4web.model.DonHang;
+import com.nhom4web.model.DongDonHang;
 
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -40,21 +40,12 @@ public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
     protected LinkedHashMap<String, Object> sangMap(DonHang donHang) {
         LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
         if (donHang.getMa() > 0) duLieu.put("ma", donHang.getMa());
-        if (donHang.getNguoiDung().getMa() > 0) duLieu.put("maNguoiDung", donHang.getNguoiDung().getMa());
+        if (donHang.getMaNguoiDung() > 0) duLieu.put("maNguoiDung", donHang.getMaNguoiDung());
         if (donHang.getDiaChi() != null) duLieu.put("diaChi", donHang.getDiaChi());
         if (donHang.getTrangThai() != null) duLieu.put("trangThai", donHang.getTrangThai());
         if (donHang.getThoiGianTao() != null) duLieu.put("thoiGianTao", donHang.getThoiGianTao());
         if (donHang.getThoiGianCapNhat() != null) duLieu.put("thoiGianCapNhat", donHang.getThoiGianCapNhat());
         return duLieu;
-    }
-
-    @Override
-    protected void setKhoaChinh(DonHang donHang, ResultSet rs) {
-        try {
-            if (rs.next()) donHang.setMa(rs.getInt(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
     }
 
     @Override
@@ -66,10 +57,11 @@ public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
     @Override
     public boolean them(DonHang donHang, boolean luu) {
         try {
-            if (
-                    !super.them(donHang, false) ||
-                    !new DongDonHangDAO().them(donHang.getMa(), donHang.getDongDonHangs(), false)
-            ) throw new Exception();
+            if (!super.them(donHang, false)) throw new Exception();
+            for (DongDonHang dongDonHang : donHang.getDongDonHangs()) {
+                dongDonHang.setMaDonHang(donHang.getMa());
+            }
+            if (!new DongDonHangDAO().them(donHang.getDongDonHangs(), false)) throw new Exception();
             if (luu) ketNoi.commit();
             return true;
         } catch (Exception e) {

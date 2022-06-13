@@ -44,19 +44,18 @@ public class DongDonHangDAO extends AbstractDAO<DongDonHang> implements IDongDon
     protected LinkedHashMap<String, Object> sangMap(DongDonHang dongDonHang) {
         LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
         if (dongDonHang.getMa() > 0) duLieu.put("ma", dongDonHang.getMa());
+        if (dongDonHang.getMaDonHang() > 0) duLieu.put("maDonHang", dongDonHang.getMaDonHang());
         if (dongDonHang.getDonGia() > 0) duLieu.put("donGia", dongDonHang.getDonGia());
         if (dongDonHang.getSoLuong() > 0) duLieu.put("soLuong", dongDonHang.getSoLuong());
-        if (dongDonHang.getSach() != null) duLieu.put("maSach", dongDonHang.getSach().getMa());
+        if (dongDonHang.getMaSach() > 0) duLieu.put("maSach", dongDonHang.getMaSach());
         return duLieu;
     }
 
     @Override
-    protected void setKhoaChinh(DongDonHang dongDonHang, ResultSet rs) {
-        try {
-            if (rs.next()) dongDonHang.setMa(rs.getInt(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public DongDonHang tim(int ma) {
+        DongDonHang dongDonHang = super.tim(ma);
+        if (dongDonHang == null || !this.sach(dongDonHang)) return null;
+        return dongDonHang;
     }
 
     @Override
@@ -67,9 +66,10 @@ public class DongDonHangDAO extends AbstractDAO<DongDonHang> implements IDongDon
             List<DongDonHang> dongDonHangs =  this.sangThucThes(ps.executeQuery());
             if (dongDonHangs != null) {
                 for (DongDonHang dongDonHang : dongDonHangs) {
-                    if (!this.sach(dongDonHang)) throw new Exception();
+                    if (!this.sach(dongDonHang)) return null;
                 }
             }
+            return dongDonHangs;
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -78,37 +78,22 @@ public class DongDonHangDAO extends AbstractDAO<DongDonHang> implements IDongDon
     }
 
     @Override
-    public boolean them(int maDonHang, List<DongDonHang> dongDonHangs, boolean luu) {
-        String sql = "INSERT INTO dongDonHang (maSach, maDonHang, soLuong, donGia) VALUES (?, ?, ?, ?)";
-        try {
-            for (DongDonHang dongDonHang : dongDonHangs) {
-                Sach sach = SACH_DAO.tim(dongDonHang.getSach().getMa());
-                if (sach == null) throw new Exception("Khong ton tai sach co ma la " + dongDonHang.getSach().getMa());
-                sach.setSoLuongTrongKho(sach.getSoLuongTrongKho() - dongDonHang.getSoLuong());
-                sach.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
-                if (!SACH_DAO.capNhat(sach, false)) throw new Exception("Khong the cap nhat so luong trong kho");
+    public boolean them(DongDonHang dongDonHang, boolean luu) {
+        Sach sach = dongDonHang.getSach();
+        sach.setSoLuongTrongKho(sach.getSoLuongTrongKho() - dongDonHang.getSoLuong());
+        sach.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
+        return SACH_DAO.capNhat(sach, luu) && super.them(dongDonHang, luu);
+    }
 
-                dongDonHang.setSach(sach);
-                dongDonHang.setDonGia(sach.getGiaTien());
-                PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-                DongDonHangDAO.setThamSoTruyVan(
-                        ps,
-                        sach.getMa(),
-                        maDonHang,
-                        dongDonHang.getSoLuong(),
-                        dongDonHang.getDonGia()
-                );
-                ps.executeUpdate();
-                this.setKhoaChinh(dongDonHang, ps.getGeneratedKeys());
-            }
-            if (luu) ketNoi.commit();
-            return true;
+    @Override
+    public boolean them(List<DongDonHang> list, boolean luu) {
+        for (DongDonHang dongDonHang : list) {
+            Sach sach = dongDonHang.getSach();
+            sach.setSoLuongTrongKho(sach.getSoLuongTrongKho() - dongDonHang.getSoLuong());
+            sach.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
+            if (!SACH_DAO.capNhat(sach, luu)) return false;
         }
-        catch (Exception e) {
-            e.printStackTrace();
-            if (luu) this.rollback();
-        }
-        return false;
+        return super.them(list, luu);
     }
 
     @Override
@@ -118,14 +103,10 @@ public class DongDonHangDAO extends AbstractDAO<DongDonHang> implements IDongDon
                 this.tenBang
         );
         try {
-            Sach sach = SACH_DAO.tim(dongDonHang.getSach().getMa());
-            if (sach == null) throw new Exception("Khong ton tai sach co ma la " + dongDonHang.getSach().getMa());
+            Sach sach = dongDonHang.getSach();
             sach.setSoLuongTrongKho(sach.getSoLuongTrongKho() - dongDonHang.getSoLuong());
             sach.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
-            if (!SACH_DAO.capNhat(sach, false)) throw new Exception("Khong the cap nhat so luong trong kho");
-
-            dongDonHang.setSach(sach);
-            dongDonHang.setDonGia(sach.getGiaTien());
+            if (!SACH_DAO.capNhat(sach, false)) throw new Exception();
             PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             DongDonHangDAO.setThamSoTruyVan(
                     ps,

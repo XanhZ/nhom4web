@@ -7,7 +7,6 @@ import com.nhom4web.utils.HinhAnh;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.*;
 
 public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnhSachDAO {
@@ -40,78 +39,23 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
     @Override
     protected LinkedHashMap<String, Object> sangMap(HinhAnhSach hinhAnhSach) {
         LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
-        if (hinhAnhSach.getMa() != -1) duLieu.put("ma", hinhAnhSach.getMa());
+        if (hinhAnhSach.getMa() > 0) duLieu.put("ma", hinhAnhSach.getMa());
+        if (hinhAnhSach.getMaSach() > 0) duLieu.put("maSach", hinhAnhSach.getMaSach());
         if (hinhAnhSach.getDuongDan() != null) duLieu.put("duongDan", hinhAnhSach.getDuongDan());
         if (hinhAnhSach.getPublicId() != null) duLieu.put("publicId", hinhAnhSach.getPublicId());
         return duLieu;
     }
 
     @Override
-    protected void setKhoaChinh(HinhAnhSach hinhAnhSach, ResultSet rs) {
+    public boolean xoaTheoMaSach(int maSach) {
         try {
-            if (rs.next()) hinhAnhSach.setMa(rs.getInt(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public boolean them(int maSach, List<HinhAnhSach> hinhAnhSachs, boolean luu) {
-        try {
-            String[] temp = new String[hinhAnhSachs.size()];
-            Arrays.fill(temp, "(?, ?, ?)");
-            String sql = String.format(
-                    "INSERT INTO %s (maSach, duongDan, publicId) VALUES %s;",
-                    this.tenBang,
-                    String.join(", ", temp)
-            );
-            PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-
-            int i = 0;
-            for (HinhAnhSach hinhAnhSach : hinhAnhSachs) {
-                HinhAnhSachDAO.setThamSoTai(ps, ++i, maSach);
-                HinhAnhSachDAO.setThamSoTai(ps, ++i, hinhAnhSach.getDuongDan());
-                HinhAnhSachDAO.setThamSoTai(ps, ++i, hinhAnhSach.getPublicId());
-            }
-
+            String sql = String.format("DELETE FROM %s WHERE maSach = %d", this.tenBang, maSach);
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
             ps.executeUpdate();
-            ResultSet rs = ps.getGeneratedKeys();
-            for (HinhAnhSach hinhAnhSach : hinhAnhSachs) {
-                this.setKhoaChinh(hinhAnhSach, rs);
-            }
-
-            if (luu) ketNoi.commit();
+            ps.close();
             return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            if (luu) this.rollback();
-        }
-        return false;
-    }
-
-    @Override
-    public boolean capNhat(int maSach, List<HinhAnhSach> hinhAnhSachs, boolean luu) {
-        try {
-            String sql = String.format("SELECT publicId FROM %s WHERE maSach = %d", this.tenBang, maSach);
-            PreparedStatement ps1 = ketNoi.prepareStatement(sql);
-            ResultSet rs = ps1.executeQuery();
-            List<String> publicIds = new ArrayList<>();
-            while (rs.next()) {
-                publicIds.add(rs.getString("publicId"));
-            }
-            ps1.close();
-
-            sql = String.format("DELETE FROM %s WHERE maSach = %d", this.tenBang, maSach);
-            PreparedStatement ps2 = ketNoi.prepareStatement(sql);
-            ps2.executeUpdate();
-            ps2.close();
-
-            if (this.them(maSach, hinhAnhSachs, luu) && HinhAnh.xoaTrenCloud(publicIds)) {
-                if (luu) ketNoi.commit();
-            }
         } catch (Exception e) {
             e.printStackTrace();
-            if (luu) this.rollback();
         }
         return false;
     }
@@ -123,10 +67,8 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             ResultSet rs = ps.executeQuery();
             List<HinhAnhSach> hinhAnhSachs = this.sangThucThes(rs);
-            if (hinhAnhSachs != null) {
-                return hinhAnhSachs;
-            }
             ps.close();
+            return hinhAnhSachs;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -146,11 +88,10 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
             if (rs.next()) {
                 List<String> publicIds = new LinkedList<>();
                 publicIds.add(rs.getString("publicId"));
-                if (HinhAnh.xoaTrenCloud(publicIds)) {
-                    return super.xoa(ma, luu);
-                }
+                HinhAnh.xoaTrenCloud(publicIds);
+                return super.xoa(ma, luu);
             }
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;
@@ -164,9 +105,11 @@ public class HinhAnhSachDAO extends AbstractDAO<HinhAnhSach> implements IHinhAnh
             ResultSet rs = ps.executeQuery();
             while (rs.next()) pubicIds.add(rs.getString(1));
             ps.close();
-        } catch (SQLException e) {
+            HinhAnh.xoaTrenCloud(pubicIds);
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
         }
-        return HinhAnh.xoaTrenCloud(pubicIds);
+        return false;
     }
 }

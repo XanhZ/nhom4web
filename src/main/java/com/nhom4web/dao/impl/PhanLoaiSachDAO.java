@@ -37,66 +37,27 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
     @Override
     protected LinkedHashMap<String, Object> sangMap(PhanLoaiSach phanLoaiSach) {
         LinkedHashMap<String, Object> duLieu = new LinkedHashMap<>();
-        if (phanLoaiSach.getMa() != -1) duLieu.put("ma", phanLoaiSach.getMa());
-        if (phanLoaiSach.getSach().getMa() != -1) duLieu.put("duongDan", phanLoaiSach.getSach().getMa());
-        if (phanLoaiSach.getDanhMuc().getMa() != -1) duLieu.put("publicId", phanLoaiSach.getDanhMuc().getMa());
+        if (phanLoaiSach.getMa() > 0) duLieu.put("ma", phanLoaiSach.getMa());
+        if (phanLoaiSach.getMaDanhMuc() > 0) duLieu.put("maDanhMuc", phanLoaiSach.getMaDanhMuc());
+        if (phanLoaiSach.getMaSach() > 0) duLieu.put("maSach", phanLoaiSach.getMaSach());
         return duLieu;
     }
 
     @Override
-    protected void setKhoaChinh(PhanLoaiSach phanLoaiSach, ResultSet rs) {
-        try {
-            if (rs.next()) phanLoaiSach.setMa(rs.getInt(1));
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    public PhanLoaiSach tim(int ma) {
+        PhanLoaiSach phanLoaiSach = super.tim(ma);
+        if (!this.danhMuc(phanLoaiSach)) return null;
+        return phanLoaiSach;
     }
 
     @Override
-    public boolean them(int maSach, List<Integer> maDanhMucs, boolean luu) {
-        try {
-            String[] temps = new String[maDanhMucs.size()];
-            Arrays.fill(temps, "(?, ?)");
-            String sql = String.format(
-                    "INSERT INTO %s (maSach, maDanhMuc) VALUES %s",
-                    this.tenBang,
-                    String.join(", ", temps)
-            );
-
-            PreparedStatement ps = ketNoi.prepareStatement(sql);
-            int i = 0;
-            for (Integer maDanhMuc : maDanhMucs) {
-                PhanLoaiSachDAO.setThamSoTai(ps, ++i, maSach);
-                PhanLoaiSachDAO.setThamSoTai(ps, ++i, maDanhMuc);
-            }
-
-            ps.executeUpdate();
-            if (luu) ketNoi.commit();
-            ps.close();
-            return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            this.rollback();
-        }
-        return false;
+    public boolean capNhat(PhanLoaiSach phanLoaiSach, boolean luu) {
+        return super.capNhat(phanLoaiSach, luu) && this.danhMuc(phanLoaiSach);
     }
 
     @Override
-    public boolean capNhat(int maSach, List<Integer> maDanhMucs, boolean luu) {
-        try {
-            String sql = String.format("DELETE FROM %s WHERE maSach = %d", this.tenBang, maSach);
-            PreparedStatement ps = ketNoi.prepareStatement(sql);
-            ps.executeUpdate();
-            ps.close();
-            if (this.them(maSach, maDanhMucs, false)) {
-                if (luu) ketNoi.commit();
-                return true;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            if (luu) this.rollback();
-        }
-        return false;
+    public boolean them(PhanLoaiSach phanLoaiSach, boolean luu) {
+        return super.them(phanLoaiSach, luu) && this.danhMuc(phanLoaiSach);
     }
 
     @Override
@@ -129,5 +90,19 @@ public class PhanLoaiSachDAO extends AbstractDAO<PhanLoaiSach> implements IPhanL
             e.printStackTrace();
         }
         return null;
+    }
+
+    @Override
+    public boolean xoaTheoMaSach(int maSach) {
+        try {
+            String sql = String.format("DELETE FROM %s WHERE maSach = %d", this.tenBang, maSach);
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            ps.executeUpdate();
+            ps.close();
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 }
