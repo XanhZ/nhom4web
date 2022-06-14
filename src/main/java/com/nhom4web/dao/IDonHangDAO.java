@@ -43,8 +43,22 @@ public interface IDonHangDAO {
             while (rs.next()) dongDonHangs.add(IDongDonHangDAO.rsSangThucThe(rs));
             donHang.setDongDonHangs(dongDonHangs);
             return true;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        catch (Exception e) {
+        return false;
+    }
+
+    default boolean nguoiDung(DonHang donHang) {
+        try {
+            String sql = String.format("SELECT * FROM nguoiDung WHERE ma = %d", donHang.getMaNguoiDung());
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                donHang.setNguoiDung(INguoiDungDAO.rsSangThucThe(rs));
+                return true;
+            }
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return false;

@@ -1,7 +1,7 @@
 package com.nhom4web.controller.api;
 
 import com.nhom4web.controller.api.donhang.DonHangController;
-import com.nhom4web.controller.api.donhang.DongDonHangController;
+import com.nhom4web.controller.api.donhang.DonHangNDController;
 
 import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
@@ -16,7 +16,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.regex.Pattern;
 
-@WebServlet("/api/don-hang/*")
+@WebServlet(urlPatterns = {
+        "/api/nguoi-dung/don-hang/*",
+        "/api/don-hang/*"
+})
 @MultipartConfig
 public class DonHangMainController extends HttpServlet {
     private static final HashMap<String, Method> DELETE_MAP = new HashMap<>();
@@ -96,10 +99,6 @@ public class DonHangMainController extends HttpServlet {
                     "/api/don-hang/\\d+",
                     DonHangController.class.getMethod("xoa", HttpServletRequest.class, HttpServletResponse.class)
             );
-            DELETE_MAP.put(
-                    "/api/don-hang/\\d+/dong-don-hang/\\d+",
-                    DongDonHangController.class.getMethod("xoa", HttpServletRequest.class, HttpServletResponse.class)
-            );
 
             GET_MAP.put(
                     "/api/don-hang",
@@ -110,21 +109,17 @@ public class DonHangMainController extends HttpServlet {
                     DonHangController.class.getMethod("tim", HttpServletRequest.class, HttpServletResponse.class)
             );
             GET_MAP.put(
-                    "/api/don-hang/\\d+/dong-don-hang",
-                    DongDonHangController.class.getMethod("timTatCa", HttpServletRequest.class, HttpServletResponse.class)
+                    "/api/nguoi-dung/don-hang",
+                    DonHangNDController.class.getMethod("timTatCa", HttpServletRequest.class, HttpServletResponse.class)
             );
             GET_MAP.put(
-                    "/api/don-hang/\\d+/dong-don-hang/\\d+",
-                    DongDonHangController.class.getMethod("tim", HttpServletRequest.class, HttpServletResponse.class)
+                    "/api/nguoi-dung/don-hang/\\d+",
+                    DonHangNDController.class.getMethod("tim", HttpServletRequest.class, HttpServletResponse.class)
             );
 
             POST_MAP.put(
-                    "/api/don-hang",
-                    DonHangController.class.getMethod("them", HttpServletRequest.class, HttpServletResponse.class)
-            );
-            POST_MAP.put(
-                    "/api/don-hang/\\d+/dong-don-hang",
-                    DongDonHangController.class.getMethod("them", HttpServletRequest.class, HttpServletResponse.class)
+                    "/api/nguoi-dung/don-hang",
+                    DonHangNDController.class.getMethod("them", HttpServletRequest.class, HttpServletResponse.class)
             );
 
             PUT_MAP.put(
@@ -132,8 +127,8 @@ public class DonHangMainController extends HttpServlet {
                     DonHangController.class.getMethod("capNhat", HttpServletRequest.class, HttpServletResponse.class)
             );
             PUT_MAP.put(
-                    "/api/don-hang/\\d+/dong-don-hang/\\d+",
-                    DongDonHangController.class.getMethod("capNhat", HttpServletRequest.class, HttpServletResponse.class)
+                    "/api/nguoi-dung/don-hang/\\d+",
+                    DonHangNDController.class.getMethod("capNhat", HttpServletRequest.class, HttpServletResponse.class)
             );
         } catch (NoSuchMethodException e) {
             e.printStackTrace();

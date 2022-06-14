@@ -13,8 +13,6 @@ import java.util.Set;
 import static com.nhom4web.dao.impl.AbstractDAO.ketNoi;
 
 public interface IDongDonHangDAO {
-    boolean them(int maDonHang, DongDonHang dongDonHang, boolean luu);
-
     List<DongDonHang> timTatCa(int maDonHang);
 
     static DongDonHang rsSangThucThe(ResultSet rs) throws SQLException {

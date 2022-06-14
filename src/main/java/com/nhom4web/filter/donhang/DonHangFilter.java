@@ -1,54 +1,56 @@
 package com.nhom4web.filter.donhang;
 
 import com.nhom4web.filter.AbstractFilter;
+import com.nhom4web.model.NguoiDung;
 import com.nhom4web.utils.Json;
 
-import javax.servlet.ServletException;
 import javax.servlet.annotation.MultipartConfig;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import static com.nhom4web.controller.api.donhang.DonHangController.chiSoTrangThai;
+import static com.nhom4web.filter.AuthFilter.IS_ADMIN;
+
 @MultipartConfig
 public class DonHangFilter extends AbstractFilter {
-    public DonHangFilter() {
-        this.luat.put("diaChi", KHONG_BO_TRONG);
-        this.luat.put("maSach", KHONG_BO_TRONG + "/" + SO_NGUYEN_DUONG);
-        this.luat.put("soLuong", KHONG_BO_TRONG + "/" + SO_NGUYEN_DUONG);
-        this.luat.put("trangThai", KHONG_BO_TRONG);
-
-        this.e.put("diaChi." + KHONG_BO_TRONG, "Không được bỏ trống địa chỉ");
-        this.e.put("maSach." + KHONG_BO_TRONG, "Không được bỏ trống mã sách");
-        this.e.put("maSach." + SO_NGUYEN_DUONG, "Mã sách không hợp lệ");
-        this.e.put("soLuong." + KHONG_BO_TRONG, "Không được bỏ trống số lượng");
-        this.e.put("soLuong." + SO_NGUYEN_DUONG, "Số lượng không hợp lệ");
-        this.e.put("trangThai." + KHONG_BO_TRONG, "Không được bỏ trống trạng thái đơn hàng");
+    @Override
+    public boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        NguoiDung nguoiDung = (NguoiDung) req.getSession().getAttribute("nguoiDung");
+        if (nguoiDung.getLoaiNguoiDung() != IS_ADMIN) {
+            resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return false;
+        }
+        return super.kiemTraDelete(req, resp);
     }
 
     @Override
-    public boolean kiemTraPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        Map<String, String> loi = this.getLoi(req);
-        loi.remove("trangThai");
-        if (loi.size() != 0) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            Json.chuyenThanhJson(resp, loi);
+    public boolean kiemTraGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        NguoiDung nguoiDung = (NguoiDung) req.getSession().getAttribute("nguoiDung");
+        if (nguoiDung.getLoaiNguoiDung() != IS_ADMIN) {
+            resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return false;
         }
-        return true;
+        return super.kiemTraGet(req, resp);
     }
 
     @Override
     public boolean kiemTraPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
+        NguoiDung nguoiDung = (NguoiDung) req.getSession().getAttribute("nguoiDung");
+        if (nguoiDung.getLoaiNguoiDung() != IS_ADMIN) {
+            resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return false;
+        }
         Pattern patternMa = Pattern.compile("\\d+");
         Matcher matcher = patternMa.matcher(req.getRequestURI());
         int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
         Map<String, String> loi = this.getLoi(req);
-        loi.remove("diaChi");
+        if (chiSoTrangThai(req.getParameter("trangThai")) == -1) {
+            loi.put("trangThai", "Trạng thái đơn hàng không hợp lệ");
+        }
         if (loi.size() != 0) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             Json.chuyenThanhJson(resp, loi);

@@ -24,14 +24,12 @@ public class GioHangFilter extends AbstractFilter {
 
     @Override
     public boolean kiemTraDelete(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String duongDan = req.getPathInfo();
-        if (duongDan != null) {
+        if (req.getPathInfo() != null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return false;
         }
         Map<String, String> loi = this.getLoi(req);
-        loi.remove("soLuong." + KHONG_BO_TRONG);
-        loi.remove("soLuong." + SO_NGUYEN_DUONG);
+        loi.remove("soLuong");
         if (loi.size() != 0) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             Json.chuyenThanhJson(resp, loi);
@@ -42,29 +40,8 @@ public class GioHangFilter extends AbstractFilter {
 
     @Override
     public boolean kiemTraGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String duongDan = req.getPathInfo();
-        if (duongDan != null) {
+        if (req.getPathInfo() != null) {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return false;
-        }
-        return true;
-    }
-
-    @Override
-    public boolean kiemTraPost(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String duongDan = req.getPathInfo();
-        if (duongDan != null) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return false;
-        }
-        if (req.getParameterValues("maSach").length != req.getParameterValues("soLuong").length) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return false;
-        }
-        Map<String, String> loi = this.getLoi(req);
-        if (loi.size() != 0) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            Json.chuyenThanhJson(resp, loi);
             return false;
         }
         return true;
@@ -72,21 +49,6 @@ public class GioHangFilter extends AbstractFilter {
 
     @Override
     public boolean kiemTraPut(HttpServletRequest req, HttpServletResponse resp) throws IOException {
-        String duongDan = req.getPathInfo();
-        if (duongDan != null) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return false;
-        }
-        if (req.getParameterValues("maSach").length != req.getParameterValues("soLuong").length) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            return false;
-        }
-        Map<String, String> loi = this.getLoi(req);
-        if (loi.size() != 0) {
-            resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            Json.chuyenThanhJson(resp, loi);
-            return false;
-        }
-        return true;
+        return this.kiemTraPost(req, resp);
     }
 }

@@ -74,7 +74,7 @@ public class SachMainFilter extends HttpFilter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (this.urlKhongKhop) res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        res.setStatus(this.urlKhongKhop ? HttpServletResponse.SC_NOT_FOUND : HttpServletResponse.SC_BAD_REQUEST);
     }
 
     static {
@@ -98,6 +98,10 @@ public class SachMainFilter extends HttpFilter {
             );
             GET_MAP.put(
                     "/api/sach/\\d+",
+                    SachFilter.class.getMethod("kiemTraGet", HttpServletRequest.class, HttpServletResponse.class)
+            );
+            GET_MAP.put(
+                    "/api/sach/\\d+/lien-quan",
                     SachFilter.class.getMethod("kiemTraGet", HttpServletRequest.class, HttpServletResponse.class)
             );
             GET_MAP.put(

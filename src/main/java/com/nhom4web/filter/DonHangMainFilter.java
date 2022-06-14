@@ -1,7 +1,7 @@
 package com.nhom4web.filter;
 
 import com.nhom4web.filter.donhang.DonHangFilter;
-import com.nhom4web.filter.donhang.DongDonHangFilter;
+import com.nhom4web.filter.donhang.DonHangNDFilter;
 
 import javax.servlet.FilterChain;
 import javax.servlet.ServletException;
@@ -25,7 +25,7 @@ public class DonHangMainFilter extends HttpFilter {
     private static final HashMap<String, Method> POST_MAP = new HashMap<>();
     private static final HashMap<String, Method> PUT_MAP = new HashMap<>();
     private static final DonHangFilter DON_HANG_FILTER = new DonHangFilter();
-    private static final DongDonHangFilter DONG_DON_HANG_FILTER = new DongDonHangFilter();
+    private static final DonHangNDFilter DON_HANG_ND_FILTER = new DonHangNDFilter();
 
     private boolean urlKhongKhop;
 
@@ -53,7 +53,7 @@ public class DonHangMainFilter extends HttpFilter {
                 Object o;
                 Class<?> dClass = entry.getValue().getDeclaringClass();
                 if (DON_HANG_FILTER.getClass().equals(dClass)) o = DON_HANG_FILTER;
-                else o = DONG_DON_HANG_FILTER;
+                else o = DON_HANG_ND_FILTER;
                 return (boolean) entry.getValue().invoke(o, req, resp);
             }
         }
@@ -76,7 +76,9 @@ public class DonHangMainFilter extends HttpFilter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (this.urlKhongKhop) res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        if (this.urlKhongKhop) {
+            res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+        }
     }
 
     static {
@@ -85,10 +87,6 @@ public class DonHangMainFilter extends HttpFilter {
                     "/api/don-hang/\\d+",
                     DonHangFilter.class.getMethod("kiemTraDelete", HttpServletRequest.class, HttpServletResponse.class)
             );
-            DELETE_MAP.put(
-                    "/api/don-hang/\\d+/dong-don-hang/\\d+",
-                    DongDonHangFilter.class.getMethod("kiemTraDelete", HttpServletRequest.class, HttpServletResponse.class)
-            );
 
             GET_MAP.put(
                     "/api/don-hang",
@@ -99,21 +97,17 @@ public class DonHangMainFilter extends HttpFilter {
                     DonHangFilter.class.getMethod("kiemTraGet", HttpServletRequest.class, HttpServletResponse.class)
             );
             GET_MAP.put(
-                    "/api/don-hang/\\d+/dong-don-hang",
-                    DongDonHangFilter.class.getMethod("kiemTraGet", HttpServletRequest.class, HttpServletResponse.class)
+                    "/api/nguoi-dung/don-hang",
+                    DonHangNDFilter.class.getMethod("kiemTraGet", HttpServletRequest.class, HttpServletResponse.class)
             );
             GET_MAP.put(
-                    "/api/don-hang/\\d+/dong-don-hang/\\d+",
-                    DongDonHangFilter.class.getMethod("kiemTraGet", HttpServletRequest.class, HttpServletResponse.class)
+                    "/api/nguoi-dung/don-hang/\\d+",
+                    DonHangNDFilter.class.getMethod("kiemTraGet", HttpServletRequest.class, HttpServletResponse.class)
             );
 
             POST_MAP.put(
-                    "/api/don-hang",
-                    DonHangFilter.class.getMethod("kiemTraPost", HttpServletRequest.class, HttpServletResponse.class)
-            );
-            POST_MAP.put(
-                    "/api/don-hang/\\d+/dong-don-hang",
-                    DongDonHangFilter.class.getMethod("kiemTraPost", HttpServletRequest.class, HttpServletResponse.class)
+                    "/api/nguoi-dung/don-hang",
+                    DonHangNDFilter.class.getMethod("kiemTraPost", HttpServletRequest.class, HttpServletResponse.class)
             );
 
             PUT_MAP.put(
@@ -121,8 +115,8 @@ public class DonHangMainFilter extends HttpFilter {
                     DonHangFilter.class.getMethod("kiemTraPut", HttpServletRequest.class, HttpServletResponse.class)
             );
             PUT_MAP.put(
-                    "/api/don-hang/\\d+/dong-don-hang/\\d+",
-                    DongDonHangFilter.class.getMethod("kiemTraPut", HttpServletRequest.class, HttpServletResponse.class)
+                    "/api/nguoi-dung/don-hang/\\d+",
+                    DonHangNDFilter.class.getMethod("kiemTraPut", HttpServletRequest.class, HttpServletResponse.class)
             );
         } catch (NoSuchMethodException e) {
             e.printStackTrace();

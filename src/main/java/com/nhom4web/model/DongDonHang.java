@@ -19,6 +19,14 @@ public class DongDonHang {
         this.sach = sach;
     }
 
+    public DongDonHang(int maDonHang, int soLuong, Sach sach) {
+        this.maDonHang = maDonHang;
+        this.maSach = sach.getMa();
+        this.soLuong = soLuong;
+        this.donGia = sach.getGiaTien();
+        this.sach = sach;
+    }
+
     public int getMa() {
         return ma;
     }
@@ -65,11 +73,5 @@ public class DongDonHang {
 
     public void setMaSach(int maSach) {
         this.maSach = maSach;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (!(o instanceof DongDonHang)) return false;
-        return this.getMaSach() == ((DongDonHang) o).getMaSach();
     }
 }

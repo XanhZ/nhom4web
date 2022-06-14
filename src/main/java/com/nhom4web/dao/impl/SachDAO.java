@@ -7,6 +7,7 @@ import com.nhom4web.model.Sach;
 
 import java.sql.*;
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     private static final PhanLoaiSachDAO PHAN_LOAI_SACH_DAO = new PhanLoaiSachDAO();
@@ -91,25 +92,43 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
 
     @Override
     public List<Sach> timSachLienQuan(int maSach) {
+        try {
+            String sql = String.format(
+                    "SELECT * FROM %s " +
+                    "WHERE ma IN (SELECT maSach FROM phanLoaiSach WHERE maSach <> %d AND maDanhMuc IN (%s)) " +
+                    "LIMIT 10",
+                    this.tenBang,
+                    maSach,
+                    PHAN_LOAI_SACH_DAO.timDanhMucSach(maSach)
+                            .stream()
+                            .map(o -> String.valueOf(o.getDanhMuc().getMa()))
+                            .collect(Collectors.joining(", "))
+            );
+            PreparedStatement ps = ketNoi.prepareStatement(sql);
+            List<Sach> sachs = this.sangThucThes(ps.executeQuery());
+            ps.close();
+            for (Sach sach : sachs) {
+                if (!this.hinhAnhSachs(sach)) return null;
+            }
+            return sachs;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
     @Override
-    public List<Sach> timSachTheo(Map<String, Object> thuocTinhs) {
-/*        try {
-            String sql = "SELECT * FROM sach " +
-                    "INNER JOIN phanLoaiSach ON sach.ma = phanLoaiSach.maSach " +
-                    "WHERE phanLoaiSach.maSach IN ?";
-            PreparedStatement ps = ketNoi.prepareStatement(sql);
-            this.setThamSoTai(ps, 1, maDanhMucs);
+    public List<Sach> timSachTheo(Map<String, String[]> thuocTinhs) {
+        try {
+            PreparedStatement ps = ketNoi.prepareStatement(this.sangSql(thuocTinhs));
             List<Sach> sachs = this.sangThucThes(ps.executeQuery());
             for (Sach sach : sachs) {
-                HINH_ANH_SACH_DAO.timTatCa(sach);
+                if (!this.hinhAnhSachs(sach)) return null;
             }
             return sachs;
-        } catch (SQLException e) {
+        } catch (Exception e) {
             e.printStackTrace();
-        }*/
+        }
         return null;
     }
 
@@ -136,5 +155,75 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
     public boolean xoa(int ma, boolean commit) {
         if (!new HinhAnhSachDAO().xoaTrenCloud(ma)) return false;
         return super.xoa(ma, commit);
+    }
+
+    private String sangSql(Map<String, String[]> thuocTinhs) {
+        List<String> thuocTinhLocs = new LinkedList<>();
+        String sapXep = null;
+        String gioiHan = null;
+        for (Map.Entry<String, String[]> thuocTinh : thuocTinhs.entrySet()) {
+            switch (thuocTinh.getKey()) {
+                case "tenSach": {
+                    String tenSach = "%" + thuocTinh.getValue()[0] + "%";
+                    thuocTinhLocs.add(String.format("tenSach LIKE '%s'", tenSach));
+                    break;
+                }
+                case "giaTu": {
+                    thuocTinhLocs.add("giaTien >= " + thuocTinh.getValue()[0]);
+                    break;
+                }
+                case "giaDen": {
+                    thuocTinhLocs.add("giaTien <= " + thuocTinh.getValue()[0]);
+                    break;
+                }
+                case "danhMuc": {
+                    thuocTinhLocs.add(
+                            String.format(
+                                    "ma IN (SELECT DISTINCT maSach FROM phanLoaiSach WHERE maDanhMuc IN (%s))",
+                                    String.join(", ", thuocTinh.getValue())
+                            )
+                    );
+                    break;
+                }
+                case "sapXepTheo": {
+                    switch (thuocTinh.getValue()[0]) {
+                        case "giaGiamDan": {
+                            sapXep = "ORDER BY giaTien DESC";
+                            break;
+                        }
+                        case "giaTangDan": {
+                            sapXep = "ORDER BY giaTien ASC";
+                            break;
+                        }
+                        case "tenSach": {
+                            sapXep = "ORDER BY tenSach ASC";
+                            break;
+                        }
+                        case "ganDayNhat": {
+                            sapXep = "ORDER BY thoiGianTao DESC";
+                            break;
+                        }
+                        case "banChayNhat": {
+                            thuocTinhLocs.add(
+                                    "ma IN (SELECT maSach FROM dongDonHang " +
+                                            "WHERE maDonHang IN (SELECT ma FROM donHang WHERE trangThai = 'xacNhan') " +
+                                            "GROUP BY maSach ORDER BY COUNT(soLuong))"
+                            );
+                            break;
+                        }
+                    }
+                    break;
+                }
+                case "gioiHan": {
+                    gioiHan = String.format("LIMIT %s", thuocTinh.getValue()[0]);
+                    break;
+                }
+            }
+        }
+        String sql = "SELECT * FROM sach";
+        if (!thuocTinhLocs.isEmpty()) sql += " WHERE " + String.join(" AND ", thuocTinhLocs);
+        if (sapXep != null) sql += " " + sapXep;
+        if (gioiHan != null) sql += " " + gioiHan;
+        return sql;
     }
 }

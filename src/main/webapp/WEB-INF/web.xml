@@ -12,6 +12,7 @@
       <transport-guarantee>CONFIDENTIAL</transport-guarantee>
     </user-data-constraint>
   </security-constraint>
+
   <welcome-file-list>
     <welcome-file>index.jsp</welcome-file>
   </welcome-file-list>
@@ -52,7 +53,9 @@
     <url-pattern>/api/sach/*</url-pattern>
     <url-pattern>/api/danh-muc/*</url-pattern>
     <url-pattern>/api/don-hang/*</url-pattern>
+    <url-pattern>/api/nguoi-dung/don-hang/*</url-pattern>
     <url-pattern>/api/binh-luan/*</url-pattern>
+    <url-pattern>/api/gio-hang</url-pattern>
   </filter-mapping>
   <!-- End Authentication Filter  -->
 
@@ -74,13 +77,14 @@
   <filter-mapping>
     <filter-name>Don-Hang-Filter</filter-name>
     <url-pattern>/api/don-hang/*</url-pattern>
+    <url-pattern>/api/nguoi-dung/don-hang/*</url-pattern>
   </filter-mapping>
   <!-- End Don Hang Filter  -->
 
   <!-- Begin Gio Hang Filter  -->
   <filter-mapping>
     <filter-name>Gio-Hang-Filter</filter-name>
-    <url-pattern>/api/gio-hang/*</url-pattern>
+    <url-pattern>/api/gio-hang</url-pattern>
   </filter-mapping>
   <!-- End Gio Hang Filter  -->
 </web-app>

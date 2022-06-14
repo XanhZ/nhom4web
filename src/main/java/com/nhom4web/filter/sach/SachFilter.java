@@ -101,6 +101,31 @@ public class SachFilter extends AbstractFilter {
         Matcher matcher = patternMa.matcher(req.getRequestURI());
         int ma = matcher.find() ? Integer.parseInt(matcher.group()) : -1;
         req.setAttribute("ma", ma > 0 ? ma : null);
+        return ma != -1 || this.kiemTraThuocTinhLocs(req);
+    }
+
+    private boolean kiemTraThuocTinhLocs(HttpServletRequest req) {
+        for (Map.Entry<String, String[]> thuocTinh : req.getParameterMap().entrySet()) {
+            switch (thuocTinh.getKey()) {
+                case "tenSach": {
+                    Pattern kiTuDacBiet = Pattern.compile ("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+                    if (kiTuDacBiet.matcher(thuocTinh.getValue()[0]).find()) return false;
+                    break;
+                }
+                case "giaTu":
+                case "giaDen":
+                case "gioiHan": {
+                    if (!Pattern.matches(REGEX_SO_NGUYEN_DUONG, thuocTinh.getValue()[0])) return false;
+                    break;
+                }
+                case "danhMuc": {
+                    for (String maDanhMuc : thuocTinh.getValue()) {
+                        if (!Pattern.matches(REGEX_SO_NGUYEN_DUONG, maDanhMuc)) return false;
+                    }
+                    break;
+                }
+            }
+        }
         return true;
     }
 }

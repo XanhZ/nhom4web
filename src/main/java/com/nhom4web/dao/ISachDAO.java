@@ -13,7 +13,7 @@ import static com.nhom4web.dao.impl.AbstractDAO.ketNoi;
 public interface ISachDAO {
     List<Sach> timSachLienQuan(int maSach);
 
-    List<Sach> timSachTheo(Map<String, Object> thuocTinhs);
+    List<Sach> timSachTheo(Map<String, String[]> thuocTinhs);
 
     boolean capNhatToanBo(Sach sach, boolean luu);
 

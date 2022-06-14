@@ -113,6 +113,10 @@ public class SachMainController extends HttpServlet {
                     SachController.class.getMethod("tim", HttpServletRequest.class, HttpServletResponse.class)
             );
             GET_MAP.put(
+                    "/api/sach/\\d+/lien-quan",
+                    SachController.class.getMethod("timSachLienQuan", HttpServletRequest.class, HttpServletResponse.class)
+            );
+            GET_MAP.put(
                     "/api/sach/\\d+/hinh-anh-sach",
                     HinhAnhSachController.class.getMethod("timTatCa", HttpServletRequest.class, HttpServletResponse.class)
             );

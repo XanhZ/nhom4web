@@ -14,7 +14,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -33,18 +32,29 @@ public class SachController {
 
     public static void tim(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         Object maObj = req.getAttribute("ma");
-
         Sach sach = DAO.tim((Integer) maObj);
         if (sach == null) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);
             return;
         }
-
         Json.chuyenThanhJson(resp, sach);
     }
 
+    public static void timSachLienQuan(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        List<Sach> sachs = DAO.timSachLienQuan((Integer) req.getAttribute("ma"));
+        if (sachs != null) {
+            Json.chuyenThanhJson(resp, sachs);
+            return;
+        }
+        resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+    }
+
     public static void timTatTa(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        Json.chuyenThanhJson(resp, DAO.layTatCa());
+        if (req.getParameterMap().isEmpty()) {
+            Json.chuyenThanhJson(resp, DAO.layTatCa());
+            return;
+        }
+        Json.chuyenThanhJson(resp, DAO.timSachTheo(req.getParameterMap()));
     }
 
     public static void them(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

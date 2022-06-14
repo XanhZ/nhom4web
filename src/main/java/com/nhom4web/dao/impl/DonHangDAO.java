@@ -11,6 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
+    private static final DongDonHangDAO DONG_DON_HANG_DAO = new DongDonHangDAO();
+
     public DonHangDAO() {
         super("donHang");
     }
@@ -51,7 +53,11 @@ public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
     @Override
     public DonHang tim(int ma) {
         DonHang donHang = super.tim(ma);
-        return this.dongDonHangs(donHang) ? donHang : null;
+        if (!this.dongDonHangs(donHang)) return null;
+        for (DongDonHang dongDonHang : donHang.getDongDonHangs()) {
+            if (!DONG_DON_HANG_DAO.sach(dongDonHang)) return null;
+        }
+        return donHang;
     }
 
     @Override
@@ -61,7 +67,7 @@ public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
             for (DongDonHang dongDonHang : donHang.getDongDonHangs()) {
                 dongDonHang.setMaDonHang(donHang.getMa());
             }
-            if (!new DongDonHangDAO().them(donHang.getDongDonHangs(), false)) throw new Exception();
+            if (!DONG_DON_HANG_DAO.them(donHang.getDongDonHangs(), false)) throw new Exception();
             if (luu) ketNoi.commit();
             return true;
         } catch (Exception e) {
@@ -79,12 +85,13 @@ public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
             DonHangDAO.setThamSoTruyVan(ps, maNguoiDung, trangThai);
             List<DonHang> donHangs = this.sangThucThes(ps.executeQuery());
             for (DonHang donHang : donHangs) {
-                if (!this.dongDonHangs(donHang)) {
-                    throw new Exception();
+                if (!this.dongDonHangs(donHang)) throw new Exception();
+                for (DongDonHang dongDonHang : donHang.getDongDonHangs()) {
+                    if (!DONG_DON_HANG_DAO.sach(dongDonHang)) throw new Exception();
                 }
             }
-        }
-        catch (Exception e) {
+            return donHangs;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;
@@ -98,12 +105,13 @@ public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
             DonHangDAO.setThamSoTruyVan(ps, trangThai);
             List<DonHang> donHangs = this.sangThucThes(ps.executeQuery());
             for (DonHang donHang : donHangs) {
-                if (!this.dongDonHangs(donHang)) {
-                    throw new Exception();
+                if (!this.dongDonHangs(donHang) || !this.nguoiDung(donHang)) throw new Exception();
+                for (DongDonHang dongDonHang : donHang.getDongDonHangs()) {
+                    if (!DONG_DON_HANG_DAO.sach(dongDonHang)) throw new Exception();
                 }
             }
-        }
-        catch (Exception e) {
+            return donHangs;
+        } catch (Exception e) {
             e.printStackTrace();
         }
         return null;

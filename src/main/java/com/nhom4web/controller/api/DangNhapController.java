@@ -2,7 +2,7 @@ package com.nhom4web.controller.api;
 
 import com.nhom4web.dao.impl.NguoiDungDAO;
 import com.nhom4web.dao.impl.ThongTinDangNhapDAO;
-import com.nhom4web.model.DongDonHang;
+import com.nhom4web.model.GioHang;
 import com.nhom4web.model.NguoiDung;
 import com.nhom4web.model.ThongTinDangNhap;
 import com.nhom4web.utils.Hashing;
@@ -17,7 +17,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashSet;
 import java.util.LinkedHashMap;
 
 @MultipartConfig
@@ -43,7 +42,7 @@ public class DangNhapController extends HttpServlet {
             NguoiDung nguoiDung = ND_DAO.tim(thongTinDangNhap.getMaNguoiDung());
             HttpSession sessionDangNhap = req.getSession();
             sessionDangNhap.setAttribute("nguoiDung", nguoiDung);
-            sessionDangNhap.setAttribute("gioHang", new HashSet<DongDonHang>());
+            sessionDangNhap.setAttribute("gioHang", new GioHang());
             Json.chuyenThanhJson(resp, "Đăng nhập thành công");
             return;
         }

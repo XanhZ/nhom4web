@@ -97,37 +97,6 @@ public class DongDonHangDAO extends AbstractDAO<DongDonHang> implements IDongDon
     }
 
     @Override
-    public boolean them(int maDonHang, DongDonHang dongDonHang, boolean luu) {
-        String sql = String.format(
-                "INSERT INTO %s (maSach, maDonHang, soLuong, donGia) VALUES (?, ?, ?, ?)",
-                this.tenBang
-        );
-        try {
-            Sach sach = dongDonHang.getSach();
-            sach.setSoLuongTrongKho(sach.getSoLuongTrongKho() - dongDonHang.getSoLuong());
-            sach.setThoiGianCapNhat(new Timestamp(System.currentTimeMillis()));
-            if (!SACH_DAO.capNhat(sach, false)) throw new Exception();
-            PreparedStatement ps = ketNoi.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            DongDonHangDAO.setThamSoTruyVan(
-                    ps,
-                    sach.getMa(),
-                    maDonHang,
-                    dongDonHang.getSoLuong(),
-                    dongDonHang.getDonGia()
-            );
-            ps.executeUpdate();
-            this.setKhoaChinh(dongDonHang, ps.getGeneratedKeys());
-            if (luu) ketNoi.commit();
-            return true;
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            if (luu) this.rollback();
-        }
-        return false;
-    }
-
-    @Override
     public boolean capNhat(DongDonHang dongDonHang, boolean luu) {
         try {
             String sql = String.format(
