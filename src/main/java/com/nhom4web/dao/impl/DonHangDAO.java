@@ -12,6 +12,7 @@ import java.util.List;
 
 public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
     private static final DongDonHangDAO DONG_DON_HANG_DAO = new DongDonHangDAO();
+    private static final SachDAO SACH_DAO = new SachDAO();
 
     public DonHangDAO() {
         super("donHang");
@@ -55,7 +56,8 @@ public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
         DonHang donHang = super.tim(ma);
         if (!this.dongDonHangs(donHang)) return null;
         for (DongDonHang dongDonHang : donHang.getDongDonHangs()) {
-            if (!DONG_DON_HANG_DAO.sach(dongDonHang)) return null;
+            if (!DONG_DON_HANG_DAO.sach(dongDonHang) || !SACH_DAO.hinhAnhSachs(dongDonHang.getSach()))
+                return null;
         }
         return donHang;
     }
@@ -87,7 +89,8 @@ public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
             for (DonHang donHang : donHangs) {
                 if (!this.dongDonHangs(donHang)) throw new Exception();
                 for (DongDonHang dongDonHang : donHang.getDongDonHangs()) {
-                    if (!DONG_DON_HANG_DAO.sach(dongDonHang)) throw new Exception();
+                    if (!DONG_DON_HANG_DAO.sach(dongDonHang) || !SACH_DAO.hinhAnhSachs(dongDonHang.getSach()))
+                        throw new Exception();
                 }
             }
             return donHangs;
@@ -107,7 +110,8 @@ public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
             for (DonHang donHang : donHangs) {
                 if (!this.dongDonHangs(donHang) || !this.nguoiDung(donHang)) throw new Exception();
                 for (DongDonHang dongDonHang : donHang.getDongDonHangs()) {
-                    if (!DONG_DON_HANG_DAO.sach(dongDonHang)) throw new Exception();
+                    if (!DONG_DON_HANG_DAO.sach(dongDonHang) || !SACH_DAO.hinhAnhSachs(dongDonHang.getSach()))
+                        throw new Exception();
                 }
             }
             return donHangs;

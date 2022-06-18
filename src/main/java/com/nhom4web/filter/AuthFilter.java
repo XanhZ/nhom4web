@@ -89,6 +89,8 @@ public class AuthFilter extends HttpFilter {
         PHAN_QUYEN_GET.put("/api/danh-muc", IS_CONG_KHAI);
         PHAN_QUYEN_GET.put("/api/danh-muc/\\d+", IS_CONG_KHAI);
         PHAN_QUYEN_GET.put("/api/gio-hang", IS_NGUOI_DUNG);
+        PHAN_QUYEN_GET.put("/api/nguoi-dung/don-hang/\\d+", IS_NGUOI_DUNG);
+        PHAN_QUYEN_GET.put("/api/don-hang/\\d+", IS_ADMIN);
 
         // POST
         PHAN_QUYEN_POST.put("/api/dang-xuat", IS_NGUOI_DUNG);
