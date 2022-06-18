@@ -24,10 +24,7 @@ public class SachMainFilter extends HttpFilter {
     private static final HinhAnhSachFilter HINH_ANH_SACH_FILTER = new HinhAnhSachFilter();
     private static final PhanLoaiSachFilter PHAN_LOAI_SACH_FILTER = new PhanLoaiSachFilter();
 
-    private boolean urlKhongKhop;
-
     private boolean thucThi(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        this.urlKhongKhop = false;
         String method = req.getMethod();
         String uri = req.getRequestURI();
         Set<Map.Entry<String, Method>> mapEntries = null;
@@ -55,7 +52,6 @@ public class SachMainFilter extends HttpFilter {
                 return (boolean) entry.getValue().invoke(o, req, resp);
             }
         }
-        this.urlKhongKhop = true;
         return false;
     }
 
@@ -74,7 +70,7 @@ public class SachMainFilter extends HttpFilter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        res.setStatus(this.urlKhongKhop ? HttpServletResponse.SC_NOT_FOUND : HttpServletResponse.SC_BAD_REQUEST);
+        res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     static {

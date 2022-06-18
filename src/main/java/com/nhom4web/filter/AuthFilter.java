@@ -8,46 +8,69 @@ import javax.servlet.http.HttpFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 @WebFilter(filterName = "Auth")
 public class AuthFilter extends HttpFilter {
-    private static final Map<String, List<String>> urlNguoiDungs = new HashMap<>();
+    private static final Map<String, Integer> PHAN_QUYEN_GET = new HashMap<>();
+    private static final Map<String, Integer> PHAN_QUYEN_DELETE = new HashMap<>();
+    private static final Map<String, Integer> PHAN_QUYEN_POST = new HashMap<>();
+    private static final Map<String, Integer> PHAN_QUYEN_PUT = new HashMap<>();
+
+    public static final int IS_CONG_KHAI = -1;
     public static final int IS_ADMIN = 1;
-    private static final int IS_NGUOI_DUNG = 0;
-    private static final String[] REGEX_DUONG_DAN_CONG_KHAIS = {
-            "/api/sach.*",
-            "/api/danh-muc.*",
-            "/api/binh-luan.*"
-    };
+    public static final int IS_NGUOI_DUNG = 0;
+
+    private boolean tonTaiUrl;
 
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
-        boolean hopLe = true;
-        String httpMethod = req.getMethod();
-        int vaiTro = this.getVaiTro(req);
-        switch (vaiTro) {
-            case IS_NGUOI_DUNG: {
-                hopLe = this.isDuongDanNguoiDung(httpMethod, req.getRequestURI());
+        Map<String, Integer> phanQuyenMap = null;
+        switch (req.getMethod()) {
+            case "GET": {
+                phanQuyenMap = PHAN_QUYEN_GET;
                 break;
             }
-            case IS_ADMIN: {
+            case "DELETE": {
+                phanQuyenMap = PHAN_QUYEN_DELETE;
                 break;
             }
-            default: {
-                hopLe = httpMethod.equals("GET") && this.isDuongDanCongKhai(req.getRequestURI());
+            case "POST": {
+                phanQuyenMap = PHAN_QUYEN_POST;
+                break;
+            }
+            case "PUT": {
+                phanQuyenMap = PHAN_QUYEN_PUT;
                 break;
             }
         }
-        if (hopLe) {
+        int vaiTro = this.getVaiTro(req);
+        if (phanQuyenMap == null) {
+            res.setStatus(HttpServletResponse.SC_METHOD_NOT_ALLOWED);
+            return;
+        }
+        if (this.isHopLe(vaiTro, req.getRequestURI(), phanQuyenMap)) {
             chain.doFilter(req, res);
             return;
         }
-        res.setStatus(vaiTro == -1 ? HttpServletResponse.SC_UNAUTHORIZED : HttpServletResponse.SC_FORBIDDEN);
+        if (this.tonTaiUrl) {
+            res.setStatus(vaiTro == -1 ? HttpServletResponse.SC_UNAUTHORIZED : HttpServletResponse.SC_FORBIDDEN);
+            return;
+        }
+        res.setStatus(HttpServletResponse.SC_NOT_FOUND);
+    }
+
+    private boolean isHopLe(int vaiTro, String uri, Map<String, Integer> phanQuyenMap) {
+        this.tonTaiUrl = false;
+        for (Map.Entry<String, Integer> o : phanQuyenMap.entrySet()) {
+            if (Pattern.matches(o.getKey(), uri)) {
+                this.tonTaiUrl = true;
+                return vaiTro >= o.getValue();
+            }
+        }
+        return false;
     }
 
     private int getVaiTro(HttpServletRequest req) {
@@ -55,45 +78,47 @@ public class AuthFilter extends HttpFilter {
         return nguoiDung == null ? -1 : nguoiDung.getLoaiNguoiDung();
     }
 
-    private boolean isDuongDanCongKhai(String url) {
-        for (String regex : REGEX_DUONG_DAN_CONG_KHAIS) {
-            if (Pattern.matches(regex, url)) return true;
-        }
-        return false;
-    }
-
-    private boolean isDuongDanNguoiDung(String method, String url) {
-        List<String> regexes = urlNguoiDungs.get(method);
-        for (String regex : regexes) {
-            if (Pattern.matches(regex, url)) return true;
-        }
-        return false;
-    }
-
     static {
-        // DELETE
-        List<String> delete = new ArrayList<>();
-        delete.add("/api/binh-luan/\\d+");
-
         // GET
-        List<String> get = new ArrayList<>();
-        get.add("/api/dong-hang.*");
-        get.add("/api/dong-don-hang.*");
+        PHAN_QUYEN_GET.put("/api/sach", IS_CONG_KHAI);
+        PHAN_QUYEN_GET.put("/api/sach/\\d+", IS_CONG_KHAI);
+        PHAN_QUYEN_GET.put("/api/sach/\\d+/hinh-anh-sach", IS_CONG_KHAI);
+        PHAN_QUYEN_GET.put("/api/sach/\\d+/hinh-anh-sach/\\d+", IS_CONG_KHAI);
+        PHAN_QUYEN_GET.put("/api/sach/\\d+/phan-loai-sach", IS_CONG_KHAI);
+        PHAN_QUYEN_GET.put("/api/sach/\\d+/phan-loai-sach/\\d+", IS_CONG_KHAI);
+        PHAN_QUYEN_GET.put("/api/danh-muc", IS_CONG_KHAI);
+        PHAN_QUYEN_GET.put("/api/danh-muc/\\d+", IS_CONG_KHAI);
+        PHAN_QUYEN_GET.put("/api/gio-hang", IS_NGUOI_DUNG);
 
         // POST
-        List<String> post = new ArrayList<>();
-        post.add("/api/don-hang");
-        post.add("/api/dong-don-hang");
-        post.add("/api/binh-luan");
+        PHAN_QUYEN_POST.put("/api/dang-xuat", IS_NGUOI_DUNG);
+        PHAN_QUYEN_POST.put("/api/danh-muc", IS_ADMIN);
+        PHAN_QUYEN_POST.put("/api/sach", IS_ADMIN);
+        PHAN_QUYEN_POST.put("/api/sach/\\d+/binh-luan", IS_NGUOI_DUNG);
+        PHAN_QUYEN_POST.put("/api/sach/\\d+/hinh-anh-sach", IS_ADMIN);
+        PHAN_QUYEN_POST.put("/api/sach/\\d+/phan-loai-sach", IS_ADMIN);
+        PHAN_QUYEN_POST.put("/api/nguoi-dung/don-hang", IS_NGUOI_DUNG);
+        PHAN_QUYEN_POST.put("/api/gio-hang", IS_NGUOI_DUNG);
 
         // PUT
-        List<String> put = new ArrayList<>();
-        put.add("/api/don-hang/\\d+");
-        put.add("/api/dong-don-hang/\\d+");
+        PHAN_QUYEN_PUT.put("/api/nguoi-dung/don-hang/\\d+", IS_NGUOI_DUNG);
+        PHAN_QUYEN_PUT.put("/api/nguoi-dung/binh-luan/\\d+", IS_NGUOI_DUNG);
+        PHAN_QUYEN_PUT.put("/api/danh-muc/\\d+", IS_ADMIN);
+        PHAN_QUYEN_PUT.put("/api/sach/\\d+/binh-luan/\\d+", IS_ADMIN);
+        PHAN_QUYEN_PUT.put("/api/sach/\\d+", IS_ADMIN);
+        PHAN_QUYEN_PUT.put("/api/sach/\\d+/hinh-anh-sach/\\d+", IS_ADMIN);
+        PHAN_QUYEN_PUT.put("/api/sach/\\d+/phan-loai-sach/\\d+", IS_ADMIN);
+        PHAN_QUYEN_PUT.put("/api/don-hang/\\d+", IS_ADMIN);
+        PHAN_QUYEN_PUT.put("/api/gio-hang", IS_NGUOI_DUNG);
 
-        urlNguoiDungs.put("DELETE", delete);
-        urlNguoiDungs.put("GET", get);
-        urlNguoiDungs.put("POST", post);
-        urlNguoiDungs.put("PUT", put);
+        // DELETE
+        PHAN_QUYEN_DELETE.put("/api/nguoi-dung/binh-luan/\\d+", IS_NGUOI_DUNG);
+        PHAN_QUYEN_DELETE.put("/api/danh-muc/\\d+", IS_ADMIN);
+        PHAN_QUYEN_DELETE.put("/api/sach/\\d+", IS_ADMIN);
+        PHAN_QUYEN_DELETE.put("/api/sach/\\d+/binh-luan/\\d+", IS_ADMIN);
+        PHAN_QUYEN_DELETE.put("/api/sach/\\d+/hinh-anh-sach/\\d+", IS_ADMIN);
+        PHAN_QUYEN_DELETE.put("/api/sach/\\d+/phan-loai-sach/\\d+", IS_ADMIN);
+        PHAN_QUYEN_DELETE.put("/api/don-hang/\\d+", IS_ADMIN);
+        PHAN_QUYEN_DELETE.put("/api/gio-hang", IS_NGUOI_DUNG);
     }
 }

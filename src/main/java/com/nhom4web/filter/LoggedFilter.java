@@ -18,6 +18,7 @@ public class LoggedFilter extends HttpFilter {
         }
         if (req.getSession().getAttribute("nguoiDung") != null) {
             res.setStatus(HttpServletResponse.SC_FORBIDDEN);
+            return;
         }
         chain.doFilter(req, res);
     }

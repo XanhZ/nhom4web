@@ -15,8 +15,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-@MultipartConfig(maxFileSize = 1024 * 1024 * 4, // 4 MB
-        maxRequestSize = 1024 * 1024 * 25 // 25 MB
+@MultipartConfig(maxFileSize = 1024 * 1024 * 2, // 2 MB
+        maxRequestSize = 1024 * 1024 * 10 // 10 MB
 )
 public class SachFilter extends AbstractFilter {
     public SachFilter() {

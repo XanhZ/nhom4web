@@ -13,13 +13,13 @@ import java.util.Map;
 @MultipartConfig
 public class DangKyFilter extends AbstractFilter {
     public DangKyFilter() {
-        this.luat.put("sdt", KHONG_BO_TRONG + "/" + SDT);
-        this.luat.put("email", KHONG_BO_TRONG + "/" + EMAIL);
+        this.luat.put("sdt", SDT);
+        this.luat.put("email", EMAIL);
+        this.luat.put("matKhau", MAT_KHAU);
 
-        this.e.put("sdt.khong-bo-trong", "Không được bỏ trống");
-        this.e.put("sdt.sdt", "Số điện thoại không hợp lệ");
-        this.e.put("email.khong-bo-trong", "Không được bỏ trống");
-        this.e.put("email.email", "Email không hợp lệ");
+        this.e.put("sdt." + SDT, "Số điện thoại không hợp lệ");
+        this.e.put("email." + EMAIL, "Email không hợp lệ");
+        this.e.put("matKhau." + MAT_KHAU, "Mật khẩu không hợp lệ");
     }
 
     @Override
@@ -42,7 +42,6 @@ public class DangKyFilter extends AbstractFilter {
             Json.chuyenThanhJson(resp, loi);
             return false;
         }
-
         return true;
     }
 

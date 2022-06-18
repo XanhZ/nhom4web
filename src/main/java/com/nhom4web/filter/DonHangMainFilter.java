@@ -27,10 +27,7 @@ public class DonHangMainFilter extends HttpFilter {
     private static final DonHangFilter DON_HANG_FILTER = new DonHangFilter();
     private static final DonHangNDFilter DON_HANG_ND_FILTER = new DonHangNDFilter();
 
-    private boolean urlKhongKhop;
-
     private boolean thucThi(HttpServletRequest req, HttpServletResponse resp) throws Exception {
-        this.urlKhongKhop = false;
         String method = req.getMethod();
         String uri = req.getRequestURI();
         Set<Map.Entry<String, Method>> mapEntries = null;
@@ -57,7 +54,6 @@ public class DonHangMainFilter extends HttpFilter {
                 return (boolean) entry.getValue().invoke(o, req, resp);
             }
         }
-        this.urlKhongKhop = true;
         return false;
     }
 
@@ -76,9 +72,7 @@ public class DonHangMainFilter extends HttpFilter {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        if (this.urlKhongKhop) {
-            res.setStatus(HttpServletResponse.SC_NOT_FOUND);
-        }
+        res.setStatus(HttpServletResponse.SC_BAD_REQUEST);
     }
 
     static {
