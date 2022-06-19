@@ -9,7 +9,7 @@ header {
 }
 
 header .dongGoi {
-	padding: 0 30px;
+	padding-left: 30px;
 	position: relative;
 	width: 100%;
 	display: flex;
@@ -47,7 +47,12 @@ header .dongGoi {
 .dieuHuong {
 	display: flex;
 	flex: 1;
-	justify-content: space-evenly;
+}
+
+.dieuHuong>div,
+.dieuHuong>a {
+	width: calc(100% /7);
+	text-align: center;
 }
 
 .dieuHuong>div,
@@ -94,3 +99,21 @@ header .dongGoi {
 .danhMuc li a {
 	display: block;
 }
+
+.gioHang {
+	display: flex;
+}
+
+.gioHang span {
+	color: #ff7979;
+}
+
+.gioHang a {
+	color: white;
+}
+
+.gioHang:hover a {
+	color: #2a2185;
+}
+
+

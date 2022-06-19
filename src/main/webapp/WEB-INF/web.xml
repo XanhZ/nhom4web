@@ -14,7 +14,7 @@
   </security-constraint>
 
   <welcome-file-list>
-    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>views/trangchu.jsp</welcome-file>
   </welcome-file-list>
 
   <!-- Session config  -->
@@ -87,4 +87,11 @@
     <url-pattern>/api/gio-hang</url-pattern>
   </filter-mapping>
   <!-- End Gio Hang Filter  -->
+
+  <jsp-config>
+    <jsp-property-group>
+      <url-pattern>*.jsp</url-pattern>
+      <page-encoding>UTF-8</page-encoding>
+    </jsp-property-group>
+  </jsp-config>
 </web-app>
