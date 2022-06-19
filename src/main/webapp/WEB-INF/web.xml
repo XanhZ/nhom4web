@@ -17,27 +17,33 @@
     <welcome-file>views/trangchu.jsp</welcome-file>
   </welcome-file-list>
 
+  <servlet-mapping>
+    <servlet-name>default</servlet-name>
+    <url-pattern>/api-docs/*</url-pattern>
+  </servlet-mapping>
+
   <!-- Session config  -->
   <session-config>
     <session-timeout>120</session-timeout>
     <tracking-mode>COOKIE</tracking-mode>
   </session-config>
 
+  <request-character-encoding>UTF-8</request-character-encoding>
+
   <!-- Web context listener to prevent leak memory when connect to MySQL -->
   <listener>
     <listener-class>com.nhom4web.HuyJdbcListener</listener-class>
   </listener>
 
-  <!-- Sitemesh decorator  -->
+  <!-- CORS Filter -->
   <filter>
-    <filter-name>sitemesh</filter-name>
-    <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
+    <filter-name>CORSFilter</filter-name>
+    <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
   </filter>
   <filter-mapping>
-    <filter-name>sitemesh</filter-name>
-    <url-pattern>/*</url-pattern>
+    <filter-name>CORSFilter</filter-name>
+    <url-pattern>/api/*</url-pattern>
   </filter-mapping>
-  <!-- End sitemesh  -->
 
   <!-- Begin Logged Filter  -->
   <filter-mapping>

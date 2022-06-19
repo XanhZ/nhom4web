@@ -18,11 +18,10 @@
 
     <jstl.version>1.2</jstl.version>
     <mysql.version>8.0.29</mysql.version>
-    <weld.version>2.4.8.Final</weld.version>
     <gson.version>2.9.0</gson.version>
-    <sitemesh.version>2.4.2</sitemesh.version>
     <cloudinary.version>1.32.2</cloudinary.version>
     <commons.io.version>2.11.0</commons.io.version>
+    <cors.filter.version>2.10</cors.filter.version>
   </properties>
 
   <!--  Begin dependencies-->
@@ -60,25 +59,11 @@
       <version>${mysql.version}</version>
     </dependency>
 
-    <!-- https://mvnrepository.com/artifact/org.jboss.weld.servlet/weld-servlet -->
-    <dependency>
-      <groupId>org.jboss.weld.servlet</groupId>
-      <artifactId>weld-servlet</artifactId>
-      <version>${weld.version}</version>
-    </dependency>
-
     <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
     <dependency>
       <groupId>com.google.code.gson</groupId>
       <artifactId>gson</artifactId>
       <version>2.9.0</version>
-    </dependency>
-
-    <!-- https://mvnrepository.com/artifact/opensymphony/sitemesh -->
-    <dependency>
-      <groupId>opensymphony</groupId>
-      <artifactId>sitemesh</artifactId>
-      <version>${sitemesh.version}</version>
     </dependency>
 
     <!-- https://mvnrepository.com/artifact/com.cloudinary/cloudinary-http44 -->
@@ -95,6 +80,12 @@
       <version>${commons.io.version}</version>
     </dependency>
 
+    <!-- https://mvnrepository.com/artifact/com.thetransactioncompany/cors-filter -->
+    <dependency>
+      <groupId>com.thetransactioncompany</groupId>
+      <artifactId>cors-filter</artifactId>
+      <version>${cors.filter.version}</version>
+    </dependency>
   </dependencies>
   <!-- End dependencies-->
 
