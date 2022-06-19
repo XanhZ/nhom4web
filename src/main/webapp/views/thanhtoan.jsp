@@ -15,34 +15,7 @@
 </head>
 
 <body>
-<header>
-  <div class="dongGoi">
-    <div class="logo">
-      <a href="trangchu.html">BookShop</a>
-    </div>
-    <div class="timKiem">
-      <input type="text" name="q" id="q" placeholder="Tìm kiếm...">
-    </div>
-    <nav class="dieuHuong">
-      <a href="trangchu.html" class="dieuHuong__duongDan">Trang chủ</a>
-      <div class="dieuHuong__danhMuc">
-        <div class="btn-danhMuc">Tủ sách</div>
-        <ul class="danhMuc">
-          <li><a href="#">Sách hướng nghiệp</a></li>
-          <li><a href="#">Sách IT</a></li>
-          <li><a href="#">Sách văn học</a></li>
-          <li><a href="#">Sách toán học</a></li>
-          <li><a href="#">Sách kỹ năng</a></li>
-        </ul>
-      </div>
-      <a href="gioithieu.html" class="dieuHuong__duongDan">Giới thiệu</a>
-      <a href="lienhe.html" class="dieuHuong__duongDan">Liên hệ</a>
-      <div class="nguoiDung">
-        <span class="tenNguoiDung">Nguyễn Văn A</span>
-      </div>
-    </nav>
-  </div>
-</header>
+<%@ include file="header.jsp"%>
 <div class="thungDung">
   <h1>Thông tin thanh toán</h1>
   <div class="noi-dung__sach">
@@ -70,16 +43,6 @@
     </div>
     <div>
       <div class="sach__thong-tin">
-        <h2 class="ten-sach">Sách Chủ nghĩa Khắc kỷ - Seneca: Những Bức Thư Đạo Đức - Triết học thức hành Đi tìm bình yên trong tâm trí</h2>
-        <div class="gia-ban">
-          <span class="thong-tin__tieu-de">Giá bán:</span>
-          <span class="gia-ban__thuc-te">129,000₫</span>
-          <del class="gia-ban__gia-goc">149,000₫</del>
-        </div>
-        <div class="tac-gia">
-          <span class="thong-tin__tieu-de">Tác giả:</span>
-          <span class="tac-gia__ten">Nhóm tác giả Spiderum</span>
-        </div>
       </div>
       <form onsubmit="return themSach()" class="bangThanhToan">
         <input type="text" placeholder="Họ và tên">
@@ -91,55 +54,9 @@
     </div>
   </div>
 </div>
-<footer class="cuoiTrang">
-  <div class="veChungToi">
-    <p class="tieuDe">giới thiệu</p>
-    <div style="font-size: 15px;color:#acb0b1;margin:20px 0;">Bản quyền của Công Ty Cổ Phần Ahora - Giấy chứng nhận
-      ĐKKD số: 0107886528 do Phòng ĐKKD Sở kế hoạch và đầu tư Tp Hà Nội cấp ngày 14/06/2017</div>
-    <div class="mangXaHoi">
-      <a href="#" class="mxh-bieuTuong">
-        <i class="fab fa-facebook-f"></i>
-      </a>
-      <a href="#" class="mxh-bieuTuong">
-        <i class="fab fa-twitter"></i>
-      </a>
-      <a href="#" class="mxh-bieuTuong">
-        <i class="fab fa-google"></i>
-      </a>
-      <a href="#" class="mxh-bieuTuong">
-        <i class="fab fa-linkedin-in"></i>
-      </a>
-    </div>
-  </div>
-  <div class="cauHoi">
-    <p class="tieuDe">pháp lý & câu hỏi</p>
-    <ul>
-      <li><a href="#">Tìm kiếm</a></li>
-      <li><a href="#">Giới thiệu</li>
-      <li><a href="#">Điều khoản và điều kiện giao dịch chung</a></li>
-      <li><a href="#">Chính sách giao nhận sản phẩm</a></li>
-      <li><a href="#">Chính sách bảo vệ thông tin cá nhân</a></li>
-      <li><a href="#">Chính sách thanh toán</a></li>
-      <li><a href="#">Tủ sách hướng nghiệp</a></li>
-      <li><a href="#">Chủ nghĩa Khắc Kỷ</a></li>
-      <li><a href="#">Hành trang Ngành IT</a></li>
-      <li><a href="#">Quà tặng cuộc sống</a></li>
-    </ul>
-  </div>
-  <div class="thongTin">
-    <p class="tieuDe">thông tin liên hệ</p>
-    <ul>
-      <li>Địa chỉ: 96A Trần Phú, P. Mộ Lao, Hà Đông, Hà Nội, Việt Nam</li>
-      <li>Điện thoại: 0988888888</li>
-      <li>Fax:</li>
-      <li>Mail: contact@nhom4.com</li>
-    </ul>
-  </div>
-  <div class="fanpage">
-    <p class="tieuDe">fanpage</p>
-  </div>
-</footer>
-<script type="text/javascript" src="${pageContext.request.contextPath}/js/sanpham.js"></script>
+<%@ include file="footer.jsp"%>
+<script src="../js/header.js"></script>
+<script type="text/javascript" src="../js/thanhtoan.js"></script>
 </body>
 
 </html>

@@ -19,13 +19,11 @@
 	position: relative;
 }
 
-
 /*----------------SAN PHAM----------------*/
 
 .loaiSanPham {
 	width: 100%;
 	margin: 50px 0;
-	height: 600px;
 	border-bottom: 2px solid #8f9194;
 }
 
@@ -46,34 +44,80 @@
 .loaiSanPham .trungBay {
 	display: flex;
 	padding: 10px 40px 30px 40px;
-	justify-content: space-around;
+	justify-content: start;
 	width: 100%;
 	height: 100%;
+	flex-wrap: wrap;
+}
+
+.locSach {
+	display: flex;
+	justify-content: space-around;
+}
+
+.luaChon {
+	background-color: white;
+	position: relative;
+	width: 400px;
+	height: 70px;
+	z-index: 3;
+	border: 1px solid black;
+}
+
+.luaChon select {
+	background: transparent;
+	border: none;
+	width: 100%;
+	height: 100%;
+	font-size: 22px;
+	z-index: 2;
+	padding: 0 10px;
+	position: relative;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
+}
+
+.luaChon select:hover {
+	cursor: pointer;
+}
+
+.luaChon:after {
+	content: '\25bc';
+	font-size: 25px;
+	width: 50px;
+	height: 30px;
+	position: absolute;
+	background-color: #3498db;
+	z-index: 1;
+	right: 20px;
+	top: 20px;
+	color: white;
+	text-align: center;
 }
 
 .sach {
-	display: block;
+	display: inline-block;
 	position: relative;
 	transition: all 0.3s ease;
-	border: 1px solid #cacaca;
+	border: 1px solid;
 	height: fit-content;
 	padding: 6px 8px;
+	width: calc(25% - 5px);
+	margin-right: 3px;
+	margin-bottom: 5px;
 }
 
-.hinh-anh-sach {
-	position: relative;
-}
-
-.hinh-anh-sach img {
+.sach a img {
 	display: inline-block;
-	width: 270px;
-	height: 300px;
+	width: 100%;
+	height: 100%;
 }
 
 .manMo {
 	display: none;
 	width: 100%;
-	height: 300px;
+	height: 85%;
 	background-color: rgba(255, 255, 255, 0.5);
 	position: absolute;
 	top: 0;
@@ -84,27 +128,24 @@
 	cursor: pointer;
 }
 
-.manMo>button {
-	cursor: pointer;
+.manMo>p {
+	display: inline-block;
+	text-align: center;
 	line-height: 30px;
 	height: 30px;
-	width: 120px;
+	width: 145px;
+	margin-top: calc(100% - 20px);
 	background-color: #242526;
 	text-transform: uppercase;
 	font-size: 12px;
-	color: white;
 }
 
-.sach .giamGia {
-	position: absolute;
-	top: 10px;
-	left: 10px;
-	display: block;
-	background-color: #0dd6f3;
-	padding: 5px 7px;
-	border-radius: 4px;
-	color: #fff;
-	font-size: 15px;
+.manMo>p a {
+	text-decoration: none;
+	color: white;
+	display: inline-block;
+	width: 100%;
+	height: 100%;
 }
 
 .sach:hover .manMo {
@@ -120,3 +161,5 @@
 	-webkit-box-orient: vertical;
 	display: -webkit-box;
 }
+
+
