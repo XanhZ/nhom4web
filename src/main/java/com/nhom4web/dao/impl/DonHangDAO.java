@@ -54,9 +54,13 @@ public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
     @Override
     public DonHang tim(int ma) {
         DonHang donHang = super.tim(ma);
-        if (!this.dongDonHangs(donHang)) return null;
+        if (donHang == null || !this.dongDonHangs(donHang)) return null;
         for (DongDonHang dongDonHang : donHang.getDongDonHangs()) {
-            if (!DONG_DON_HANG_DAO.sach(dongDonHang) || !SACH_DAO.hinhAnhSachs(dongDonHang.getSach()))
+            if (
+                    !this.nguoiDung(donHang) ||
+                            !DONG_DON_HANG_DAO.sach(dongDonHang) ||
+                            !SACH_DAO.hinhAnhSachs(dongDonHang.getSach())
+            )
                 return null;
         }
         return donHang;

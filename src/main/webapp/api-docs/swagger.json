@@ -4,9 +4,7 @@
         "title": "Tài liệu API nhóm 4",
         "version": "1.0.0"
     },
-    "schemes": [
-        "https"
-    ],
+    "schemes": [ "https" ],
     "host": "localhost:8443",
     "tags": [
         {
@@ -39,49 +37,75 @@
         }
     ],
     "definitions": {
-        "sach": {
-            "thanhCong": {
-                "description": "Thành công",
-                "schema": {
-                    "type": "object",
-                    "description": "Sách theo mã",
-                    "properties": {
-                        "ma": {
-                            "type": "integer"
-                        },
-                        "ten": {
-                            "type": "string"
-                        },
-                        "giaTien": {
-                            "type": "integer"
-                        },
-                        "soLuongTrongKho": {
-                            "type": "integer"
-                        },
-                        "thoiGianTao": {
-                            "type": "string"
-                        },
-                        "thoiGianCapNhat": {
-                            "type": "string"
-                        },
-                        "hinhAnhSachs": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "ma": {
-                                        "type": "integer"
-                                    },
-                                    "duongDan": {
-                                        "type": "string"
-                                    },
-                                    "publicId": {
-                                        "type": "string"
-                                    }
-                                }
-                            }
-                        }
-                    }
+        "Sach": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "ten": { "type": "string"   },
+                "giaTien": { "type": "integer" },
+                "soLuongTrongKho": { "type": "integer" },
+                "thoiGianTao": { "type": "string" },
+                "thoiGianCapNhat": { "type": "string" },
+                "hinhAnhSachs": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/HinhAnhSach" }
+                }
+            }
+        },
+        "HinhAnhSach": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "duongDan": { "type": "string" },
+                "publicId": { "type": "string" }
+            }
+        },
+        "DanhMuc": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "ten": { "type": "string" },
+                "thoiGianTao": { "type": "string" },
+                "thoiGianCapNhat": { "type": "string" }
+            }
+        },
+        "PhanLoaiSach": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "danhMuc": { "$ref": "#/definitions/DanhMuc" }
+            }
+        },
+        "SachTrongGioHang": {
+            "type": "object",
+            "properties": {
+                "soLuong": { "type": "integer" },
+                "sach": { "$ref": "#/definitions/Sach"}
+            }
+        },
+        "GioHang": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/SachTrongGioHang" }
+        },
+        "DongDonHang": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "soLuong": { "type": "integer" },
+                "donGia": { "type": "integer" },
+                "sach": { "$ref": "#/definitions/Sach" }
+            }
+        },
+        "DonHang": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "diaChi": { "type": "string" },
+                "thoiGianTao": { "type": "string" },
+                "thoiGianCapNhat": { "type": "string" },
+                "dongDonHangs": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/DongDonHang" }
                 }
             }
         }
@@ -89,9 +113,7 @@
     "paths": {
         "/api/danh-muc": {
             "get": {
-                "tags": [
-                    "Danh mục"
-                ],
+                "tags": [ "Danh mục" ],
                 "operationId": "lay-toan-bo-danh-muc",
                 "responses": {
                     "200": {
@@ -99,38 +121,16 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "object",
-                                "description": "Danh sách các danh mục",
-                                "properties": {
-                                    "ma": {
-                                        "type": "integer"
-                                    },
-                                    "ten": {
-                                        "type": "string"
-                                    },
-                                    "thoiGianTao": {
-                                        "type": "string"
-                                    },
-                                    "thoiGianCapNhat": {
-                                        "type": "string"
-                                    }
-                                }
+                                "$ref": "#/definitions/DanhMuc"
                             }
                         }
                     }
                 }
             },
             "post": {
-                "tags": [
-                    "Danh mục"
-                ],
+                "tags": [ "Danh mục" ],
                 "operationId": "them-moi-mot-danh-muc",
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "tenDanhMuc",
@@ -143,22 +143,8 @@
                     "200": {
                         "description": "Thành công",
                         "schema": {
-                            "type": "object",
                             "description": "Thêm một danh mục",
-                            "properties": {
-                                "tenDanhMuc": {
-                                    "type": "integer"
-                                },
-                                "ten": {
-                                    "type": "string"
-                                },
-                                "thoiGianTao": {
-                                    "type": "string"
-                                },
-                                "thoiGianCapNhat": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/DanhMuc"
                         }
                     }
                 }
@@ -166,15 +152,8 @@
         },
         "/api/danh-muc/{ma}": {
             "get": {
-                "tags": [
-                    "Danh mục"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Danh mục" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "ma",
@@ -188,37 +167,16 @@
                     "200": {
                         "description": "Thành công",
                         "schema": {
-                            "type": "object",
                             "description": "Danh mục theo mã",
-                            "properties": {
-                                "ma": {
-                                    "type": "integer"
-                                },
-                                "ten": {
-                                    "type": "string"
-                                },
-                                "thoiGianTao": {
-                                    "type": "string"
-                                },
-                                "thoiGianCapNhat": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/DanhMuc"
                         }
                     }
                 }
             },
             "put": {
-                "tags": [
-                    "Danh mục"
-                ],
+                "tags": [ "Danh mục" ],
                 "operationId": "cap-nhat-mot-danh-muc",
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "ma",
@@ -235,28 +193,14 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Thành công",
+                        "description": "Cập nhật thành công",
                         "schema": {
-                            "type": "object",
                             "description": "Cập nhật danh mục",
-                            "properties": {
-                                "tenDanhMuc": {
-                                    "type": "integer"
-                                },
-                                "ten": {
-                                    "type": "string"
-                                },
-                                "thoiGianTao": {
-                                    "type": "string"
-                                },
-                                "thoiGianCapNhat": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/DanhMuc"
                         }
                     },
                     "400": {
-                        "description": "Thất bại",
+                        "description": "Lỗi dữ liệu gửi đi",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -266,19 +210,15 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Không có quyền truy cập"
                     }
                 }
             },
             "delete": {
-                "tags": [
-                    "Danh mục"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Danh mục" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "ma",
@@ -297,12 +237,8 @@
         },
         "/api/dang-ky": {
             "post": {
-                "tags": [
-                    "Người dùng"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Người dùng" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "sdt",
@@ -338,23 +274,22 @@
                 "operationId": "dang-ky",
                 "responses": {
                     "200": {
-                        "description": "Thành công",
+                        "description": "Đăng ký thành công",
                         "schema": {
                             "type": "string",
                             "example": "Đăng ký thành công"
                         }
+                    },
+                    "403": {
+                        "description": "Không được phép"
                     }
                 }
             }
         },
         "/api/dang-nhap": {
             "post": {
-                "tags": [
-                    "Người dùng"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Người dùng" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "tenDangNhap",
@@ -374,53 +309,46 @@
                 "operationId": "dang-nhap",
                 "responses": {
                     "200": {
-                        "description": "Thành công",
+                        "description": "Đăng nhập thành công",
                         "schema": {
                             "type": "string",
                             "example": "Đăng nhập thành công"
                         }
                     },
                     "401": {
-                        "description": "Thất bại",
+                        "description": "Đăng nhập hất bại",
                         "schema": {
                             "type": "string",
                             "example": "Tên đăng nhập hoặc mật khẩu không đúng"
                         }
+                    },
+                    "403": {
+                        "description": "Không được phép"
                     }
                 }
             }
         },
         "/api/dang-xuat": {
             "post": {
-                "tags": [
-                    "Người dùng"
-                ],
+                "tags": [ "Người dùng" ],
                 "operationId": "dang-xuat",
                 "responses": {
                     "200": {
-                        "description": "Thành công",
+                        "description": "Đăng xuất thành công",
                         "schema": {
                             "type": "string",
                             "example": "Đăng xuất thành công"
                         }
                     },
                     "401": {
-                        "description": "Thất bại"
+                        "description": "Chưa xác thực"
                     }
                 }
             }
         },
         "/api/sach/{ma}": {
             "get": {
-                "tags": [
-                    "Sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Sách" ],
                 "parameters": [
                     {
                         "name": "ma",
@@ -432,20 +360,13 @@
                 "operationId": "lay-mot-sach-theo-ma",
                 "responses": {
                     "200": {
-                        "$ref": "#/definitions/sach/thanhCong"
+                        "$ref": "#/definitions/Sach"
                     }
                 }
             },
             "put": {
-                "tags": [
-                    "Sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Sách" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "ma",
@@ -495,20 +416,15 @@
                 "operationId": "cap-nhat-sach",
                 "responses": {
                     "200": {
-                        "$ref": "#/definitions/sach/thanhCong"
+                        "description": "Cập nhật sách thành công",
+                        "schema": {
+                            "$ref": "#/definitions/Sach"
+                        }
                     }
                 }
             },
             "delete": {
-                "tags": [
-                    "Sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Sách" ],
                 "parameters": [
                     {
                         "name": "ma",
@@ -519,23 +435,13 @@
                 ],
                 "operationId": "xoa-sach",
                 "responses": {
-                    "200": {
-                        "description": "Thành công"
-                    }
+                    "200": { "description": "Thành công" }
                 }
             }
         },
         "/api/sach": {
             "get": {
-                "tags": [
-                    "Sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Sách" ],
                 "parameters": [
                     {
                         "name": "tenSach",
@@ -588,63 +494,19 @@
                 "operationId": "lay-sach-theo-bo-loc",
                 "responses": {
                     "200": {
-                        "description": "Thành công",
+                        "description": "Tìm kiếm thành công",
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "object",
-                                "properties": {
-                                    "ma": {
-                                        "type": "integer"
-                                    },
-                                    "ten": {
-                                        "type": "string"
-                                    },
-                                    "giaTien": {
-                                        "type": "integer"
-                                    },
-                                    "soLuongTrongKho": {
-                                        "type": "integer"
-                                    },
-                                    "thoiGianTao": {
-                                        "type": "string"
-                                    },
-                                    "thoiGianCapNhat": {
-                                        "type": "string"
-                                    },
-                                    "hinhAnhSachs": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "object",
-                                            "properties": {
-                                                "ma": {
-                                                    "type": "integer"
-                                                },
-                                                "duongDan": {
-                                                    "type": "string"
-                                                },
-                                                "publicId": {
-                                                    "type": "string"
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
+                                "$ref": "#/definitions/Sach"
                             }
                         }
                     }
                 }
             },
             "post": {
-                "tags": [
-                    "Sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Sách" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "tenSach",
@@ -688,10 +550,13 @@
                 "operationId": "them-sach",
                 "responses": {
                     "200": {
-                        "$ref": "#/definitions/sach/thanhCong"
+                        "description": "Thêm thành công",
+                        "schema": {
+                            "$ref": "#/definitions/Sach"
+                        }
                     },
                     "400": {
-                        "description": "Thất bại",
+                        "description": "Lỗi dữ liệu gửi đi",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -709,21 +574,19 @@
                                 }
                             }
                         }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
                     }
                 }
             }
         },
         "/api/sach/{maSach}/hinh-anh-sach/{maHinhAnhSach}": {
             "get": {
-                "tags": [
-                    "Hình ảnh sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Hình ảnh sách" ],
                 "parameters": [
                     {
                         "name": "maSach",
@@ -741,34 +604,19 @@
                 "operationId": "lay-mot-hinh-anh-cua-mot-sach",
                 "responses": {
                     "200": {
-                        "description": "Thành công",
+                        "description": "Tìm thấy hình ảnh sách",
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ma": {
-                                    "type": "integer"
-                                },
-                                "duongDan": {
-                                    "type": "string"
-                                },
-                                "pulicId": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/HinhAnhSach"
                         }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy"
                     }
                 }
             },
             "put": {
-                "tags": [
-                    "Hình ảnh sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Hình ảnh sách" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "maSach",
@@ -781,39 +629,32 @@
                         "in": "path",
                         "required": true,
                         "type": "integer"
+                    },
+                    {
+                        "name": "anh",
+                        "in": "formData",
+                        "required": true,
+                        "type": "file"
                     }
                 ],
                 "operationId": "cap-nhat-mot-hinh-anh-cua-mot-sach",
                 "responses": {
                     "200": {
-                        "description": "Thành công",
+                        "description": "Cập nhật thành công",
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ma": {
-                                    "type": "integer"
-                                },
-                                "duongDan": {
-                                    "type": "string"
-                                },
-                                "pulicId": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/HinhAnhSach"
                         }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
                     }
                 }
             },
             "delete": {
-                "tags": [
-                    "Hình ảnh sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Hình ảnh sách" ],
                 "parameters": [
                     {
                         "name": "maSach",
@@ -831,22 +672,20 @@
                 "operationId": "xoa-mot-hinh-anh-cua-mot-sach",
                 "responses": {
                     "200": {
-                        "description": "Thành công"
+                        "description": "Xóa thành công"
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
                     }
                 }
             }
         },
         "/api/sach/{maSach}/hinh-anh-sach": {
             "get": {
-                "tags": [
-                    "Hình ảnh sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Hình ảnh sách" ],
                 "parameters": [
                     {
                         "name": "maSach",
@@ -862,39 +701,27 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "object",
-                                "properties": {
-                                    "ma": {
-                                        "type": "integer"
-                                    },
-                                    "duongDan": {
-                                        "type": "string"
-                                    },
-                                    "pulicId": {
-                                        "type": "string"
-                                    }
-                                }
+                                "$ref": "#/definitions/HinhAnhSach"
                             }
                         }
                     }
                 }
             },
             "post": {
-                "tags": [
-                    "Hình ảnh sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Hình ảnh sách" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "maSach",
                         "in": "path",
                         "required": true,
                         "type": "integer"
+                    },
+                    {
+                        "name": "anh",
+                        "in": "formData",
+                        "required": true,
+                        "type": "file"
                     }
                 ],
                 "operationId": "them-mot-hinh-anh-cho-mot-sach",
@@ -902,34 +729,21 @@
                     "200": {
                         "description": "Thành công",
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ma": {
-                                    "type": "integer"
-                                },
-                                "duongDan": {
-                                    "type": "string"
-                                },
-                                "pulicId": {
-                                    "type": "string"
-                                }
-                            }
+                            "$ref": "#/definitions/HinhAnhSach"
                         }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
                     }
                 }
             }
         },
         "/api/sach/{maSach}/phan-loai-sach/{maPhanLoaiSach}": {
             "get": {
-                "tags": [
-                    "Phân loại sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Phân loại sách" ],
                 "parameters": [
                     {
                         "name": "maSach",
@@ -949,43 +763,14 @@
                     "200": {
                         "description": "Thành công",
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ma": {
-                                    "type": "integer"
-                                },
-                                "danhMuc": {
-                                    "type": "object",
-                                    "properties": {
-                                        "ma": {
-                                            "type": "integer"
-                                        },
-                                        "ten": {
-                                            "type": "string"
-                                        },
-                                        "thoiGianTao": {
-                                            "type": "string"
-                                        },
-                                        "thoiGianCapNhat": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "$ref": "#/definitions/PhanLoaiSach"
                         }
                     }
                 }
             },
             "put": {
-                "tags": [
-                    "Phân loại sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Phân loại sách" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "maSach",
@@ -998,6 +783,12 @@
                         "in": "path",
                         "required": true,
                         "type": "integer"
+                    },
+                    {
+                        "name": "maDanhMuc",
+                        "in": "formData",
+                        "required": true,
+                        "type": "integer"
                     }
                 ],
                 "operationId": "cap-nhat-mot-phan-loai-sach-cua-mot-sach",
@@ -1005,43 +796,19 @@
                     "200": {
                         "description": "Thành công",
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ma": {
-                                    "type": "integer"
-                                },
-                                "danhMuc": {
-                                    "type": "object",
-                                    "properties": {
-                                        "ma": {
-                                            "type": "integer"
-                                        },
-                                        "ten": {
-                                            "type": "string"
-                                        },
-                                        "thoiGianTao": {
-                                            "type": "string"
-                                        },
-                                        "thoiGianCapNhat": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "$ref": "#/definitions/PhanLoaiSach"
                         }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
                     }
                 }
             },
             "delete": {
-                "tags": [
-                    "Phân loại sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Phân loại sách" ],
                 "parameters": [
                     {
                         "name": "maSach",
@@ -1059,22 +826,20 @@
                 "operationId": "xoa-mot-phan-loai-sach-cua-mot-sach",
                 "responses": {
                     "200": {
-                        "description": "Thành công"
+                        "description": "Xóa thành công"
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
                     }
                 }
             }
         },
         "/api/sach/{maSach}/phan-loai-sach": {
             "get": {
-                "tags": [
-                    "Phân loại sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Phân loại sách" ],
                 "parameters": [
                     {
                         "name": "maSach",
@@ -1090,48 +855,25 @@
                         "schema": {
                             "type": "array",
                             "items": {
-                                "type": "object",
-                                "properties": {
-                                    "ma": {
-                                        "type": "integer"
-                                    },
-                                    "danhMuc": {
-                                        "type": "object",
-                                        "properties": {
-                                            "ma": {
-                                                "type": "integer"
-                                            },
-                                            "ten": {
-                                                "type": "string"
-                                            },
-                                            "thoiGianTao": {
-                                                "type": "string"
-                                            },
-                                            "thoiGianCapNhat": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
+                                "$ref": "#/definitions/PhanLoaiSach"
                             }
                         }
                     }
                 }
             },
             "post": {
-                "tags": [
-                    "Phân loại sách"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Phân loại sách" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "maSach",
                         "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maDanhMuc",
+                        "in": "formData",
                         "required": true,
                         "type": "integer"
                     }
@@ -1141,109 +883,37 @@
                     "200": {
                         "description": "Thành công",
                         "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ma": {
-                                    "type": "integer"
-                                },
-                                "danhMuc": {
-                                    "type": "object",
-                                    "properties": {
-                                        "ma": {
-                                            "type": "integer"
-                                        },
-                                        "ten": {
-                                            "type": "string"
-                                        },
-                                        "thoiGianTao": {
-                                            "type": "string"
-                                        },
-                                        "thoiGianCapNhat": {
-                                            "type": "string"
-                                        }
-                                    }
-                                }
-                            }
+                            "$ref": "#/definitions/PhanLoaiSach"
                         }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
                     }
                 }
             }
         },
         "/api/gio-hang": {
             "get": {
-                "tags": [
-                    "Giỏ hàng"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Giỏ hàng" ],
                 "operationId": "xem-gio-hang",
                 "responses": {
                     "200": {
                         "description": "Thành công",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "soLuong": {
-                                        "type": "integer"
-                                    },
-                                    "sach": {
-                                        "type": "object",
-                                        "properties": {
-                                            "ma": {
-                                                "type": "integer"
-                                            },
-                                            "ten": {
-                                                "type": "string"
-                                            },
-                                            "giaTien": {
-                                                "type": "integer"
-                                            },
-                                            "soLuongTrongKho": {
-                                                "type": "integer"
-                                            },
-                                            "hinhAnhSachs": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "ma": {
-                                                            "type": "integer",
-                                                            "duongDan": "string",
-                                                            "publicId": "string"
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            "thoiGianTao": {
-                                                "type": "string"
-                                            },
-                                            "thoiGianCapNhat": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "$ref": "#/definitions/GioHang"
                         }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
                     }
                 }
             },
             "post": {
-                "tags": [
-                    "Giỏ hàng"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Giỏ hàng" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "maSach",
@@ -1263,65 +933,20 @@
                     "200": {
                         "description": "Thành công",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "soLuong": {
-                                        "type": "integer"
-                                    },
-                                    "sach": {
-                                        "type": "object",
-                                        "properties": {
-                                            "ma": {
-                                                "type": "integer"
-                                            },
-                                            "ten": {
-                                                "type": "string"
-                                            },
-                                            "giaTien": {
-                                                "type": "integer"
-                                            },
-                                            "soLuongTrongKho": {
-                                                "type": "integer"
-                                            },
-                                            "hinhAnhSachs": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "ma": {
-                                                            "type": "integer",
-                                                            "duongDan": "string",
-                                                            "publicId": "string"
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            "thoiGianTao": {
-                                                "type": "string"
-                                            },
-                                            "thoiGianCapNhat": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "$ref": "#/definitions/SachTrongGioHang"
                         }
+                    },
+                    "400": {
+                        "description": "Lỗi từ phía người dùng"
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
                     }
                 }
             },
             "put": {
-                "tags": [
-                    "Giỏ hàng"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Giỏ hàng" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "maSach",
@@ -1341,69 +966,23 @@
                     "200": {
                         "description": "Thành công",
                         "schema": {
-                            "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "soLuong": {
-                                        "type": "integer"
-                                    },
-                                    "sach": {
-                                        "type": "object",
-                                        "properties": {
-                                            "ma": {
-                                                "type": "integer"
-                                            },
-                                            "ten": {
-                                                "type": "string"
-                                            },
-                                            "giaTien": {
-                                                "type": "integer"
-                                            },
-                                            "soLuongTrongKho": {
-                                                "type": "integer"
-                                            },
-                                            "hinhAnhSachs": {
-                                                "type": "array",
-                                                "items": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "ma": {
-                                                            "type": "integer",
-                                                            "duongDan": "string",
-                                                            "publicId": "string"
-                                                        }
-                                                    }
-                                                }
-                                            },
-                                            "thoiGianTao": {
-                                                "type": "string"
-                                            },
-                                            "thoiGianCapNhat": {
-                                                "type": "string"
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "$ref": "#/definitions/SachTrongGioHang"
                         }
+                    },
+                    "400": {
+                        "description": "Lỗi từ phía người dùng"
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
                     }
                 }
             },
             "delete": {
-                "tags": [
-                    "Giỏ hàng"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Giỏ hàng" ],
                 "parameters": [
                     {
                         "name": "maSach",
-                        "in": "formData",
+                        "in": "query",
                         "required": true,
                         "type": "array",
                         "collectionFormat": "multi",
@@ -1416,128 +995,141 @@
                 "responses": {
                     "200": {
                         "description": "Thành công"
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
                     }
+                }
+            }
+        },
+        "/api/don-hang": {
+            "get": {
+                "tags": [ "Đơn hàng" ],
+                "parameters": [
+                    {
+                        "name": "trangThai",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "enum": [ "huy", "dangCho", "xacNhan" ]
+                    }
+                ],
+                "operationId": "lay-don-hang-theo-trang-thai-admin",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/DonHang" }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/don-hang/{ma}": {
+            "get": {
+                "tags": [ "Đơn hàng" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-mot-don-hang-admin",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": { "$ref": "#/definitions/DonHang" }
+                    },
+                    "401": { "description": "Chưa xác thực người dùng" },
+                    "403": { "description": "Không được phép" },
+                    "404": { "description": "Không tìm thấy" }
+                }
+            },
+            "put": {
+                "tags": [ "Đơn hàng" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "trangThai",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string",
+                        "enum": ["huy", "xacNhan"]
+                    }
+                ],
+                "operationId": "cap-nhat-mot-don-hang-admin",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": { "$ref": "#/definitions/DonHang" }
+                    },
+                    "401": { "description": "Chưa xác thực người dùng" },
+                    "403": { "description": "Không được phép" },
+                    "404": { "description": "Không tìm thấy" }
+                }
+            },
+            "delete": {
+                "tags": [ "Đơn hàng" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "xoa-mot-don-hang-admin",
+                "responses": {
+                    "200": { "description": "Thành công" },
+                    "401": { "description": "Chưa xác thực người dùng" },
+                    "403": { "description": "Không được phép" },
+                    "404": { "description": "Không tìm thấy" }
                 }
             }
         },
         "/api/nguoi-dung/don-hang": {
             "post": {
-                "tags": [
-                    "Đơn hàng"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Đơn hàng" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
                         "name": "diaChi",
                         "in": "formData",
                         "required": true,
-                        "type": "integer"
+                        "type": "string"
                     },
                     {
                         "name": "maSach",
                         "in": "formData",
                         "type": "array",
                         "collectionFormat": "multi",
-                        "items": {
-                            "type": "integer"
-                        }
+                        "items": { "type": "integer" }
                     },
                     {
                         "name": "soLuong",
                         "in": "formData",
                         "type": "array",
                         "collectionFormat": "multi",
-                        "items": {
-                            "type": "integer"
-                        }
+                        "items": { "type": "integer" }
                     }
                 ],
-                "operationId": "them-moi-mot-don-hang",
+                "operationId": "them-moi-mot-don-hang-nguoi-dung",
                 "responses": {
                     "200": {
                         "description": "Thành công",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ma": {
-                                    "type": "integer"
-                                },
-                                "diaChi": {
-                                    "type": "string"
-                                },
-                                "thoiGianTao": {
-                                    "type": "string"
-                                },
-                                "thoiGianCapNhat": {
-                                    "type": "string"
-                                },
-                                "dongDonHangs": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "ma": {
-                                                "type": "integer"
-                                            },
-                                            "soLuong": {
-                                                "type": "integer"
-                                            },
-                                            "donGia": {
-                                                "type": "integer"
-                                            },
-                                            "sach": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "ma": {
-                                                        "type": "integer"
-                                                    },
-                                                    "ten": {
-                                                        "type": "string"
-                                                    },
-                                                    "giaTien": {
-                                                        "type": "integer"
-                                                    },
-                                                    "soLuongTrongKho": {
-                                                        "type": "integer"
-                                                    },
-                                                    "thoiGianTao": {
-                                                        "type": "string"
-                                                    },
-                                                    "thoiGianCapNhat": {
-                                                        "type": "string"
-                                                    },
-                                                    "hinhAnhSachs": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "ma": {
-                                                                    "type": "integer"
-                                                                },
-                                                                "duongDan": {
-                                                                    "type": "string"
-                                                                },
-                                                                "publicId": {
-                                                                    "type": "string"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        "schema": { "$ref": "#/definitions/DonHang" }
                     },
                     "400": {
-                        "description": "Thất bại",
+                        "description": "Lỗi từ phía người dùng",
                         "schema": {
                             "type": "object",
                             "properties": {
@@ -1555,230 +1147,67 @@
                                 }
                             }
                         }
-                    }
+                    },
+                    "401": { "description": "Chưa xác thực người dùng" }
                 }
             },
             "get": {
-                "tags": [
-                    "Đơn hàng"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Đơn hàng" ],
                 "parameters": [
                     {
                         "name": "trangThai",
                         "in": "query",
                         "required": true,
                         "type": "string",
-                        "enum": [
-                            "huy",
-                            "dangCho",
-                            "xacNhan"
-                        ]
+                        "enum": [ "huy", "dangCho", "xacNhan" ]
                     }
                 ],
-                "operationId": "lay-don-hang-theo-trang-thai",
+                "operationId": "lay-don-hang-theo-trang-thai-nguoi-dung",
                 "responses": {
                     "200": {
                         "description": "Thành công",
                         "schema": {
                             "type": "array",
-                            "items": {
-                                "type": "object",
-                                "properties": {
-                                    "ma": {
-                                        "type": "integer"
-                                    },
-                                    "diaChi": {
-                                        "type": "string"
-                                    },
-                                    "thoiGianTao": {
-                                        "type": "string"
-                                    },
-                                    "thoiGianCapNhat": {
-                                        "type": "string"
-                                    },
-                                    "dongDonHangs": {
-                                        "type": "array",
-                                        "items": {
-                                            "type": "object",
-                                            "properties": {
-                                                "ma": {
-                                                    "type": "integer"
-                                                },
-                                                "soLuong": {
-                                                    "type": "integer"
-                                                },
-                                                "donGia": {
-                                                    "type": "integer"
-                                                },
-                                                "sach": {
-                                                    "type": "object",
-                                                    "properties": {
-                                                        "ma": {
-                                                            "type": "integer"
-                                                        },
-                                                        "ten": {
-                                                            "type": "string"
-                                                        },
-                                                        "giaTien": {
-                                                            "type": "integer"
-                                                        },
-                                                        "soLuongTrongKho": {
-                                                            "type": "integer"
-                                                        },
-                                                        "thoiGianTao": {
-                                                            "type": "string"
-                                                        },
-                                                        "thoiGianCapNhat": {
-                                                            "type": "string"
-                                                        },
-                                                        "hinhAnhSachs": {
-                                                            "type": "array",
-                                                            "items": {
-                                                                "type": "object",
-                                                                "properties": {
-                                                                    "ma": {
-                                                                        "type": "integer"
-                                                                    },
-                                                                    "duongDan": {
-                                                                        "type": "string"
-                                                                    },
-                                                                    "publicId": {
-                                                                        "type": "string"
-                                                                    }
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
+                            "items": { "$ref": "#/definitions/DonHang" }
                         }
                     }
                 }
             }
         },
-        "/api/nguoi-dung/don-hang/{maDonHang}": {
+        "/api/nguoi-dung/don-hang/{ma}": {
             "get": {
-                "tags": [
-                    "Đơn hàng"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Đơn hàng" ],
                 "parameters": [
                     {
-                        "name": "maDonHang",
+                        "name": "ma",
                         "in": "path",
                         "required": true,
                         "type": "integer"
                     }
                 ],
-                "operationId": "lay-mot-don-hang",
+                "operationId": "lay-mot-don-hang-nguoi-dung",
                 "responses": {
                     "200": {
                         "description": "Thành công",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ma": {
-                                    "type": "integer"
-                                },
-                                "diaChi": {
-                                    "type": "string"
-                                },
-                                "thoiGianTao": {
-                                    "type": "string"
-                                },
-                                "thoiGianCapNhat": {
-                                    "type": "string"
-                                },
-                                "dongDonHangs": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "ma": {
-                                                "type": "integer"
-                                            },
-                                            "soLuong": {
-                                                "type": "integer"
-                                            },
-                                            "donGia": {
-                                                "type": "integer"
-                                            },
-                                            "sach": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "ma": {
-                                                        "type": "integer"
-                                                    },
-                                                    "ten": {
-                                                        "type": "string"
-                                                    },
-                                                    "giaTien": {
-                                                        "type": "integer"
-                                                    },
-                                                    "soLuongTrongKho": {
-                                                        "type": "integer"
-                                                    },
-                                                    "thoiGianTao": {
-                                                        "type": "string"
-                                                    },
-                                                    "thoiGianCapNhat": {
-                                                        "type": "string"
-                                                    },
-                                                    "hinhAnhSachs": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "ma": {
-                                                                    "type": "integer"
-                                                                },
-                                                                "duongDan": {
-                                                                    "type": "string"
-                                                                },
-                                                                "publicId": {
-                                                                    "type": "string"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
+                        "schema": { "$ref": "#/definitions/DonHang" }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
+                    },
+                    "404": {
+                        "description": "Không tìm thấy"
                     }
                 }
             },
             "put": {
-                "tags": [
-                    "Đơn hàng"
-                ],
-                "produces": [
-                    "multipart/form-data;charset=utf8"
-                ],
-                "consumes": [
-                    "multipart/form-data;charset=utf8"
-                ],
+                "tags": [ "Đơn hàng" ],
+                "consumes": [ "multipart/form-data" ],
                 "parameters": [
                     {
-                        "name": "maDonHang",
+                        "name": "ma",
                         "in": "path",
                         "required": true,
                         "type": "integer"
@@ -1788,90 +1217,18 @@
                         "in": "formData",
                         "required": true,
                         "type": "string",
-                        "enum": [
-                            "huy"
-                        ]
+                        "default": "huy"
                     }
                 ],
-                "operationId": "huy-mot-don-hang",
+                "operationId": "huy-mot-don-hang-nguoi-dung",
                 "responses": {
                     "200": {
                         "description": "Thành công",
-                        "schema": {
-                            "type": "object",
-                            "properties": {
-                                "ma": {
-                                    "type": "integer"
-                                },
-                                "diaChi": {
-                                    "type": "string"
-                                },
-                                "thoiGianTao": {
-                                    "type": "string"
-                                },
-                                "thoiGianCapNhat": {
-                                    "type": "string"
-                                },
-                                "dongDonHangs": {
-                                    "type": "array",
-                                    "items": {
-                                        "type": "object",
-                                        "properties": {
-                                            "ma": {
-                                                "type": "integer"
-                                            },
-                                            "soLuong": {
-                                                "type": "integer"
-                                            },
-                                            "donGia": {
-                                                "type": "integer"
-                                            },
-                                            "sach": {
-                                                "type": "object",
-                                                "properties": {
-                                                    "ma": {
-                                                        "type": "integer"
-                                                    },
-                                                    "ten": {
-                                                        "type": "string"
-                                                    },
-                                                    "giaTien": {
-                                                        "type": "integer"
-                                                    },
-                                                    "soLuongTrongKho": {
-                                                        "type": "integer"
-                                                    },
-                                                    "thoiGianTao": {
-                                                        "type": "string"
-                                                    },
-                                                    "thoiGianCapNhat": {
-                                                        "type": "string"
-                                                    },
-                                                    "hinhAnhSachs": {
-                                                        "type": "array",
-                                                        "items": {
-                                                            "type": "object",
-                                                            "properties": {
-                                                                "ma": {
-                                                                    "type": "integer"
-                                                                },
-                                                                "duongDan": {
-                                                                    "type": "string"
-                                                                },
-                                                                "publicId": {
-                                                                    "type": "string"
-                                                                }
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
+                        "schema": { "$ref": "#/definitions/DonHang" }
+                    },
+                    "401": { "description": "Chưa xác thực người dùng" },
+                    "403": { "description": "Không được phép" },
+                    "404": { "description": "Không tìm thấy" }
                 }
             }
         },

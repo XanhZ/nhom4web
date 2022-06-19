@@ -35,6 +35,7 @@ public class DonHangNDController extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }
+        donHang.setNguoiDung(null);
         Json.chuyenThanhJson(resp, donHang);
     }
 
@@ -44,7 +45,6 @@ public class DonHangNDController extends HttpServlet {
     }
 
     public static void them(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         SachDAO sachDAO = new SachDAO();
         List<Integer> maSachs = Arrays.stream(req.getParameterValues("maSach"))
                 .map(Integer::parseInt)
@@ -115,6 +115,7 @@ public class DonHangNDController extends HttpServlet {
             resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
+        donHang.setNguoiDung(null);
         Json.chuyenThanhJson(resp, donHang);
     }
 }

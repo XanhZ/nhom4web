@@ -86,6 +86,7 @@
       <artifactId>cors-filter</artifactId>
       <version>${cors.filter.version}</version>
     </dependency>
+
   </dependencies>
   <!-- End dependencies-->
 
