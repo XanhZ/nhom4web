@@ -19,7 +19,7 @@ public class DangKyFilter extends AbstractFilter {
 
         this.e.put("sdt." + SDT, "Số điện thoại không hợp lệ");
         this.e.put("email." + EMAIL, "Email không hợp lệ");
-        this.e.put("matKhau." + MAT_KHAU, "Mật khẩu không hợp lệ");
+        this.e.put("matKhau." + MAT_KHAU, "Mật khẩu phải từ 8 ký tự bao gồm chữ hoa, chữ thường, chữ số, ký tự đặc biệt");
     }
 
     @Override

@@ -108,7 +108,7 @@ public class SachFilter extends AbstractFilter {
         for (Map.Entry<String, String[]> thuocTinh : req.getParameterMap().entrySet()) {
             switch (thuocTinh.getKey()) {
                 case "tenSach": {
-                    Pattern kiTuDacBiet = Pattern.compile ("[!@#$%&*()_+=|<>?{}\\[\\]~-]");
+                    Pattern kiTuDacBiet = Pattern.compile ("[!@#$%&*()_+=/\\\\|<>?{}\\[\\]'\"~-]");
                     if (kiTuDacBiet.matcher(thuocTinh.getValue()[0]).find()) return false;
                     break;
                 }

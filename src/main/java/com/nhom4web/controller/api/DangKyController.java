@@ -23,10 +23,8 @@ public class DangKyController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         // Thong tin nguoi dung
         LinkedHashMap<String, Object> thongTinNguoiDung = new LinkedHashMap<>();
-
         thongTinNguoiDung.put("sdt", req.getParameter("sdt"));
         thongTinNguoiDung.put("email", req.getParameter("email"));
         thongTinNguoiDung.put("ten", req.getParameter("ten"));

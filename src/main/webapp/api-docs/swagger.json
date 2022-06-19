@@ -1,0 +1,1238 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Tài liệu API nhóm 4",
+        "version": "1.0.0"
+    },
+    "schemes": [ "https" ],
+    "host": "localhost:8443",
+    "tags": [
+        {
+            "name": "Người dùng",
+            "description": "Xác thực người dùng"
+        },
+        {
+            "name": "Sách",
+            "description": "Các thao tác với sách"
+        },
+        {
+            "name": "Hình ảnh sách",
+            "description": "Các thao tác với hình ảnh sách"
+        },
+        {
+            "name": "Danh mục",
+            "description": "Các thao tác với danh mục sách"
+        },
+        {
+            "name": "Phân loại sách",
+            "description": "Các thao tác với thể loại sách"
+        },
+        {
+            "name": "Giỏ hàng",
+            "description": "Các thao tác với giỏ hàng"
+        },
+        {
+            "name": "Đơn hàng",
+            "description": "Các thao tác với đơn hàng"
+        }
+    ],
+    "definitions": {
+        "Sach": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "ten": { "type": "string"   },
+                "giaTien": { "type": "integer" },
+                "soLuongTrongKho": { "type": "integer" },
+                "thoiGianTao": { "type": "string" },
+                "thoiGianCapNhat": { "type": "string" },
+                "hinhAnhSachs": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/HinhAnhSach" }
+                }
+            }
+        },
+        "HinhAnhSach": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "duongDan": { "type": "string" },
+                "publicId": { "type": "string" }
+            }
+        },
+        "DanhMuc": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "ten": { "type": "string" },
+                "thoiGianTao": { "type": "string" },
+                "thoiGianCapNhat": { "type": "string" }
+            }
+        },
+        "PhanLoaiSach": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "danhMuc": { "$ref": "#/definitions/DanhMuc" }
+            }
+        },
+        "SachTrongGioHang": {
+            "type": "object",
+            "properties": {
+                "soLuong": { "type": "integer" },
+                "sach": { "$ref": "#/definitions/Sach"}
+            }
+        },
+        "GioHang": {
+            "type": "array",
+            "items": { "$ref": "#/definitions/SachTrongGioHang" }
+        },
+        "DongDonHang": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "soLuong": { "type": "integer" },
+                "donGia": { "type": "integer" },
+                "sach": { "$ref": "#/definitions/Sach" }
+            }
+        },
+        "DonHang": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "diaChi": { "type": "string" },
+                "thoiGianTao": { "type": "string" },
+                "thoiGianCapNhat": { "type": "string" },
+                "dongDonHangs": {
+                    "type": "array",
+                    "items": { "$ref": "#/definitions/DongDonHang" }
+                }
+            }
+        }
+    },
+    "paths": {
+        "/api/danh-muc": {
+            "get": {
+                "tags": [ "Danh mục" ],
+                "operationId": "lay-toan-bo-danh-muc",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/DanhMuc"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Danh mục" ],
+                "operationId": "them-moi-mot-danh-muc",
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "tenDanhMuc",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "description": "Thêm một danh mục",
+                            "$ref": "#/definitions/DanhMuc"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/danh-muc/{ma}": {
+            "get": {
+                "tags": [ "Danh mục" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-mot-danh-muc-theo-ma",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "description": "Danh mục theo mã",
+                            "$ref": "#/definitions/DanhMuc"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Danh mục" ],
+                "operationId": "cap-nhat-mot-danh-muc",
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "tenDanhMuc",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật thành công",
+                        "schema": {
+                            "description": "Cập nhật danh mục",
+                            "$ref": "#/definitions/DanhMuc"
+                        }
+                    },
+                    "400": {
+                        "description": "Lỗi dữ liệu gửi đi",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "tenDanhMuc": {
+                                    "type": "string",
+                                    "example": "Không được để trống tên danh mục"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Không có quyền truy cập"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Danh mục" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "xoa-mot-danh-muc",
+                "responses": {
+                    "200": {
+                        "description": "Thành công"
+                    }
+                }
+            }
+        },
+        "/api/dang-ky": {
+            "post": {
+                "tags": [ "Người dùng" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "sdt",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "email",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "ten",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "tenDangNhap",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "matKhau",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "operationId": "dang-ky",
+                "responses": {
+                    "200": {
+                        "description": "Đăng ký thành công",
+                        "schema": {
+                            "type": "string",
+                            "example": "Đăng ký thành công"
+                        }
+                    },
+                    "403": {
+                        "description": "Không được phép"
+                    }
+                }
+            }
+        },
+        "/api/dang-nhap": {
+            "post": {
+                "tags": [ "Người dùng" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "tenDangNhap",
+                        "in": "formData",
+                        "required": true,
+                        "default": "foo123",
+                        "type": "string"
+                    },
+                    {
+                        "name": "matKhau",
+                        "in": "formData",
+                        "required": true,
+                        "default": "foo123",
+                        "type": "string"
+                    }
+                ],
+                "operationId": "dang-nhap",
+                "responses": {
+                    "200": {
+                        "description": "Đăng nhập thành công",
+                        "schema": {
+                            "type": "string",
+                            "example": "Đăng nhập thành công"
+                        }
+                    },
+                    "401": {
+                        "description": "Đăng nhập hất bại",
+                        "schema": {
+                            "type": "string",
+                            "example": "Tên đăng nhập hoặc mật khẩu không đúng"
+                        }
+                    },
+                    "403": {
+                        "description": "Không được phép"
+                    }
+                }
+            }
+        },
+        "/api/dang-xuat": {
+            "post": {
+                "tags": [ "Người dùng" ],
+                "operationId": "dang-xuat",
+                "responses": {
+                    "200": {
+                        "description": "Đăng xuất thành công",
+                        "schema": {
+                            "type": "string",
+                            "example": "Đăng xuất thành công"
+                        }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực"
+                    }
+                }
+            }
+        },
+        "/api/sach/{ma}": {
+            "get": {
+                "tags": [ "Sách" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-mot-sach-theo-ma",
+                "responses": {
+                    "200": {
+                        "$ref": "#/definitions/Sach"
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Sách" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "tenSach",
+                        "in": "formData",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "giaTien",
+                        "in": "formData",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "soLuongTrongKho",
+                        "in": "formData",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maDanhMuc",
+                        "in": "formData",
+                        "required": false,
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "anh",
+                        "in": "formData",
+                        "type": "array",
+                        "required": false,
+                        "collectionFormat": "multi",
+                        "items": {
+                            "type": "file"
+                        }
+                    }
+                ],
+                "operationId": "cap-nhat-sach",
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật sách thành công",
+                        "schema": {
+                            "$ref": "#/definitions/Sach"
+                        }
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Sách" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "xoa-sach",
+                "responses": {
+                    "200": { "description": "Thành công" }
+                }
+            }
+        },
+        "/api/sach": {
+            "get": {
+                "tags": [ "Sách" ],
+                "parameters": [
+                    {
+                        "name": "tenSach",
+                        "in": "query",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "giaTu",
+                        "in": "query",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "giaDen",
+                        "in": "query",
+                        "required": false,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "danhMuc",
+                        "in": "query",
+                        "required": false,
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "sapXepTheo",
+                        "in": "query",
+                        "required": false,
+                        "type": "string",
+                        "enum": [
+                            "giaGiamDan",
+                            "giaTangDan",
+                            "tenSach",
+                            "ganDayNhat",
+                            "banChayNhat"
+                        ]
+                    },
+                    {
+                        "name": "gioiHan",
+                        "in": "query",
+                        "required": false,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-sach-theo-bo-loc",
+                "responses": {
+                    "200": {
+                        "description": "Tìm kiếm thành công",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Sach"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Sách" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "tenSach",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "giaTien",
+                        "in": "formData",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "soLuongTrongKho",
+                        "in": "formData",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maDanhMuc",
+                        "in": "formData",
+                        "required": true,
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "anh",
+                        "in": "formData",
+                        "type": "array",
+                        "required": true,
+                        "collectionFormat": "multi",
+                        "items": {
+                            "type": "file"
+                        }
+                    }
+                ],
+                "operationId": "them-sach",
+                "responses": {
+                    "200": {
+                        "description": "Thêm thành công",
+                        "schema": {
+                            "$ref": "#/definitions/Sach"
+                        }
+                    },
+                    "400": {
+                        "description": "Lỗi dữ liệu gửi đi",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "giaTien": {
+                                    "type": "string",
+                                    "example": "Giá tiền không được bỏ trống"
+                                },
+                                "tenSach": {
+                                    "type": "string",
+                                    "example": "Tên sách không được bỏ trống"
+                                },
+                                "soLuongTrongKho": {
+                                    "type": "string",
+                                    "example": "Số lượng không được bỏ trống"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
+                    }
+                }
+            }
+        },
+        "/api/sach/{maSach}/hinh-anh-sach/{maHinhAnhSach}": {
+            "get": {
+                "tags": [ "Hình ảnh sách" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maHinhAnhSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-mot-hinh-anh-cua-mot-sach",
+                "responses": {
+                    "200": {
+                        "description": "Tìm thấy hình ảnh sách",
+                        "schema": {
+                            "$ref": "#/definitions/HinhAnhSach"
+                        }
+                    },
+                    "404": {
+                        "description": "Không tìm thấy"
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Hình ảnh sách" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maHinhAnhSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "anh",
+                        "in": "formData",
+                        "required": true,
+                        "type": "file"
+                    }
+                ],
+                "operationId": "cap-nhat-mot-hinh-anh-cua-mot-sach",
+                "responses": {
+                    "200": {
+                        "description": "Cập nhật thành công",
+                        "schema": {
+                            "$ref": "#/definitions/HinhAnhSach"
+                        }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Hình ảnh sách" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maHinhAnhSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "xoa-mot-hinh-anh-cua-mot-sach",
+                "responses": {
+                    "200": {
+                        "description": "Xóa thành công"
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
+                    }
+                }
+            }
+        },
+        "/api/sach/{maSach}/hinh-anh-sach": {
+            "get": {
+                "tags": [ "Hình ảnh sách" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-tat-ca-hinh-anh-cua-mot-sach",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/HinhAnhSach"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Hình ảnh sách" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "anh",
+                        "in": "formData",
+                        "required": true,
+                        "type": "file"
+                    }
+                ],
+                "operationId": "them-mot-hinh-anh-cho-mot-sach",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "$ref": "#/definitions/HinhAnhSach"
+                        }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
+                    }
+                }
+            }
+        },
+        "/api/sach/{maSach}/phan-loai-sach/{maPhanLoaiSach}": {
+            "get": {
+                "tags": [ "Phân loại sách" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maPhanLoaiSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-mot-phan-loai-sach-cua-mot-sach",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "$ref": "#/definitions/PhanLoaiSach"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Phân loại sách" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maPhanLoaiSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maDanhMuc",
+                        "in": "formData",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "cap-nhat-mot-phan-loai-sach-cua-mot-sach",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "$ref": "#/definitions/PhanLoaiSach"
+                        }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Phân loại sách" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maPhanLoaiSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "xoa-mot-phan-loai-sach-cua-mot-sach",
+                "responses": {
+                    "200": {
+                        "description": "Xóa thành công"
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
+                    }
+                }
+            }
+        },
+        "/api/sach/{maSach}/phan-loai-sach": {
+            "get": {
+                "tags": [ "Phân loại sách" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-tat-ca-phan-loai-sach-cua-mot-sach",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/PhanLoaiSach"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Phân loại sách" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maDanhMuc",
+                        "in": "formData",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "them-mot-phan-loai-sach-cua-mot-sach",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "$ref": "#/definitions/PhanLoaiSach"
+                        }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
+                    }
+                }
+            }
+        },
+        "/api/gio-hang": {
+            "get": {
+                "tags": [ "Giỏ hàng" ],
+                "operationId": "xem-gio-hang",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "$ref": "#/definitions/GioHang"
+                        }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Giỏ hàng" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "formData",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "soLuong",
+                        "in": "formData",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "them-mot-sach-vao-trong-gio-hang",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "$ref": "#/definitions/SachTrongGioHang"
+                        }
+                    },
+                    "400": {
+                        "description": "Lỗi từ phía người dùng"
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Giỏ hàng" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "formData",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "soLuong",
+                        "in": "formData",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "cap-nhat-sach-vao-trong-gio-hang",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "$ref": "#/definitions/SachTrongGioHang"
+                        }
+                    },
+                    "400": {
+                        "description": "Lỗi từ phía người dùng"
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [ "Giỏ hàng" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "query",
+                        "required": true,
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "operationId": "xoa-mot-so-sach-vao-trong-gio-hang",
+                "responses": {
+                    "200": {
+                        "description": "Thành công"
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    }
+                }
+            }
+        },
+        "/api/don-hang": {
+            "get": {
+                "tags": [ "Đơn hàng" ],
+                "parameters": [
+                    {
+                        "name": "trangThai",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "enum": [ "huy", "dangCho", "xacNhan" ]
+                    }
+                ],
+                "operationId": "lay-don-hang-theo-trang-thai-admin",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/DonHang" }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/don-hang/{ma}": {
+            "get": {
+                "tags": [ "Đơn hàng" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-mot-don-hang-admin",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": { "$ref": "#/definitions/DonHang" }
+                    },
+                    "401": { "description": "Chưa xác thực người dùng" },
+                    "403": { "description": "Không được phép" },
+                    "404": { "description": "Không tìm thấy" }
+                }
+            },
+            "put": {
+                "tags": [ "Đơn hàng" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "trangThai",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string",
+                        "enum": ["huy", "xacNhan"]
+                    }
+                ],
+                "operationId": "cap-nhat-mot-don-hang-admin",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": { "$ref": "#/definitions/DonHang" }
+                    },
+                    "401": { "description": "Chưa xác thực người dùng" },
+                    "403": { "description": "Không được phép" },
+                    "404": { "description": "Không tìm thấy" }
+                }
+            },
+            "delete": {
+                "tags": [ "Đơn hàng" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "xoa-mot-don-hang-admin",
+                "responses": {
+                    "200": { "description": "Thành công" },
+                    "401": { "description": "Chưa xác thực người dùng" },
+                    "403": { "description": "Không được phép" },
+                    "404": { "description": "Không tìm thấy" }
+                }
+            }
+        },
+        "/api/nguoi-dung/don-hang": {
+            "post": {
+                "tags": [ "Đơn hàng" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "diaChi",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "maSach",
+                        "in": "formData",
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": { "type": "integer" }
+                    },
+                    {
+                        "name": "soLuong",
+                        "in": "formData",
+                        "type": "array",
+                        "collectionFormat": "multi",
+                        "items": { "type": "integer" }
+                    }
+                ],
+                "operationId": "them-moi-mot-don-hang-nguoi-dung",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": { "$ref": "#/definitions/DonHang" }
+                    },
+                    "400": {
+                        "description": "Lỗi từ phía người dùng",
+                        "schema": {
+                            "type": "object",
+                            "properties": {
+                                "giaTien": {
+                                    "type": "string",
+                                    "example": "Giá tiền không được bỏ trống"
+                                },
+                                "tenSach": {
+                                    "type": "string",
+                                    "example": "Tên sách không được bỏ trống"
+                                },
+                                "soLuongTrongKho": {
+                                    "type": "string",
+                                    "example": "Số lượng không được bỏ trống"
+                                }
+                            }
+                        }
+                    },
+                    "401": { "description": "Chưa xác thực người dùng" }
+                }
+            },
+            "get": {
+                "tags": [ "Đơn hàng" ],
+                "parameters": [
+                    {
+                        "name": "trangThai",
+                        "in": "query",
+                        "required": true,
+                        "type": "string",
+                        "enum": [ "huy", "dangCho", "xacNhan" ]
+                    }
+                ],
+                "operationId": "lay-don-hang-theo-trang-thai-nguoi-dung",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "type": "array",
+                            "items": { "$ref": "#/definitions/DonHang" }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/nguoi-dung/don-hang/{ma}": {
+            "get": {
+                "tags": [ "Đơn hàng" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-mot-don-hang-nguoi-dung",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": { "$ref": "#/definitions/DonHang" }
+                    },
+                    "401": {
+                        "description": "Chưa xác thực người dùng"
+                    },
+                    "403": {
+                        "description": "Không được phép"
+                    },
+                    "404": {
+                        "description": "Không tìm thấy"
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Đơn hàng" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "trangThai",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string",
+                        "default": "huy"
+                    }
+                ],
+                "operationId": "huy-mot-don-hang-nguoi-dung",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": { "$ref": "#/definitions/DonHang" }
+                    },
+                    "401": { "description": "Chưa xác thực người dùng" },
+                    "403": { "description": "Không được phép" },
+                    "404": { "description": "Không tìm thấy" }
+                }
+            }
+        },
+        "x-contentType": "multipart/form-data",
+        "x-accepts": ""
+    }
+}

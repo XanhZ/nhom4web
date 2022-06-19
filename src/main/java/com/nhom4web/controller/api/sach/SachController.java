@@ -58,8 +58,6 @@ public class SachController {
     }
 
     public static void them(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-
         List<HinhAnhSach> hinhAnhSachs = HinhAnh.luuVaoCloud(
                 req.getParts()
                         .stream()
@@ -97,8 +95,6 @@ public class SachController {
     }
 
     public static void capNhat(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
-
         Sach sach = DAO.tim((Integer) req.getAttribute("ma"));
         if (sach == null) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);

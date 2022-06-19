@@ -1,0 +1,63 @@
+<!-- HTML for static distribution bundle build -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Nhom 4 Web</title>
+    <link rel="icon" type="image/png" href="4.jpeg" sizes="16x16" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.12.0/swagger-ui.min.css" integrity="sha512-c/nL8uV8W4bgSdxmZQDO0T+34SYDuurZMc2ylKRuqUvTn0CONDptVTnc7EPiXyaGZwsgv3l/i/PDuxV7RY54yw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.12.0/swagger-ui.min.js" integrity="sha512-PPv69BIr5IxCAs65RR14dtg0hcJ1NmI8QvtNDUOZ09CPJNrTmRRWfRHbvVUFhE5yN98lHbdavmYPkHDmcukarw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.12.0/swagger-ui-bundle.min.js" integrity="sha512-sKa8WOPosIBmesxJhYX/uL1lGNw10iyh2oRnsI0fwzj1WXd/EIonclHX7jYRAzfk3/UX77+Lxk8ZdAXSdS6GyA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/swagger-ui/4.12.0/swagger-ui-standalone-preset.min.js" integrity="sha512-J8kACzvV/aKXKxVubTCOG2tkPFR5GzZEvKwr9dNjlzWzKiVufmoGNTyZCbiJ74KNu0vvdGnlgkPHzCw5fnMuZg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <style>
+      html
+      {
+        box-sizing: border-box;
+        overflow: -moz-scrollbars-vertical;
+        overflow-y: scroll;
+      }
+
+      *,
+      *:before,
+      *:after
+      {
+        box-sizing: inherit;
+      }
+
+      body
+      {
+        margin:0;
+        background: #fafafa;
+      }
+
+      td {
+        font-size: 14px
+      }
+    </style>
+  </head>
+
+  <body>
+    <div id="swagger-ui"></div>
+    <script>
+    window.onload = function() {
+      // Begin Swagger UI call region
+      // End Swagger UI call region
+      window.ui = SwaggerUIBundle({
+        url: "swagger.json",
+        dom_id: '#swagger-ui',
+        deepLinking: true,
+        presets: [
+          SwaggerUIBundle.presets.apis,
+          SwaggerUIStandalonePreset
+        ],
+        plugins: [
+          SwaggerUIBundle.plugins.DownloadUrl
+        ],
+        onComplete: function () {
+          document.querySelector('.link').remove();
+        }
+      });
+    };
+  </script>
+  </body>
+</html>

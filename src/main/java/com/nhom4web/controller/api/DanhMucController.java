@@ -48,7 +48,6 @@ public class DanhMucController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         DanhMuc danhMuc = new DanhMuc(
                 req.getParameter("tenDanhMuc"),
                 new Timestamp(System.currentTimeMillis()),
@@ -64,7 +63,6 @@ public class DanhMucController extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.setCharacterEncoding("UTF-8");
         DanhMuc danhMuc = DAO.tim((Integer) req.getAttribute("ma"));
         if (danhMuc == null) {
             resp.setStatus(HttpServletResponse.SC_NOT_FOUND);

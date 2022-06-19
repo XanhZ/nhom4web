@@ -3,6 +3,7 @@
          xmlns="http://xmlns.jcp.org/xml/ns/javaee"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
   <security-constraint>
     <web-resource-collection>
       <web-resource-name>secured page</web-resource-name>
@@ -17,37 +18,36 @@
     <welcome-file>views/trangchu.jsp</welcome-file>
   </welcome-file-list>
 
-  <!-- Session config  -->
   <session-config>
-    <session-timeout>120</session-timeout>
+    <session-timeout>60</session-timeout>
     <tracking-mode>COOKIE</tracking-mode>
   </session-config>
 
-  <!-- Web context listener to prevent leak memory when connect to MySQL -->
+  <request-character-encoding>UTF-8</request-character-encoding>
+
+  <!-- Listener để tránh rò rỉ bộ nhớ từ MySQL -->
   <listener>
     <listener-class>com.nhom4web.HuyJdbcListener</listener-class>
   </listener>
 
-  <!-- Sitemesh decorator  -->
+  <!-- CORS Filter -->
   <filter>
-    <filter-name>sitemesh</filter-name>
-    <filter-class>com.opensymphony.module.sitemesh.filter.PageFilter</filter-class>
+    <filter-name>CORSFilter</filter-name>
+    <filter-class>com.thetransactioncompany.cors.CORSFilter</filter-class>
   </filter>
   <filter-mapping>
-    <filter-name>sitemesh</filter-name>
-    <url-pattern>/*</url-pattern>
+    <filter-name>CORSFilter</filter-name>
+    <url-pattern>/api/*</url-pattern>
   </filter-mapping>
-  <!-- End sitemesh  -->
 
-  <!-- Begin Logged Filter  -->
+  <!-- Logged Filter  -->
   <filter-mapping>
     <filter-name>Logged</filter-name>
     <url-pattern>/api/dang-ky</url-pattern>
     <url-pattern>/api/dang-nhap</url-pattern>
   </filter-mapping>
-  <!-- End Logged Filter  -->
 
-  <!-- Begin Authentication Filter  -->
+  <!-- Authentication Filter  -->
   <filter-mapping>
     <filter-name>Auth</filter-name>
     <url-pattern>/api/dang-xuat</url-pattern>
@@ -58,31 +58,27 @@
     <url-pattern>/api/binh-luan/*</url-pattern>
     <url-pattern>/api/gio-hang</url-pattern>
   </filter-mapping>
-  <!-- End Authentication Filter  -->
 
-  <!-- Begin Danh Muc Filter  -->
+  <!-- Danh Muc Filter  -->
   <filter-mapping>
     <filter-name>Danh-Muc-Filter</filter-name>
     <url-pattern>/api/danh-muc/*</url-pattern>
   </filter-mapping>
-  <!-- End Danh Muc Filter  -->
 
-  <!-- Begin Sach Filter  -->
+  <!-- Sach Filter  -->
   <filter-mapping>
     <filter-name>Sach-Filter</filter-name>
     <url-pattern>/api/sach/*</url-pattern>
   </filter-mapping>
-  <!-- End Sach Filter  -->
 
-  <!-- Begin Don Hang Filter  -->
+  <!-- Don Hang Filter  -->
   <filter-mapping>
     <filter-name>Don-Hang-Filter</filter-name>
     <url-pattern>/api/don-hang/*</url-pattern>
     <url-pattern>/api/nguoi-dung/don-hang/*</url-pattern>
   </filter-mapping>
-  <!-- End Don Hang Filter  -->
 
-  <!-- Begin Gio Hang Filter  -->
+  <!-- Gio Hang Filter  -->
   <filter-mapping>
     <filter-name>Gio-Hang-Filter</filter-name>
     <url-pattern>/api/gio-hang</url-pattern>

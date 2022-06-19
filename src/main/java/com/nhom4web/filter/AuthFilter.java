@@ -82,6 +82,7 @@ public class AuthFilter extends HttpFilter {
         // GET
         PHAN_QUYEN_GET.put("/api/sach", IS_CONG_KHAI);
         PHAN_QUYEN_GET.put("/api/sach/\\d+", IS_CONG_KHAI);
+        PHAN_QUYEN_GET.put("/api/sach/\\d+/lien-quan", IS_CONG_KHAI);
         PHAN_QUYEN_GET.put("/api/sach/\\d+/hinh-anh-sach", IS_CONG_KHAI);
         PHAN_QUYEN_GET.put("/api/sach/\\d+/hinh-anh-sach/\\d+", IS_CONG_KHAI);
         PHAN_QUYEN_GET.put("/api/sach/\\d+/phan-loai-sach", IS_CONG_KHAI);
@@ -89,7 +90,9 @@ public class AuthFilter extends HttpFilter {
         PHAN_QUYEN_GET.put("/api/danh-muc", IS_CONG_KHAI);
         PHAN_QUYEN_GET.put("/api/danh-muc/\\d+", IS_CONG_KHAI);
         PHAN_QUYEN_GET.put("/api/gio-hang", IS_NGUOI_DUNG);
+        PHAN_QUYEN_GET.put("/api/nguoi-dung/don-hang", IS_NGUOI_DUNG);
         PHAN_QUYEN_GET.put("/api/nguoi-dung/don-hang/\\d+", IS_NGUOI_DUNG);
+        PHAN_QUYEN_GET.put("/api/don-hang", IS_ADMIN);
         PHAN_QUYEN_GET.put("/api/don-hang/\\d+", IS_ADMIN);
 
         // POST
