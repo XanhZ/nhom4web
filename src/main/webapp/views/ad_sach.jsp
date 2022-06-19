@@ -10,7 +10,7 @@
     <title>Admin - Sách</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="icon" href="${pageContext.request.contextPath}/img/logo.png" sizes="32x32">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/book_admin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ad_sach.css">
 </head>
 <body>
 <div class="thungChua">
@@ -53,7 +53,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a id="dangXuat" href="#">
                         <span class="bieuTuong">
                           <i class="fa-solid fa-right-from-bracket"></i>
                         </span>
@@ -78,162 +78,148 @@
         </div>
         <div class="noiDung">
             <div class="danhSach">
-                <form onsubmit="return themSach()" class="bangThemSach">
-                    <input type="text" placeholder="Tên sách">
-                    <input type="text" placeholder="Danh mục">
-                    <input type="text" placeholder="Giá">
-                    <input type="text" placeholder="Số lượng">
-                    <input type="text" placeholder="Đường dẫn ảnh">
-                    <input type="submit" value="Thêm sách" class="nutThemSach">
-                </form>
+<%--                <form onsubmit="return themSach()" class="bangThemSach">--%>
+<%--                    <input type="text" placeholder="Tên sách">--%>
+<%--                    <input type="text" placeholder="Danh mục">--%>
+<%--                    <input type="text" placeholder="Giá">--%>
+<%--                    <input type="text" placeholder="Số lượng">--%>
+<%--                    <input type="text" placeholder="Đường dẫn ảnh">--%>
+<%--                    <input type="submit" value="Thêm sách" class="nutThemSach">--%>
+<%--                </form>--%>
                 <table>
                     <thead>
                     <tr>
                         <td>Tên</td>
-                        <td>Danh mục</td>
                         <td>Giá bán</td>
-                        <td>Số lượng</td>
+                        <td>Số lượng tồn</td>
+                        <td>Cập nhật gần đây</td>
                     </tr>
                     </thead>
 
-                    <tbody>
-                    <tr>
-                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
-                        <td>Sách hướng nghiệp</td>
-                        <td>100000</td>
-                        <td>20</td>
-                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
-                        <td>Sách hướng nghiệp</td>
-                        <td>100000</td>
-                        <td>20</td>
-                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
-                        <td>Sách hướng nghiệp</td>
-                        <td>100000</td>
-                        <td>20</td>
-                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
-                        <td>Sách hướng nghiệp</td>
-                        <td>100000</td>
-                        <td>20</td>
-                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
-                        <td>Sách hướng nghiệp</td>
-                        <td>100000</td>
-                        <td>20</td>
-                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
-                        <td>Sách hướng nghiệp</td>
-                        <td>100000</td>
-                        <td>20</td>
-                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
-                        <td>Sách hướng nghiệp</td>
-                        <td>100000</td>
-                        <td>20</td>
-                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
-                        <td>Sách hướng nghiệp</td>
-                        <td>100000</td>
-                        <td>20</td>
-                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
-                        <td>Sách hướng nghiệp</td>
-                        <td>100000</td>
-                        <td>20</td>
-                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Ngành sáng tạo nghệ thuật có gì?</td>
-                        <td>Sách hướng nghiệp</td>
-                        <td>100000</td>
-                        <td>20</td>
-                        <td><img src="https://product.hstatic.net/200000123069/product/proposal_ntmnst_1706a93213ea40e397be5bbdaced5977_grande.png"></img></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
+                    <tbody id="danhSachSach">
                     </tbody>
                 </table>
             </div>
         </div>
     </div>
 </div>
+<%--Modal--%>
+<div class="modal hide">
+    <div class="modal-nen">
+    </div>
+    <div class="modal-noidung">
+        <div class="modal-noidungchinh">
+            <div class="modal-tieude">
+                Xóa sách
+            </div>
+            <div class="modal-thanhphansach">
+                <form action="">
+                    <div class="truongNhapLieu">
+                        <input type="text" class="nhapLieu" placeholder=" ">
+                        <label class="nhanNhapLieu">Tên sách</label>
+                    </div>
+                    <div class="truongNhapLieu">
+                        <input type="password" class="nhapLieu" placeholder=" ">
+                        <label class="nhanNhapLieu">Danh mục sách</label>
+                    </div>
+                    <div class="truongNhapLieu">
+                        <input type="password" class="nhapLieu" placeholder=" ">
+                        <label class="nhanNhapLieu">Giá sách</label>
+                    </div>
+                    <div class="truongNhapLieu">
+                        <input type="password" class="nhapLieu" placeholder=" ">
+                        <label class="nhanNhapLieu">Số lượng</label>
+                    </div>
+                    <div class="truongNhapLieu">
+                        <input type="password" class="nhapLieu" placeholder=" ">
+                        <label class="nhanNhapLieu">Đường dẫn ảnh</label>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-nutsua">
+                <button type="button">Xác nhận xóa</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="${pageContext.request.contextPath}/js/admin.js"></script>
-
+<script>
+    var danhSachSach = document.querySelector("#danhSachSach");
+    var nutXoa;
+    var modal;
+    var capNhat;
+    var nutDangXuat;
+    function capNhatCacNut() {
+        nutXoa = document.querySelectorAll('.nutXoa');
+        modal = document.querySelector('.modal');
+        capNhat = document.querySelector('.modal-nutsua button');
+        nutDangXuat = document.querySelector('#dangXuat');
+    }
+    function hienThiModal(e){
+        modal.classList.toggle('hide');
+    }
+    function capNhatSach() {
+        for (let i = 0; i < nutXoa.length; i++) {
+            nutXoa[i].addEventListener('click', hienThiModal);
+        }
+        modal.addEventListener('click', function (e) {
+            // console.log(e.target);
+            // console.log(modal.childNodes[3]);
+            if (e.target == modal.childNodes[3]) {
+                hienThiModal();
+            }
+        });
+        capNhat.addEventListener('click', hienThiModal);
+    }
+    function dangXuat(){
+        fetch('/api/dang-xuat', {
+            method: 'POST',
+        })
+            .then(response => {
+                if (response.status !== 200 && response.status !== 201) {
+                    throw response
+                }
+                return response.json()
+            })
+            .then(data => {
+                location.assign('${pageContext.request.contextPath}/views/trangchu.jsp');
+            })
+            .catch(async function(err) {
+                alert("Lỗi !");
+            })
+    }
+    function taiDuLieu(){
+        fetch('/api/sach', {
+            method: 'GET',
+        })
+            .then(response => response.json())
+            .then(data => {
+                let htmlDanhSachSach ='';
+                for(let i=0;i<data.length;i++){
+                    htmlDanhSachSach+=''+
+                        '<tr>'+
+                            '<td>'+data[i].ten+'</td>'+
+                            '<td>'+data[i].giaTien+'</td>'+
+                            '<td>'+data[i].soLuongTrongKho+'</td>'+
+                            '<td>'+data[i].thoiGianCapNhat+'</td>'+
+                            '<td><img src="'+data[i].hinhAnhSachs[0].duongDan+'"></img></td>'+
+                            '<td>'+
+                                '<div class="chinhSua">'+
+                                    '<i class="fa-solid fa-trash nutXoa"></i>'+
+                                '</div>'+
+                            '</td>'+
+                        '</tr>';
+                }
+                danhSachSach.innerHTML = htmlDanhSachSach;
+                capNhatCacNut();
+                capNhatSach();
+                nutDangXuat.addEventListener('click',dangXuat);
+            })
+            .catch(async function(err) {
+                alert("Lỗi hệ thống !");
+            })
+    }
+    taiDuLieu();
+</script>
 </html>

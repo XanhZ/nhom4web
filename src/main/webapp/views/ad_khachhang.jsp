@@ -10,7 +10,7 @@
     <title>Admin - Khách hàng</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
     <link rel="icon" href="${pageContext.request.contextPath}/img/logo.png" sizes="32x32">
-    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/khachHang_admin.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/css/ad_khachhang.css">
 </head>
 <body>
 <div class="thungChua">
@@ -53,7 +53,7 @@
             </li>
 
             <li>
-                <a href="#">
+                <a id="dangXuat" href="#">
                         <span class="bieuTuong">
                           <i class="fa-solid fa-right-from-bracket"></i>
                         </span>
@@ -98,268 +98,7 @@
                     </tr>
                     </thead>
 
-                    <tbody>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Nguyễn Văn A</td>
-                        <td>0123456789</td>
-                        <td>vana@gmail.com</td>
-                        <td>1</td>
-                        <td></td>
-                        <td>
-                            <div class="chinhSua">
-                                <i class="fa-solid fa-pen nutSua"></i>
-                                <i class="fa-solid fa-trash nutXoa"></i>
-                            </div>
-                        </td>
-                    </tr>
+                    <tbody id="danhSachKhachHang">
                     </tbody>
                 </table>
             </div>
@@ -367,7 +106,114 @@
     </div>
 </div>
 <%--Modal--%>
+<div class="modal hide">
+    <div class="modal-nen">
+    </div>
+    <div class="modal-noidung">
+        <div class="modal-noidungchinh">
+            <div class="modal-tieude">
+                Chỉnh sửa khách hàng
+            </div>
+            <div class="modal-thanhphansach">
+                <form action="">
+                    <div class="truongNhapLieu">
+                        <input type="text" class="nhapLieu" placeholder=" ">
+                        <label class="nhanNhapLieu">Tên khách hàng</label>
+                    </div>
+                    <div class="truongNhapLieu">
+                        <input type="password" class="nhapLieu" placeholder=" ">
+                        <label class="nhanNhapLieu">Số điện thoại</label>
+                    </div>
+                    <div class="truongNhapLieu">
+                        <input type="password" class="nhapLieu" placeholder=" ">
+                        <label class="nhanNhapLieu">Email</label>
+                    </div>
+                    <div class="truongNhapLieu">
+                        <input type="password" class="nhapLieu" placeholder=" ">
+                        <label class="nhanNhapLieu">Loại người dùng</label>
+                    </div>
+                    <!-- <div class="truongNhapLieu">
+                      <input type="password" class="nhapLieu" placeholder=" ">
+                      <label class="nhanNhapLieu">Đường dẫn ảnh</label>
+                    </div> -->
+                </form>
+            </div>
+            <div class="modal-nutsua">
+                <button type="button">Cập nhật</button>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 <script src="${pageContext.request.contextPath}/js/admin.js"></script>
+<script>
+    var danhSachKhachHang = document.querySelector("#danhSachKhachHang");
+    function taiDanhSachKhachHang(){
+        fetch('/api/danh-muc',{
+            method:'GET'
+        })
+            .then(resp => resp.json())
+            .then(data=>{
+                let htmlDanhSachKhachHang = '';
+                for(let i=0;i<data.length;i++){
+                    htmlDanhSachKhachHang+=''+
+                        '<tr>'+
+                            '<td>'+'hh'+'</td>'+
+                            '<td>'+'hh'+'</td>'+
+                            '<td>'+'hh'+'</td>'+
+                            '<td>'+'hh'+'</td>'
+                            '<td>'+'hh'+'</td>'+
+                            '<td>'+
+                                '<div class="chinhSua">'+
+                                    '<i class="fa-solid fa-pen nutSua"></i>'+
+                                    '<i class="fa-solid fa-trash nutXoa"></i>'+
+                                '</div>'+
+                            '</td>'+
+                        '</tr>';
+                }
+                danhSachKhachHang.innerHTML = htmlDanhSachKhachHang;
+            })
+            .catch(err=>{
+                alert("Lỗi hệ thống");
+            })
+    }
+    taiDanhSachKhachHang();
+    var nutSua = document.querySelectorAll('.nutSua');
+    var modal = document.querySelector('.modal');
+    var capNhat = document.querySelector('.modal-nutsua button');
+    var nutDangXuat = document.querySelector("#dangXuat");
+    function hienThiModal(e){
+        modal.classList.toggle('hide');
+    }
+    for(let i=0;i<nutSua.length;i++){
+        nutSua[i].addEventListener('click',hienThiModal);
+    }
+    modal.addEventListener('click',function(e){
+        // console.log(e.target);
+        // console.log(modal.childNodes[3]);
+        if(e.target == modal.childNodes[3]){
+            hienThiModal();
+        }
+    });
+    capNhat.addEventListener('click',hienThiModal);
 
+    function dangXuat(){
+        fetch('/api/dang-xuat', {
+            method: 'POST',
+        })
+            .then(response => {
+                if (response.status !== 200 && response.status !== 201) {
+                    throw response
+                }
+                return response.json()
+            })
+            .then(data => {
+                location.assign('${pageContext.request.contextPath}/views/trangchu.jsp');
+            })
+            .catch(async function(err) {
+                alert("Lỗi !");
+            })
+    }
+    nutDangXuat.addEventListener('click',dangXuat);
+</script>
 </html>

@@ -45,4 +45,24 @@
 <script src="../js/header.js"></script>
 </body>
 
+<script>
+    function dangXuat(){
+        fetch('/api/dang-xuat', {
+            method: 'POST',
+        })
+            .then(response => {
+                if (response.status !== 200 && response.status !== 201) {
+                    throw response
+                }
+                return response.json()
+            })
+            .then(data => {
+                location.assign('/trang-chu');
+            })
+            .catch(async function(err) {
+                alert("Lỗi !");
+            })
+    }
+</script>
+</body>
 </html>

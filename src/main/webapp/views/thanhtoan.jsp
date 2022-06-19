@@ -56,5 +56,4 @@
 <script src="../js/header.js"></script>
 <script type="text/javascript" src="../js/thanhtoan.js"></script>
 </body>
-
 </html>

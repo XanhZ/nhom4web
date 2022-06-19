@@ -40,7 +40,7 @@
             <div class="dieuHuongCon">
                 <c:if test="${not empty nguoiDung}">
                     <button class="taiKhoan"><h3>${nguoiDung.ten}</h3></button>
-                    <button id="dangXuat" type="button">Đăng xuất</button>
+                    <button id="dangXuat" onclick="dangXuat()" type="button">Đăng xuất</button>
                 </c:if>
                 <c:if test="${empty nguoiDung}">
                     <a href="${pageContext.request.contextPath}/views/dangnhap.jsp" class="dieuHuong__duongDan">Đăng nhập</a>
@@ -240,6 +240,24 @@
     </div>
 </footer>
 <script type="text/javascript" src="${pageContext.request.contextPath}/js/sanpham.js"></script>
+<script>
+    function dangXuat(){
+        fetch('/api/dang-xuat', {
+            method: 'POST',
+        })
+            .then(response => {
+                if (response.status !== 200 && response.status !== 201) {
+                    throw response
+                }
+                return response.json()
+            })
+            .then(data => {
+                location.assign('${pageContext.request.contextPath}/views/trangchu.jsp');
+            })
+            .catch(async function(err) {
+                alert("Lỗi !");
+            })
+    }
+</script>
 </body>
-
 </html>

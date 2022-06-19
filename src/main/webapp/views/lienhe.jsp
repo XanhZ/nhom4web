@@ -63,5 +63,4 @@
 <script src="../js/header.js"></script>
 <%@ include file="footer.jsp"%>s
 </body>
-
 </html>
