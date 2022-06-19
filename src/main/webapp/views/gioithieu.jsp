@@ -1,5 +1,4 @@
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-
+<%@ include file="../common/taglib.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -14,7 +13,6 @@
 </head>
 <body>
 <%@ include file="header.jsp"%>
-
 <main class="phan-than">
     <div class="gioi-thieu-con">
         <div class="phan-dau-gioi-thieu">
@@ -47,4 +45,24 @@
 <script src="../js/header.js"></script>
 </body>
 
+<script>
+    function dangXuat(){
+        fetch('/api/dang-xuat', {
+            method: 'POST',
+        })
+            .then(response => {
+                if (response.status !== 200 && response.status !== 201) {
+                    throw response
+                }
+                return response.json()
+            })
+            .then(data => {
+                location.assign('/trang-chu');
+            })
+            .catch(async function(err) {
+                alert("Lỗi !");
+            })
+    }
+</script>
+</body>
 </html>

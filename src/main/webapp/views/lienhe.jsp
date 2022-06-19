@@ -1,6 +1,4 @@
-<%@ taglib prefix = "c" uri = "http://java.sun.com/jsp/jstl/core" %>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-         pageEncoding="UTF-8"%>
+<%@ include file="../common/taglib.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -65,5 +63,4 @@
 <script src="../js/header.js"></script>
 <%@ include file="footer.jsp"%>s
 </body>
-
 </html>

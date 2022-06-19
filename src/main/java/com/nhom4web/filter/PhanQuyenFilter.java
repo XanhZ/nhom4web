@@ -12,8 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Pattern;
 
-@WebFilter(filterName = "Auth")
-public class AuthFilter extends HttpFilter {
+@WebFilter(filterName = "PhanQuyen")
+public class PhanQuyenFilter extends HttpFilter {
     private static final Map<String, Integer> PHAN_QUYEN_GET = new HashMap<>();
     private static final Map<String, Integer> PHAN_QUYEN_DELETE = new HashMap<>();
     private static final Map<String, Integer> PHAN_QUYEN_POST = new HashMap<>();

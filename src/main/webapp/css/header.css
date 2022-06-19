@@ -9,7 +9,7 @@ header {
 }
 
 header .dongGoi {
-	padding-left: 30px;
+	padding: 0 30px;
 	position: relative;
 	width: 100%;
 	display: flex;
@@ -47,17 +47,16 @@ header .dongGoi {
 .dieuHuong {
 	display: flex;
 	flex: 1;
+	justify-content: space-between;
+}
+.dieuHuong > .dieuHuongCon{
+	display: flex;
 }
 
-.dieuHuong>div,
-.dieuHuong>a {
-	width: calc(100% /7);
-	text-align: center;
-}
-
-.dieuHuong>div,
-.dieuHuong>a,
+.dieuHuong>.dieuHuongCon>div,
+.dieuHuong>.dieuHuongCon>a,
 .danhMuc li a {
+	display: inline-block;
 	cursor: pointer;
 	color: #fff;
 	font-size: 18px;
@@ -66,11 +65,30 @@ header .dongGoi {
 	transition: all 0.3s ease;
 }
 
-.dieuHuong>div:hover,
-.dieuHuong>a:hover,
+.dieuHuong>.dieuHungoCon>div:hover,
+.dieuHuong>.dieuHuongCon>a:hover,
 .danhMuc li a:hover {
 	background: #fff;
 	color: #2a2185;
+}
+.dieuHuongCon > #dangXuat{
+	height: 38px;
+	font-size: 16px;
+	border-radius: 10px;
+	width: 100px;
+	background-color: #dc3545;
+	color: #fff;
+	margin: 14px 0px;
+}
+.taiKhoan{
+	height: 38px;
+	font-size: 16px;
+	border-radius: 20px;
+	width: 150px;
+	background-color: #fff;
+	color: #2a2185;
+	margin: 14px 0px;
+	text-align: center;
 }
 
 .dieuHuong__danhMuc {
@@ -99,21 +117,3 @@ header .dongGoi {
 .danhMuc li a {
 	display: block;
 }
-
-.gioHang {
-	display: flex;
-}
-
-.gioHang span {
-	color: #ff7979;
-}
-
-.gioHang a {
-	color: white;
-}
-
-.gioHang:hover a {
-	color: #2a2185;
-}
-
-

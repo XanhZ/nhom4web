@@ -8,8 +8,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-@WebFilter(filterName = "Logged")
-public class LoggedFilter extends HttpFilter {
+@WebFilter(filterName = "XacThuc")
+public class XacThucFilter extends HttpFilter {
     @Override
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
         if (!req.getMethod().equals("POST")) {
