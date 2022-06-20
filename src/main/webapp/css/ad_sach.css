@@ -248,7 +248,7 @@ body {
 .bangThemSach {
   width: 100%;
   display: flex;
-  justify-content: space-between;
+  justify-content: right;
   margin: 20px 0;
 }
 
