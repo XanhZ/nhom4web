@@ -1,37 +1,40 @@
-const $ = document.querySelector.bind(document)
-const span = document.querySelector(".gioHang #sl")
-
-fetch("/api/gio-hang")
-    .then(function (resp){
-        return resp.json()
+const span = document.querySelector(".sl")
+async function laySoLuong() {
+    const resp = await fetch("https://localhost:8443/api/gio-hang", {
+        method: "GET",
     })
-    .then(function (sl) {
-        span.innerText = sl.soLuong
-    })
-    .catch(function (loi) {
-        console.log(loi)
-    })
+    const duLieu = await resp.json();
+    if (resp.ok) {
+        span.innerHTML = duLieu.length
+    }
+    else {
+        throw resp
+    }
+}
 
-const danhMuc = $(".danhMuc")
+laySoLuong()
+const danhMuc = document.querySelector(".danhMuc")
 
-fetch('/api/danh-muc')
+
+fetch('https://localhost:8443/api/danh-muc')
     .then(function (resp){
         return resp.json()
     })
     .then(function (danhMucs) {
         let dm = danhMucs.map(function (danhMuc) {
-            const url = danhMuc.ten.toLowerCase().normalize("NFD").replace(/\p{Diacritic}/gu, "").replaceAll(" ", "-")
+            const url = "/sach-theo-danh-muc?ma=" + danhMuc.ma
             return `
-             <li><a href="/${url}">${danhMuc.ten}</a></li>
+             <li><a href="${url}">${danhMuc.ten}</a></li>
             `
         })
+
         danhMuc.innerHTML = dm.join('');
     })
     .catch(function (loi) {
         console.log(loi)
     })
 
-const search = $(".timKiem input")
+const search = document.querySelector(".timKiem input")
 
 search.addEventListener("keypress", function(event) {
     if (event.key === "Enter") {
@@ -39,3 +42,15 @@ search.addEventListener("keypress", function(event) {
         location.assign(url)
     }
 })
+
+const nutDangXuat = document.querySelector("#dangXuat")
+nutDangXuat.onclick = function () {
+    fetch(`https://localhost:8443/api/dang-xuat`, {
+        method: 'POST'
+    })
+        .then(function (resp) {
+            if(resp.ok) {
+                location.assign("/trang-chu")
+            }
+    })
+}

@@ -1,0 +1,126 @@
+@import url('chung.css');
+
+main {
+  background: #ededed;
+  padding: 20px 0px;
+}
+
+.don-hang {
+  width: 80%;
+  margin: 30px auto;
+}
+
+.don-hang__chi-tiet {
+  background: #fff;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  padding: 0px 20px 10px 20px;
+}
+
+.don-hang__nhan {
+  padding-top: 20px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #cacaca;
+  font-size: x-large;
+  font-weight: 600;
+}
+
+.don-hang-dia-chi,
+.don-hang-thoi-gian-tao,
+.don-hang-thoi-gian-cap-nhat,
+.don-hang-trang-thai {
+  margin: 10px 0px;
+}
+
+.nhan {
+  font-weight: 600;
+}
+
+.don-hang__san-pham {
+  margin-top: 30px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+  background: #fff;
+}
+
+.san-pham__noi-dung {
+  display: flex;
+  padding: 20px;
+  border-bottom: 2px solid #cacaca;
+  font-weight: 600;
+}
+
+.noi-dung__sach {
+  flex: 2.5;
+}
+
+.noi-dung__so-luong,
+.noi-dung__don-gia,
+.noi-dung__thanh-tien {
+  flex: 1;
+}
+
+.san-pham {
+  display: flex;
+  align-items: center;
+  padding: 20px;
+}
+
+.san-pham__sach {
+  display: flex;
+  align-items: center;
+  flex: 2.5;
+}
+
+.sach__ten-sach {
+  margin-left: 10px;
+}
+
+.sach__hinh-anh img {
+  width: 150px;
+}
+
+.san-pham__so-luong,
+.san-pham__don-gia,
+.san-pham__thanh-tien {
+  flex: 1;
+}
+
+.don-hang__thao-tac {
+  position: sticky;
+  bottom: 0;
+  margin-top: 30px;
+  padding: 30px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  background: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.tong-tien-nhan {
+  font-weight: 600;
+}
+
+.btn-huy {
+  cursor: pointer;
+  margin-right: 50px;
+  border: 1px solid #ff0000;
+  background: #ff0000;
+  color: #fff;
+  padding: 8px 20px;
+  font-size: 18px;
+  border-radius: 5px;
+  font-weight: 600;
+  transition: 0.3s ease;
+}
+
+.btn-huy:hover {
+  background: #ce5a5a;
+}
+
+.tong-tien-gia-tri {
+  font-size: xx-large;
+  font-weight: 600;
+  color: #ff1100;
+  margin-right: 100px;
+  margin-left: 20px;
+}

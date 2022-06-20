@@ -111,89 +111,7 @@
   align-items: center;
 }
 
-.gia-ban__thuc-te {
-  font-size: 18px;
-  opacity: .92;
-  font-weight: bold;
-}
 
-.fa-star {
-  color: #f6f632;
-}
-
-.them-gio-hang-form {
-  display: flex;
-  flex-direction: column;
-}
-
-.btn-so-luong {
-  float: left;
-  background: #f3f4f4;
-  border: solid 1px #f3f4f4;
-  cursor: pointer;
-  font-weight: 600;
-  font-size: 16px;
-  outline: none;
-  height: 32px;
-  width: 32px;
-  text-align: center;
-  border-radius: 0;
-}
-
-#soLuong {
-  background: #fff;
-  font-weight: 600;
-  height: 32px;
-  padding: 0;
-  outline: none;
-  text-align: center;
-  width: 70px;
-  border: 1px solid #f3f4f4;
-  border-left: none;
-  border-right: none;
-  border-radius: 1px;
-  float: left;
-  -webkit-appearance: none;
-}
-
-.form-hanh-dong {
-  display: flex;
-  margin-top: 15px;
-}
-
-.them-gio-hang-form button {
-  width: 200px;
-  font-size: 15px;
-  font-weight: bold;
-  text-transform: uppercase;
-  box-shadow: none;
-  padding: 14px 15px;
-  line-height: 22px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-
-.btn-mua {
-  margin-top: 10px;
-  margin-right: 10px;
-  padding: 5px;
-  background-color: #fff;
-  border: 1px solid #cacaca;
-  color: black;
-}
-
-.btn-mua:hover {
-  background-color: #d3d3d3;
-}
-
-.btn-them {
-  background-color: #000;
-  color: #fff;
-}
-
-.btn-them:hover {
-  background-color: #332323;
-}
 
 /*----------------SAN PHAM LIEN QUAN----------------*/
 
@@ -302,4 +220,30 @@
     -webkit-line-clamp: 1;
     -webkit-box-orient: vertical;
     display: -webkit-box;
+}
+
+.binhLuans {
+    width: 80%;
+    margin: 10px auto;
+}
+
+.binhLuan {
+    padding: 5px;
+    margin-top: 5px;
+    border-bottom: 1px solid gray;
+}
+
+.tenNguoiBinhLuan {
+    color: #ff7675;
+    font-weight: 600;
+}
+
+.thongTinPhu {
+    display: flex;
+    justify-content: space-between;
+}
+
+.nhapNoiDung {
+    width: 100%;
+    padding: 5px;
 }

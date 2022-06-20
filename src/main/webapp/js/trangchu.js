@@ -1,5 +1,5 @@
-const $$ = document.querySelectorAll.bind(document)
-const trungBay =  $$(".sanPham .loaiSanPham .trungBay")
+const trungBay =  document.querySelectorAll(".sanPham .loaiSanPham .trungBay")
+const soLuong = document.querySelector(".sl")
 
 const sanPhamNoiBat = trungBay[0]
 
@@ -11,10 +11,10 @@ fetch('/api/sach')
         let dachSach = sachs.map(function (sach) {
             return `
             <div class="sach">
-                <a href="#"><img src="../img/logo.png"></a>
+                <a href="#"><img src="${sach.hinhAnhSachs[0].duongDan}"></a>
                 <div class="manMo">
                     <p>
-                        <a href="/sach?ma=${sach.ma}">Mua ngay</a>
+                        <a href="/thanh-toan?sach=${sach.ma}">Mua ngay</a>
                     </p>
                     <p>
                         <span style="color: white; cursor:pointer;" onclick="them(${sach.ma})">Thêm vào giỏ</span>
@@ -45,10 +45,10 @@ fetch('/api/sach?danhMuc=1')
         let dachSach = sachs.map(function (sach) {
             return `
             <div class="sach">
-                <a href="#"><img src="../img/logo.png"></a>
+                <a href="#"><img src="${sach.hinhAnhSachs[0].duongDan}"></a>
                 <div class="manMo">
                     <p>
-                        <a href="/sach?ma=${sach.ma}">Mua ngay</a>
+                        <a href="/thanh-toan?sach=${sach.ma}"">Mua ngay</a>
                     </p>
                     <p>
                         <span style="color: white; cursor:pointer;" onclick="them(${sach.ma})">Thêm vào giỏ</span>
@@ -79,10 +79,10 @@ fetch('/api/sach?danhMuc=2')
         let dachSach = sachs.map(function (sach) {
             return `
             <div class="sach">
-                <a href="#"><img src="../img/logo.png"></a>
+                <a href="#"><img src="${sach.hinhAnhSachs[0].duongDan}"></a>
                 <div class="manMo">
                     <p>
-                        <a href="/sach?ma=${sach.ma}">Mua ngay</a>
+                        <a href="/thanh-toan?sach=${sach.ma}"">Mua ngay</a>
                     </p>
                     <p>
                         <span style="color: white; cursor:pointer;" onclick="them(${sach.ma})">Thêm vào giỏ</span>
@@ -100,4 +100,24 @@ fetch('/api/sach?danhMuc=2')
     .catch(function (loi) {
         console.log(loi)
     })
-const soLuong = document.querySelector("#soLuong")
+
+async function them(maSach) {
+    const gioHang = new FormData();
+    gioHang.append('maSach',maSach)
+    gioHang.append('soLuong', 1)
+    const resp = await fetch("api/gio-hang", {
+        method: "POST",
+        body: gioHang
+    })
+    if (resp.ok) {
+        alert("Đã thêm vào giỏ hàng.")
+        laySoLuong()
+        return resp.json()
+    }
+    else {
+        throw resp
+    }
+}
+
+
+

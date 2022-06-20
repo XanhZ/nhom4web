@@ -1,0 +1,74 @@
+@import url("chung.css");
+
+.thungDung {
+    margin: 20px 30px;
+}
+
+
+
+.san-pham__noi-dung {
+    display: flex;
+    padding: 20px;
+    border-bottom: 2px solid #cacaca;
+    font-weight: 600;
+}
+
+.noi-dung__sach {
+    flex: 2.5;
+}
+
+.noi-dung__so-luong,
+.noi-dung__don-gia,
+.noi-dung__thanh-tien {
+    flex: 1;
+}
+
+.san-pham {
+    display: flex;
+    align-items: center;
+    padding: 20px;
+}
+
+.san-pham__sach {
+    display: flex;
+    align-items: center;
+    flex: 2.5;
+}
+
+.sach__ten-sach {
+    margin-left: 10px;
+}
+
+.sach__hinh-anh img {
+    width: 150px;
+}
+
+.san-pham__so-luong,
+.san-pham__don-gia,
+.san-pham__thanh-tien {
+    flex: 1;
+}
+
+.nutGui {
+    background-color: #2a2185;
+    color: #fff;
+    border: none !important;
+    padding: 10px;
+    text-align: center;
+}
+
+.diaChi {
+    padding: 5px;
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.nutGui:hover {
+    cursor: pointer;
+}
+
+.thongTinThanhToan {
+    text-align: start;
+    margin-bottom: 10px;
+    font-weight: 600;
+}

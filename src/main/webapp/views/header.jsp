@@ -12,21 +12,29 @@
             <div class="dieuHuong__danhMuc">
                 <div class="btn-danhMuc">Tủ sách</div>
                 <ul class="danhMuc">
-                    <li><a href="#">Sách hướng nghiệp</a></li>
-                    <li><a href="#">Sách IT</a></li>
-                    <li><a href="#">Sách văn học</a></li>
-                    <li><a href="#">Sách toán học</a></li>
-                    <li><a href="#">Sách kỹ năng</a></li>
                 </ul>
             </div>
             <a href="/gioi-thieu" class="dieuHuong__duongDan">Giới thiệu</a>
             <a href="/lien-he" class="dieuHuong__duongDan">Liên hệ</a>
             <c:if test="${not empty nguoiDung}">
-                <h1 style="color: white">${nguoiDung.ten}</h1>
+                <a class="gioHang" href="/nguoi-dung/gio-hang">
+                   <span class="sl"></span>
+                   <i class="fas fa-shopping-cart"></i>
+                </a>
+                <div class="tenNguoiDung">
+                    <a href="/nguoi-dung/don-hang?trangThai=dangCho" style="color: white">
+                        ${nguoiDung.ten}
+                    </a>
+                </div>
+                <div class="dieuHuong__duongDan" id="dangXuat">Đăng xuất</div>
             </c:if>
             <c:if test="${empty nguoiDung}">
                 <a href="/dang-nhap" class="dieuHuong__duongDan">Đăng nhập</a>
                 <a href="/dang-ky" class="dieuHuong__duongDan">Đăng ký</a>
+                <a class="gioHang" href="">
+                    <span class="sl"></span>
+                    <i class="fas fa-shopping-cart"></i>
+                </a>
             </c:if>
         </nav>
     </div>

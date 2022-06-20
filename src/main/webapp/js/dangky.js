@@ -32,7 +32,6 @@ function XacNhan(trang) {
 				if (typeof trang.onSubmit === 'function') {
 					var cacThongTinDauVao = bieuMau.querySelectorAll('[name]')
 					var thongTinBieuMau = Array.from(cacThongTinDauVao).reduce(function (cacGiaTri, input) {
-
 						cacGiaTri[input.name] = input.value;
 						return cacGiaTri;
 					}, {});

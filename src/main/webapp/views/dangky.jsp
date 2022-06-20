@@ -18,12 +18,12 @@
 <div class="thungDung">
     <div class="thungDungBieuMau">
         <div class="hinh-anh">
-            <img src="${pageContext.request.contextPath}/img/icon-sign.jpg" alt="">
+            <img src="../img/icon-sign.jpg" alt="">
         </div>
         <form action="#" class="bieuMauDangKi">
             <div class="veTrangChu">
                 <a href="/trang-chu">
-                    <img src="${pageContext.request.contextPath}/img/logo.png" alt="logo">
+                    <img src="../img/logo.png" alt="logo">
                 </a>
             </div>
             <h2 class="title">Đăng kí</h2>
@@ -33,32 +33,35 @@
                 <label class="nhanNhapLieu">Họ và tên</label>
                 <div class="danhGia"><i class="fas fa-check-circle"></i></div>
             </div>
+            <span class="loi-ten"></span>
             <div class="truongNhapLieu" id="sdt">
                 <i class="fa-solid fa-phone"></i>
                 <input type="text" name="soDienThoai" class="nhapLieu" placeholder=" ">
                 <label class="nhanNhapLieu">Số điện thoại</label>
                 <div class="danhGia"><i class="fas fa-check-circle"></i></div>
             </div>
+            <span class="loi-sdt"></span>
             <div class="truongNhapLieu" id="email">
                 <i class="fas fa-envelope"></i>
                 <input type="email" name="email" class="nhapLieu" placeholder=" ">
                 <label class="nhanNhapLieu">Email</label>
                 <div class="danhGia"><i class="fas fa-check-circle"></i></div>
             </div>
+            <span class="loi-email"></span>
             <div class="truongNhapLieu" id="taiKhoan">
                 <i class="fas fa-user"></i>
                 <input type="text" name="taiKhoan" class="nhapLieu" placeholder=" ">
                 <label class="nhanNhapLieu">Tài khoản</label>
                 <div class="danhGia"><i class="fas fa-check-circle"></i></div>
             </div>
+            <span class="loi-tenDangNhap"></span>
             <div class="truongNhapLieu" id="matKhau">
                 <i class="fas fa-lock"></i>
                 <input type="password" name="matKhau" id="pass" class="nhapLieu" placeholder=" ">
                 <label class="nhanNhapLieu" for="pass">Mật khẩu</label>
                 <div class="danhGia" id="checkPass1"><i class="fas fa-check-circle"></i></div>
             </div>
-            <p id="mess" style="font-size: 12px;color: rgb(49, 48, 48);">
-            </p>
+            <span class="loi-matKhau"></span>
             <div class="truongNhapLieu" id="xacNhanMatKhau">
                 <i class="fas fa-lock"></i>
                 <input type="password" id="cnfPass" class="nhapLieu" placeholder=" ">
@@ -70,7 +73,7 @@
     </div>
 </div>
 
-<script src="${pageContext.request.contextPath}/js/dangky.js"></script>
+<script src="../js/dangky.js"></script>
 <script>
     XacNhan({
         bieuMau: ".bieuMauDangKi",
@@ -85,6 +88,10 @@
             }, 8)
         ],
         onSubmit: async function (data) {
+            const spans = document.querySelector("span")
+            for(const span in spans) {
+                span.innerHTML = ""
+            }
             const api = "/api/dang-ky";
             const nguoiDung = new FormData();
             nguoiDung.append('sdt', data.soDienThoai)
@@ -92,16 +99,22 @@
             nguoiDung.append('ten', data.hoVaTen)
             nguoiDung.append('tenDangNhap', data.taiKhoan)
             nguoiDung.append('matKhau', data.matKhau)
-            fetch(api, {
+            const resp = await fetch(api, {
                 method: 'POST',
                 body: nguoiDung
-            })
-                .then(function(resp) {
-                    if (resp.status !== 200 || resp.status !== 201) {
-                        location.assign("/trang-chu")
-                        return resp.json();
+            });
+            const duLieu = await resp.json();
+            if(resp.ok) {
+                location.assign("/dang-nhap")
+            }
+            else {
+                if (resp.status === 400) {
+                    for (const property in duLieu) {
+                        const className = ".loi-" + property
+                        document.querySelector(className).innerHTML = duLieu[property];
                     }
-                })
+                }
+            }
         }
     })
 </script>
