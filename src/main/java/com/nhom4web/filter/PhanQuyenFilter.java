@@ -89,6 +89,7 @@ public class PhanQuyenFilter extends HttpFilter {
         PHAN_QUYEN_GET.put("/api/sach/\\d+/phan-loai-sach/\\d+", IS_CONG_KHAI);
         PHAN_QUYEN_GET.put("/api/danh-muc", IS_CONG_KHAI);
         PHAN_QUYEN_GET.put("/api/danh-muc/\\d+", IS_CONG_KHAI);
+        PHAN_QUYEN_GET.put("/api/sach/\\d+/binh-luan", IS_CONG_KHAI);
         PHAN_QUYEN_GET.put("/api/gio-hang", IS_NGUOI_DUNG);
         PHAN_QUYEN_GET.put("/api/nguoi-dung/don-hang", IS_NGUOI_DUNG);
         PHAN_QUYEN_GET.put("/api/nguoi-dung/don-hang/\\d+", IS_NGUOI_DUNG);
@@ -117,7 +118,7 @@ public class PhanQuyenFilter extends HttpFilter {
         PHAN_QUYEN_PUT.put("/api/gio-hang", IS_NGUOI_DUNG);
 
         // DELETE
-        PHAN_QUYEN_DELETE.put("/api/nguoi-dung/binh-luan/\\d+", IS_NGUOI_DUNG);
+        PHAN_QUYEN_DELETE.put("/api/sach/binh-luan/\\d+", IS_NGUOI_DUNG);
         PHAN_QUYEN_DELETE.put("/api/danh-muc/\\d+", IS_ADMIN);
         PHAN_QUYEN_DELETE.put("/api/sach/\\d+", IS_ADMIN);
         PHAN_QUYEN_DELETE.put("/api/sach/\\d+/binh-luan/\\d+", IS_ADMIN);

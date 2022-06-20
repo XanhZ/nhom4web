@@ -20,6 +20,10 @@
             "description": "Các thao tác với hình ảnh sách"
         },
         {
+            "name": "Bình luận sách",
+            "description": "Các thao tác với bình luận sách"
+        },
+        {
             "name": "Danh mục",
             "description": "Các thao tác với danh mục sách"
         },
@@ -106,7 +110,26 @@
                 "dongDonHangs": {
                     "type": "array",
                     "items": { "$ref": "#/definitions/DongDonHang" }
-                }
+                },
+                "nguoiDung": { "$ref":  "#/definitions/NguoiDung" }
+            }
+        },
+        "NguoiDung": {
+            "type": "object",
+            "properties": {
+                "ten": { "type": "string" },
+                "sdt": { "type": "string" },
+                "email": { "type" : "string"}
+            }
+        },
+        "BinhLuan": {
+            "type": "object",
+            "properties": {
+                "ma": { "type": "integer" },
+                "noiDung": { "type": "string" },
+                "thoiGianTao": { "type": "string" },
+                "thoiGianCapNhat": { "type": "string" },
+                "nguoiDung": { "$ref": "#/definitions/NguoiDung" }
             }
         }
     },
@@ -580,6 +603,155 @@
                     },
                     "403": {
                         "description": "Không được phép"
+                    }
+                }
+            }
+        },
+        "/api/sach/{ma}/lien-quan": {
+            "get": {
+                "tags": [ "Sách" ],
+                "parameters": [
+                    {
+                        "name": "ma",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-sach-lien-quan",
+                "responses": {
+                    "200": {
+                        "description": "Tìm kiếm thành công",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/Sach"
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sach/{maSach}/binh-luan": {
+            "get": {
+                "tags": [ "Bình luận sách" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "lay-tat-ca-binh-luan-theo-ma-sach",
+                "responses": {
+                    "200": {
+                        "description": "Thanh cong",
+                        "schema": {
+                            "type":"array",
+                            "items": {
+                                "$ref": "#/definitions/BinhLuan"
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [ "Bình luận sách" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "noiDung",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "operationId": "them-binh-luan-cho-sach",
+                "responses": {
+                    "200": {
+                        "description": "Thêm bình luận cho sách thành công",
+                        "schema": {
+                            "$ref": "#/definitions/BinhLuan"
+                        }
+                    }
+                }
+            }
+        },
+        "/api/sach/{maSach}/binh-luan/{maBinhLuan}": {
+            "delete": {
+                "tags": [ "Bình luận sách" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maBinhLuan",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    }
+                ],
+                "operationId": "xoa-binh-luan",
+                "responses": {
+                    "200": {
+                        "description": "Thành công"
+                    },
+                    "403": {
+                        "description": "Thất bại",
+                        "schema": {
+                            "type": "string",
+                            "example": "Người dùng không có quyền xóa bình luận"
+                        }
+                    }
+                }
+            },
+            "put": {
+                "tags": [ "Bình luận sách" ],
+                "consumes": [ "multipart/form-data" ],
+                "parameters": [
+                    {
+                        "name": "maSach",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "maBinhLuan",
+                        "in": "path",
+                        "required": true,
+                        "type": "integer"
+                    },
+                    {
+                        "name": "noiDung",
+                        "in": "formData",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "operationId": "cap-nhat-binh-luan",
+                "responses": {
+                    "200": {
+                        "description": "Thành công",
+                        "schema": {
+                            "$ref": "#/definitions/BinhLuan"
+                        }
+                    },
+                    "403": {
+                        "description": "Thất bại",
+                        "schema": {
+                            "type": "string",
+                            "example": "Người dùng không có quyền sửa bình luận"
+                        }
                     }
                 }
             }

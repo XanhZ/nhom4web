@@ -23,6 +23,7 @@ public class SachMainFilter extends HttpFilter {
     private static final SachFilter SACH_FILTER = new SachFilter();
     private static final HinhAnhSachFilter HINH_ANH_SACH_FILTER = new HinhAnhSachFilter();
     private static final PhanLoaiSachFilter PHAN_LOAI_SACH_FILTER = new PhanLoaiSachFilter();
+    private static final BinhLuanFilter BINH_LUAN_FILTER = new BinhLuanFilter();
 
     private boolean thucThi(HttpServletRequest req, HttpServletResponse resp) throws Exception {
         String method = req.getMethod();
@@ -48,6 +49,7 @@ public class SachMainFilter extends HttpFilter {
                 Class<?> dClass = entry.getValue().getDeclaringClass();
                 if (SACH_FILTER.getClass().equals(dClass)) o = SACH_FILTER;
                 else if (HINH_ANH_SACH_FILTER.getClass().equals(dClass)) o = HINH_ANH_SACH_FILTER;
+                else if (BINH_LUAN_FILTER.getClass().equals(dClass)) o = BINH_LUAN_FILTER;
                 else o = PHAN_LOAI_SACH_FILTER;
                 return (boolean) entry.getValue().invoke(o, req, resp);
             }
@@ -87,6 +89,10 @@ public class SachMainFilter extends HttpFilter {
                     "/api/sach/\\d+/phan-loai-sach/\\d+",
                     PhanLoaiSachFilter.class.getMethod("kiemTraDelete", HttpServletRequest.class, HttpServletResponse.class)
             );
+            DELETE_MAP.put(
+                    "/api/sach/\\d+/binh-luan/\\d+",
+                    BinhLuanFilter.class.getMethod("kiemTraDelete", HttpServletRequest.class, HttpServletResponse.class)
+            );
 
             GET_MAP.put(
                     "/api/sach",
@@ -116,6 +122,10 @@ public class SachMainFilter extends HttpFilter {
                     "/api/sach/\\d+/phan-loai-sach/\\d+",
                     PhanLoaiSachFilter.class.getMethod("kiemTraGet", HttpServletRequest.class, HttpServletResponse.class)
             );
+            GET_MAP.put(
+                    "/api/sach/\\d+/binh-luan",
+                    BinhLuanFilter.class.getMethod("kiemTraGet", HttpServletRequest.class, HttpServletResponse.class)
+            );
 
             POST_MAP.put(
                     "/api/sach",
@@ -129,6 +139,10 @@ public class SachMainFilter extends HttpFilter {
                     "/api/sach/\\d+/phan-loai-sach",
                     PhanLoaiSachFilter.class.getMethod("kiemTraPost", HttpServletRequest.class, HttpServletResponse.class)
             );
+            POST_MAP.put(
+                    "/api/sach/\\d+/binh-luan",
+                    BinhLuanFilter.class.getMethod("kiemTraPost", HttpServletRequest.class, HttpServletResponse.class)
+            );
 
             PUT_MAP.put(
                     "/api/sach/\\d+",
@@ -141,6 +155,10 @@ public class SachMainFilter extends HttpFilter {
             PUT_MAP.put(
                     "/api/sach/\\d+/phan-loai-sach/\\d+",
                     PhanLoaiSachFilter.class.getMethod("kiemTraPut", HttpServletRequest.class, HttpServletResponse.class)
+            );
+            PUT_MAP.put(
+                    "/api/sach/\\d+/binh-luan/\\d+",
+                    BinhLuanFilter.class.getMethod("kiemTraPut", HttpServletRequest.class, HttpServletResponse.class)
             );
         } catch (NoSuchMethodException e) {
             e.printStackTrace();

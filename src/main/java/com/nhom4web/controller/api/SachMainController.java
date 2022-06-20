@@ -1,5 +1,6 @@
 package com.nhom4web.controller.api;
 
+import com.nhom4web.controller.api.sach.BinhLuanController;
 import com.nhom4web.controller.api.sach.HinhAnhSachController;
 import com.nhom4web.controller.api.sach.PhanLoaiSachController;
 import com.nhom4web.controller.api.sach.SachController;
@@ -103,6 +104,10 @@ public class SachMainController extends HttpServlet {
                     "/api/sach/\\d+/phan-loai-sach/\\d+",
                     PhanLoaiSachController.class.getMethod("xoa", HttpServletRequest.class, HttpServletResponse.class)
             );
+            DELETE_MAP.put(
+                    "/api/sach/\\d+/binh-luan/\\d+",
+                    BinhLuanController.class.getMethod("xoa", HttpServletRequest.class, HttpServletResponse.class)
+            );
 
             GET_MAP.put(
                     "/api/sach",
@@ -132,6 +137,10 @@ public class SachMainController extends HttpServlet {
                     "/api/sach/\\d+/phan-loai-sach/\\d+",
                     PhanLoaiSachController.class.getMethod("tim", HttpServletRequest.class, HttpServletResponse.class)
             );
+            GET_MAP.put(
+                    "/api/sach/\\d+/binh-luan",
+                    BinhLuanController.class.getMethod("timTatCaTheoMaSach", HttpServletRequest.class, HttpServletResponse.class)
+            );
 
             POST_MAP.put(
                     "/api/sach",
@@ -145,6 +154,10 @@ public class SachMainController extends HttpServlet {
                     "/api/sach/\\d+/phan-loai-sach",
                     PhanLoaiSachController.class.getMethod("them", HttpServletRequest.class, HttpServletResponse.class)
             );
+            POST_MAP.put(
+                    "/api/sach/\\d+/binh-luan",
+                    BinhLuanController.class.getMethod("them", HttpServletRequest.class, HttpServletResponse.class)
+            );
 
             PUT_MAP.put(
                     "/api/sach/\\d+",
@@ -157,6 +170,10 @@ public class SachMainController extends HttpServlet {
             PUT_MAP.put(
                     "/api/sach/\\d+/phan-loai-sach/\\d+",
                     PhanLoaiSachController.class.getMethod("capNhat", HttpServletRequest.class, HttpServletResponse.class)
+            );
+            PUT_MAP.put(
+                    "/api/sach/\\d+/binh-luan/\\d+",
+                    BinhLuanController.class.getMethod("capNhat", HttpServletRequest.class, HttpServletResponse.class)
             );
         } catch (NoSuchMethodException e) {
             e.printStackTrace();

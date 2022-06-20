@@ -32,6 +32,10 @@
 - /api/sach/{sach_id}/hinh-anh-sach: POST, GET
 - /api/sach/{sach_id}/hinh-anh-sach/{id}: GET, PUT, DELETE
 ----------------------------------------------
+4. Bình luận sách
+- /api/sach/{sach_id}/binh-luan: POST, GET
+- /api/sach/{sach_id}/binh-luan/{binh_luan_id}: PUT, DELETE
+----------------------------------------------
 5. Phân loại sách
 - /api/sach/{sach_id}/phan-loai-sach: POST, GET
 - /api/sach/{sach_id}/phan-loai-sach/{id}: GET, PUT, DELETE
