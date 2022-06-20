@@ -86,7 +86,10 @@ public class DonHangDAO extends AbstractDAO<DonHang> implements IDonHangDAO {
     @Override
     public List<DonHang> layTheoNguoiDung(int maNguoiDung, String trangThai) {
         try {
-            String sql = String.format("SELECT * FROM %s WHERE maNguoiDung = ? AND trangThai = ?", this.tenBang);
+            String sql = String.format(
+                    "SELECT * FROM %s WHERE maNguoiDung = ? AND trangThai = ? ORDER BY thoiGianTao DESC",
+                    this.tenBang
+            );
             PreparedStatement ps = ketNoi.prepareStatement(sql);
             DonHangDAO.setThamSoTruyVan(ps, maNguoiDung, trangThai);
             List<DonHang> donHangs = this.sangThucThes(ps.executeQuery());

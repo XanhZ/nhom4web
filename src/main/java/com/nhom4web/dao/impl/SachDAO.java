@@ -161,6 +161,7 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
         List<String> thuocTinhLocs = new LinkedList<>();
         String sapXep = null;
         String gioiHan = null;
+        boolean banChayNhat = false;
         for (Map.Entry<String, String[]> thuocTinh : thuocTinhs.entrySet()) {
             switch (thuocTinh.getKey()) {
                 case "tenSach": {
@@ -204,11 +205,7 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
                             break;
                         }
                         case "banChayNhat": {
-                            thuocTinhLocs.add(
-                                    "ma IN (SELECT maSach FROM dongDonHang " +
-                                            "WHERE maDonHang IN (SELECT ma FROM donHang WHERE trangThai = 'xacNhan') " +
-                                            "GROUP BY maSach ORDER BY COUNT(soLuong))"
-                            );
+                            banChayNhat = true;
                             break;
                         }
                     }
@@ -223,6 +220,18 @@ public class SachDAO extends AbstractDAO<Sach> implements ISachDAO {
         String sql = "SELECT * FROM sach";
         if (!thuocTinhLocs.isEmpty()) sql += " WHERE " + String.join(" AND ", thuocTinhLocs);
         if (sapXep != null) sql += " " + sapXep;
+        if (banChayNhat) {
+            sql = String.format(
+                    "SELECT A.* FROM (%s) AS A, (" +
+                        "SELECT maSach, COUNT(soLuong) AS daBan " +
+                        "FROM dongDonHang " +
+                        "WHERE maDonHang IN (SELECT ma FROM donHang WHERE trangThai = 'xacNhan') " +
+                        "GROUP BY maSach) AS thongKe " +
+                    "WHERE A.ma = thongKe.maSach " +
+                    "ORDER BY daBan DESC",
+                    sql
+            );
+        }
         if (gioiHan != null) sql += " " + gioiHan;
         return sql;
     }
