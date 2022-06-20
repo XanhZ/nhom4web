@@ -17,32 +17,21 @@
     <div class="dieuHuong">
         <ul>
             <li>
-                <a href="">
+                <a href="#">
                         <span class="bieuTuong">
                           <i class="fa-solid fa-layer-group"></i>
                         </span>
-                    <span class="tieuDe logo">TEAM 4</span>
+                    <span class="tieuDe logo">Book Shop</span>
                 </a>
             </li>
-
-            <li class="hoatDong">
+            <li >
                 <a href="">
-                        <span class="bieuTuong">
-                          <i class="fa-solid fa-users"></i>
-                        </span>
-                    <span class="tieuDe">Khách hàng</span>
-                </a>
-            </li>
-
-            <li>
-                <a href="${pageContext.request.contextPath}/views/ad_danhmuc.jsp">
                         <span class="bieuTuong">
                           <i class="fa-solid fa-book-bookmark"></i>
                         </span>
                     <span class="tieuDe">Danh mục</span>
                 </a>
             </li>
-
             <li>
                 <a href="${pageContext.request.contextPath}/views/ad_sach.jsp">
                         <span class="bieuTuong">
@@ -51,7 +40,14 @@
                     <span class="tieuDe">Sách</span>
                 </a>
             </li>
-
+            <li>
+                <a href="${pageContext.request.contextPath}/views/ad_hoadon.jsp">
+                      <span class="bieuTuong">
+                        <i class="fa-solid fa-money-bill-trend-up"></i>
+                      </span>
+                    <span class="tieuDe">Đơn hàng</span>
+                </a>
+            </li>
             <li>
                 <a id="dangXuat" href="#">
                         <span class="bieuTuong">
