@@ -77,24 +77,5 @@
 <%@ include file="footer.jsp"%>
 </body>
 <script src="../js/header.js"></script>
-<script type="module" src="../js/trangchu.js"></script>
-<script type="text/javascript">
-    const soLuong = document.querySelector(".gioHang #sl")
-    async function them(maSach) {
-        const giohang = new FormData();
-        giohang.append('maSach',maSach)
-        giohang.append('soLuong', 1)
-        const resp = await fetch("api/gio-hang", {
-            method: "POST",
-            body: gioHang
-        })
-        if (resp.ok) {
-            alert("Đã thêm vào giỏ hàng.")
-            return resp.json()
-        }
-        else {
-            throw resp
-        }
-    }
-</script>
+<script type="text/javascript" src="../js/trangchu.js"></script>
 </html>

@@ -19,35 +19,33 @@
   <div class="noi-dung__sach">
     <div class="sach__hinh-anh">
       <div class="hinh-anh__album">
-        <div class="hinh-anh--don dang-hien-thi">
-          <img src="https://product.hstatic.net/200000123069/product/01_2d46620cb39244419293ed2a27642676_master.jpg">
-        </div>
-        <div class="hinh-anh--don">
-          <img src="http://product.hstatic.net/200000123069/product/01_2d46620cb39244419293ed2a27642676_master.jpg">
-        </div>
-        <div class="hinh-anh--don">
-          <img src="http://product.hstatic.net/200000123069/product/06_593f7f745177481aa52a24774942c11c_master.jpg">
-        </div>
-        <div class="hinh-anh--don">
-          <img src="https://product.hstatic.net/200000123069/product/02_d89e11769cf24fe6bf3ac1686e0eecae_master.jpg">
-        </div>
-        <div class="hinh-anh--don">
-          <img src="https://product.hstatic.net/200000123069/product/05_3dc4173f00e3491084ff244d689da617_master.jpg">
-        </div>
       </div>
       <div class="hinh-anh-hien-thi">
-        <img src="https://product.hstatic.net/200000123069/product/01_2d46620cb39244419293ed2a27642676_master.jpg" alt="">
+        <img>
       </div>
     </div>
     <div>
       <div class="sach__thong-tin">
       </div>
+      <form class="them-gio-hang-form">
+        <div class="thong-tin-so-luong">
+          <input type="button" value="-" class="btn-so-luong">
+          <input type="number" name="soLuong" id="soLuong" value="1" min="1">
+          <input type="button" value="+" class="btn-so-luong">
+        </div>
+      </form>
       <form onsubmit="return themSach()" class="bangThanhToan">
-        <input type="text" placeholder="Họ và tên">
-        <input type="text" placeholder="Số điện thoại người nhận">
-        <input type="text" placeholder="Địa chỉ">
+        <c:if test="${not empty nguoiDung}">
+          <div class="thongTinThanhToan">
+            Tên khách hàng : ${nguoiDung.ten}
+          </div>
+          <div class="thongTinThanhToan">
+              Số điện thoại : ${nguoiDung.sdt}
+          </div>
+        </c:if>
+        <input type="text" placeholder="Địa chỉ" class="diaChi">
         <span>Thanh toán khi giao hàng</span>
-        <input type="submit" value="Gửi" class="nutGui">
+        <input value="Gửi" class="nutGui">
       </form>
     </div>
   </div>

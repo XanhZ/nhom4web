@@ -1,3 +1,33 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700;800;900&display=swap');
+@import url('header.css');
+@import url('footer.css');
+
+* {
+	padding: 0;
+	margin: 0;
+	box-sizing: border-box;
+	font-family: Poppins, sans-serif;
+}
+
+* a {
+	text-decoration: none;
+}
+
+body {
+	padding-bottom: 50px;
+	min-width: 1280px;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+	-webkit-appearance: none;
+	margin: 0;
+}
+
+::-webkit-scrollbar {
+	display: none;
+}
+
 header {
 	background-color: #2a2185;
 	position: sticky;
@@ -9,7 +39,7 @@ header {
 }
 
 header .dongGoi {
-	padding: 0 30px;
+	padding-left: 30px;
 	position: relative;
 	width: 100%;
 	display: flex;
@@ -47,16 +77,17 @@ header .dongGoi {
 .dieuHuong {
 	display: flex;
 	flex: 1;
-	justify-content: space-between;
-}
-.dieuHuong > .dieuHuongCon{
-	display: flex;
 }
 
-.dieuHuong>.dieuHuongCon>div,
-.dieuHuong>.dieuHuongCon>a,
+.dieuHuong>div,
+.dieuHuong>a {
+	width: calc(100% /7);
+	text-align: center;
+}
+
+.dieuHuong>div,
+.dieuHuong>a,
 .danhMuc li a {
-	display: inline-block;
 	cursor: pointer;
 	color: #fff;
 	font-size: 18px;
@@ -65,30 +96,16 @@ header .dongGoi {
 	transition: all 0.3s ease;
 }
 
-.dieuHuong>.dieuHungoCon>div:hover,
-.dieuHuong>.dieuHuongCon>a:hover,
+.dieuHuong>div:hover,
+.dieuHuong>a:hover,
 .danhMuc li a:hover {
 	background: #fff;
 	color: #2a2185;
 }
-.dieuHuongCon > #dangXuat{
-	height: 38px;
-	font-size: 16px;
-	border-radius: 10px;
-	width: 100px;
-	background-color: #dc3545;
-	color: #fff;
-	margin: 14px 0px;
-}
-.taiKhoan{
-	height: 38px;
-	font-size: 16px;
-	border-radius: 20px;
-	width: 150px;
-	background-color: #fff;
+
+.tenNguoiDung:hover {
+	background: white;
 	color: #2a2185;
-	margin: 14px 0px;
-	text-align: center;
 }
 
 .dieuHuong__danhMuc {
@@ -117,3 +134,19 @@ header .dongGoi {
 .danhMuc li a {
 	display: block;
 }
+
+.gioHang {
+	display: flex;
+	text-align: center;
+	justify-content: center;
+}
+
+.gioHang span {
+	color: #ff7675;
+}
+
+.gioHang i {
+	display: inline-block;
+	padding-top: 23px;
+}
+

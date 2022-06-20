@@ -1,1 +1,90 @@
 @import url('chung.css');
+
+main {
+  background: #ededed;
+  padding: 20px 0px;
+}
+
+.danh-sach-don-hang {
+  width: 80%;
+  margin: 0 auto;
+}
+
+.danh-sach-don-hang__dieu-huong {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  background: #fff;
+}
+
+.dieu-huong-duong-dan {
+  color: #000;
+  text-decoration: none;
+  padding: 20px 40px 16px 40px;
+}
+
+.dieu-huong-duong-dan.active {
+  color: #0d6efd;
+  font-weight: 600;
+  border-bottom: 4px solid #3434ae;
+}
+
+.don-hang-noi-dung {
+  box-shadow: rgb(0 0 0 / 24%) 0px 3px 8px;
+  background: #fff;
+  color: #000;
+  margin: 20px 0px;
+}
+
+.san-pham {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 10px;
+}
+
+.san-pham__minh-hoa {
+  display: flex;
+}
+
+.minh-hoa__hinh-anh {
+  border: 1px solid #cacaca;
+}
+
+.minh-hoa__hinh-anh img {
+  width: 120px;
+}
+
+.minh-hoa__thong-tin {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.ten-sach {
+  font-size: x-large;
+  font-weight: 600;
+}
+
+.san-pham__thanh-tien {
+  font-size: x-large;
+  color: #fc5204;
+  font-weight: 600;
+}
+
+.don-hang__tong-tien {
+  padding: 8px 20px;
+  background: #fff4d3;
+  border-top: 2px dashed #cacaca;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.tong-tien-gia-tri {
+  margin-left: 10px;
+  font-size: xx-large;
+  color: #ff2600;
+  font-weight: 600;
+}
